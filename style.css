@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+    min-height: 100vh;
+}
+
+.glow-text {
+    text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+}
+
+.card-glow {
+    box-shadow: 0 0 30px rgba(167, 139, 250, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card-glow:hover {
+    box-shadow: 0 0 40px rgba(167, 139, 250, 0.3);
+    transform: translateY(-2px);
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #312e81 25%, #4c1d95 50%, #312e81 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.typing-effect {
+    overflow: hidden;
+    border-right: 2px solid #a78bfa;
+    white-space: nowrap;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #a78bfa; }
+}
+
+.gradient-border {
+    position: relative;
+    background: #1e1b4b;
+    border-radius: 12px;
+}
+
+.gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    padding: 2px;
+    background: linear-gradient(135deg, #a78bfa, #22d3ee);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.pulse-glow {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #a78bfa, #22d3ee);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.3);
+}
+
+.metric-card {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.platform-score {
+    transition: all 0.3s ease;
+}
+
+.platform-score:hover {
+    transform: scale(1.05);
+}
+
+.loading-spinner {
+    border: 3px solid rgba(167, 139, 250, 0.2);
+    border-top: 3px solid #a78bfa;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

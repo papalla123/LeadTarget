@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadTarget AI - Suite de Inteligencia de Mercado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-gray-100">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-indigo-950/90 backdrop-blur-lg border-b border-violet-400/20 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-violet-400 to-cyan-400 rounded-lg flex items-center justify-center">
+                        <span class="text-2xl">🎯</span>
+                    </div>
+                    <span class="text-xl font-bold glow-text">LeadTarget AI</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="https://sueldopro-2026.vercel.app" class="nav-link text-gray-300 hover:text-violet-400 transition-colors">SueldoPro</a>
+                    <a href="https://margin-master-pro.vercel.app" class="nav-link text-gray-300 hover:text-violet-400 transition-colors">MarginMaster</a>
+                    <a href="https://liquidez-force.vercel.app" class="nav-link text-gray-300 hover:text-violet-400 transition-colors">LiquidezForce</a>
+                    <a href="#" class="nav-link text-violet-400 font-semibold">LeadTarget AI</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4 glow-text">
+                    Suite de Inteligencia de Mercado
+                </h1>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    El cerebro de marketing que combina datos financieros reales con predicción de ROI y generación de estrategias con IA
+                </p>
+            </div>
+
+            <!-- Ecosystem Sync Banner -->
+            <div id="syncBanner" class="gradient-border p-6 mb-8 hidden">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="loading-spinner"></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-violet-400">Sincronizando Ecosistema Empresarial</h3>
+                            <p class="text-gray-400 text-sm">Importando datos de MarginMaster y LiquidezForce...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Input Panel -->
+                <div class="lg:col-span-2 card-glow bg-indigo-900/40 backdrop-blur rounded-xl p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-violet-400">Configuración de Campaña</h2>
+                    
+                    <!-- Imported Data Display -->
+                    <div id="importedData" class="mb-6 p-4 bg-indigo-950/50 rounded-lg border border-cyan-400/30 hidden">
+                        <h3 class="text-sm font-semibold text-cyan-400 mb-2">📊 Datos Importados del Ecosistema</h3>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-400">Margen Neto:</span>
+                                <span id="importedMargin" class="text-white font-semibold ml-2">--</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">Presupuesto Disponible:</span>
+                                <span id="importedBudget" class="text-white font-semibold ml-2">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Industria/Nicho</label>
+                                <select id="industry" class="w-full bg-indigo-950 border border-violet-400/30 rounded-lg px-4 py-3 text-white">
+                                    <option value="ecommerce">E-commerce</option>
+                                    <option value="servicios">Servicios Profesionales</option>
+                                    <option value="b2b">B2B/SaaS</option>
+                                    <option value="educacion">Educación Online</option>
+                                    <option value="salud">Salud y Bienestar</option>
+                                    <option value="inmobiliaria">Inmobiliaria</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Precio del Producto/Servicio ($)</label>
+                                <input type="number" id="productPrice" value="297" class="w-full bg-indigo-950 border border-violet-400/30 rounded-lg px-4 py-3 text-white" placeholder="297">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Presupuesto Mensual ($)</label>
+                                <input type="number" id="monthlyBudget" value="3000" class="w-full bg-indigo-950 border border-violet-400/30 rounded-lg px-4 py-3 text-white" placeholder="3000">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Tasa de Conversión Estimada (%)</label>
+                                <input type="number" id="conversionRate" value="2.5" step="0.1" class="w-full bg-indigo-950 border border-violet-400/30 rounded-lg px-4 py-3 text-white" placeholder="2.5">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Objetivo de la Campaña</label>
+                            <select id="campaignGoal" class="w-full bg-indigo-950 border border-violet-400/30 rounded-lg px-4 py-3 text-white">
+                                <option value="awareness">Awareness (Alcance Máximo)</option>
+                                <option value="consideration">Consideration (Tráfico Cualificado)</option>
+                                <option value="conversion">Conversion (Ventas Directas)</option>
+                                <option value="retention">Retention (Clientes Recurrentes)</option>
+                            </select>
+                        </div>
+
+                        <button id="analyzeBtn" class="w-full bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600 text-white font-bold py-4 rounded-lg transition-all transform hover:scale-105">
+                            🚀 Generar Estrategia Inteligente
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Insights Panel -->
+                <div class="card-glow bg-indigo-900/40 backdrop-blur rounded-xl p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-violet-400">🤖 AI Insights</h2>
+                    <div id="aiInsights" class="space-y-4">
+                        <div class="skeleton h-20 rounded-lg"></div>
+                        <div class="skeleton h-20 rounded-lg"></div>
+                        <div class="skeleton h-20 rounded-lg"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Dashboard -->
+            <div id="resultsSection" class="hidden space-y-6">
+                <!-- Metrics Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="metric-card rounded-xl p-6">
+                        <div class="text-gray-400 text-sm mb-2">CPA Máximo Seguro</div>
+                        <div id="maxCPA" class="text-3xl font-bold text-violet-400">$0</div>
+                        <div class="text-xs text-gray-500 mt-1">Basado en tu margen</div>
+                    </div>
+                    <div class="metric-card rounded-xl p-6">
+                        <div class="text-gray-400 text-sm mb-2">Leads Proyectados</div>
+                        <div id="projectedLeads" class="text-3xl font-bold text-cyan-400">0</div>
+                        <div class="text-xs text-gray-500 mt-1">Por mes</div>
+                    </div>
+                    <div class="metric-card rounded-xl p-6">
+                        <div class="text-gray-400 text-sm mb-2">Ventas Esperadas</div>
+                        <div id="expectedSales" class="text-3xl font-bold text-green-400">0</div>
+                        <div class="text-xs text-gray-500 mt-1">Conversiones</div>
+                    </div>
+                    <div class="metric-card rounded-xl p-6">
+                        <div class="text-gray-400 text-sm mb-2">ROI Proyectado</div>
+                        <div id="projectedROI" class="text-3xl font-bold text-yellow-400">0%</div>
+                        <div class="text-xs text-gray-500 mt-1">Retorno estimado</div>
+                    </div>
+                </div>
+
+                <!-- Platform Selector -->
+                <div class="card-glow bg-indigo-900/40 backdrop-blur rounded-xl p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-violet-400">📱 Smart Platform Selector</h2>
+                    <div id="platformScores" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    </div>
+                </div>
+
+                <!-- Funnel Visualization -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card-glow bg-indigo-900/40 backdrop-blur rounded-xl p-6">
+                        <h2 class="text-2xl font-bold mb-6 text-violet-400">📊 Embudo de Conversión</h2>
+                        <canvas id="funnelChart"></canvas>
+                    </div>
+
+                    <div class="card-glow bg-indigo-900/40 backdrop-blur rounded-xl p-6">
+                        <h2 class="text-2xl font-bold mb-6 text-violet-400">💰 Proyección LTV</h2>
+                        <canvas id="ltvChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Buyer Persona Generator -->
+                <div class="card-glow bg-indigo-900/40 backdrop-blur rounded-xl p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-violet-400">👤 AI Persona Architect 2.0</h2>
+                    <div id="buyerPersona" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    </div>
+                </div>
+
+                <!-- Ad Copy Engine -->
+                <div class="card-glow bg-indigo-900/40 backdrop-blur rounded-xl p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-violet-400">✍️ The Ad-Copy Engine</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div id="aidaCopy" class="bg-indigo-950/50 rounded-lg p-4">
+                            <h3 class="text-lg font-semibold text-cyan-400 mb-3">AIDA Framework</h3>
+                            <div class="text-sm text-gray-300 space-y-2"></div>
+                        </div>
+                        <div id="pasCopy" class="bg-indigo-950/50 rounded-lg p-4">
+                            <h3 class="text-lg font-semibold text-cyan-400 mb-3">PAS Framework</h3>
+                            <div class="text-sm text-gray-300 space-y-2"></div>
+                        </div>
+                        <div id="storyCopy" class="bg-indigo-950/50 rounded-lg p-4">
+                            <h3 class="text-lg font-semibold text-cyan-400 mb-3">Story (3 Actos)</h3>
+                            <div class="text-sm text-gray-300 space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Strategy -->
+                <div class="flex justify-center">
+                    <button id="exportBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-8 rounded-lg transition-all transform hover:scale-105">
+                        📄 Exportar Hoja de Ruta de Escalamiento
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t border-violet-400/20 bg-indigo-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center text-gray-400 text-sm">
+                <p class="mb-2">⚖️ <strong>Disclaimer Legal:</strong> Simulador estratégico. Decisiones bajo responsabilidad del usuario.</p>
+                <p>Datos basados en promedios de plataformas oficiales (Google/Meta). LeadTarget AI no garantiza resultados específicos.</p>
+                <p class="mt-4 text-violet-400">© 2026 LeadTarget AI - Powered by Market Intelligence</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
