@@ -1,214 +1,348 @@
-// Global State - Control de Gráficos para evitar errores de duplicidad
-let funnelChart = null;
-let ltvChart = null;
-
-// Inicialización inmediata
-document.addEventListener('DOMContentLoaded', () => {
-    setupEventListeners();
-    console.log("🎯 LeadTarget AI: Motor de Inteligencia Activo");
-});
-
-function setupEventListeners() {
-    // Botón Principal
-    const analyzeBtn = document.getElementById('analyzeBtn');
-    if(analyzeBtn) {
-        analyzeBtn.addEventListener('click', ejecutarAnalisisCompleto);
-    }
-
-    // Botón de Sincronización (Ecosistema)
-    const syncBtn = document.getElementById('syncBtn');
-    if(syncBtn) {
-        syncBtn.addEventListener('click', simulateEcosystemImport);
-    }
-
-    // Botón de Exportación
-    const exportBtn = document.getElementById('exportBtn');
-    if(exportBtn) {
-        exportBtn.addEventListener('click', exportStrategy);
-    }
+// Simulate Ecosystem Import
+function simulateEcosystemImport() {
+    const banner = document.getElementById('syncBanner');
+    const importedDataDiv = document.getElementById('importedData');
+    
+    banner.classList.remove('hidden');
+    
+    setTimeout(() => {
+        // Simular datos importados de MarginMaster y LiquidezForce
+        const simulatedMargin = (Math.random() * 30 + 20).toFixed(1);
+        const simulatedBudget = (Math.random() * 5000 + 2000).toFixed(0);
+        
+        document.getElementById('importedMargin').textContent = simulatedMargin + '%';
+        document.getElementById('importedBudget').textContent = '$' + simulatedBudget;
+        
+        banner.classList.add('hidden');
+        importedDataDiv.classList.remove('hidden');
+        
+        showAIInsights();
+    }, 2000);
 }
 
-function ejecutarAnalisisCompleto() {
-    // 1. Captura de datos de los inputs
-    const industry = document.getElementById('industry').value;
-    const budget = parseFloat(document.getElementById('budget').value) || 0;
-    const productPrice = parseFloat(document.getElementById('productPrice').value) || 0;
-
-    // Validación rápida
-    if (budget <= 0 || productPrice <= 0) {
-        alert("⚠️ Por favor, ingresa un presupuesto y precio válidos para calcular la estrategia.");
-        return;
-    }
-
-    // 2. Mostrar la sección de resultados inmediatamente
-    const resultsSection = document.getElementById('resultsSection');
-    resultsSection.classList.remove('hidden');
-
-    // 3. Motor de cálculos (Benchmarks de data.js)
-    const metrics = calculateMetrics(industry, budget, productPrice);
-    
-    // 4. Renderizado masivo de componentes
-    updateStatsDOM(metrics);
-    createFunnelChart(metrics);
-    createLTVChart(metrics);
-    generatePlatformScores(productPrice);
-    renderBuyerPersona(industry);
-    renderAdCopies(industry, productPrice);
-    
-    // 5. Scroll suave al éxito
-    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function calculateMetrics(industry, budget, price) {
-    const bench = industryData[industry] || industryData.ecommerce;
-    const clicks = Math.floor(budget / bench.avgCPC);
-    const conversions = Math.floor(clicks * (bench.avgConversion / 100));
-    const revenue = conversions * price;
-    const roi = budget > 0 ? ((revenue - budget) / budget) * 100 : 0;
-    const cpa = conversions > 0 ? budget / conversions : 0;
-
-    return { clicks, conversions, revenue, roi, cpa, bench };
-}
-
-function updateStatsDOM(m) {
-    document.getElementById('statClicks').textContent = m.clicks.toLocaleString();
-    document.getElementById('statConversions').textContent = m.conversions.toLocaleString();
-    document.getElementById('statRevenue').textContent = '$' + m.revenue.toLocaleString();
-    
-    const roiEl = document.getElementById('statROI');
-    roiEl.textContent = m.roi.toFixed(1) + '%';
-    roiEl.className = m.roi >= 0 ? 'text-3xl font-bold text-emerald-400' : 'text-3xl font-bold text-rose-500';
-}
-
-function createFunnelChart(m) {
-    const ctx = document.getElementById('funnelChart').getContext('2d');
-    if (funnelChart) funnelChart.destroy();
-    
-    funnelChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Alcance', 'Clicks', 'Ventas'],
-            datasets: [{
-                data: [m.clicks * 40, m.clicks, m.conversions],
-                backgroundColor: ['#4c1d95', '#8b5cf6', '#22d3ee'],
-                borderRadius: 8
-            }]
+// Show AI Insights
+function showAIInsights() {
+    const insights = [
+        {
+            icon: '🎯',
+            title: 'Nicho Identificado',
+            text: 'Tu industria muestra tendencia evergreen con estabilidad de demanda'
         },
-        options: {
-            indexAxis: 'y',
-            plugins: { legend: { display: false } },
-            scales: { x: { display: false }, y: { ticks: { color: '#94a3b8' } } }
-        }
-    });
-}
-
-function createLTVChart(m) {
-    const ctx = document.getElementById('ltvChart').getContext('2d');
-    if (ltvChart) ltvChart.destroy();
-    
-    ltvChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Mes 1', 'Mes 3', 'Mes 6', 'Mes 12'],
-            datasets: [{
-                label: 'Crecimiento Proyectado',
-                data: [m.revenue, m.revenue * 1.4, m.revenue * 2, m.revenue * m.bench.avgLTV],
-                borderColor: '#22d3ee',
-                backgroundColor: 'rgba(34, 211, 238, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
+        {
+            icon: '💡',
+            title: 'Recomendación IA',
+            text: 'Optimiza para conversión. Tu ticket permite invertir en calidad de leads'
         },
-        options: {
-            plugins: { legend: { display: false } },
-            scales: { y: { ticks: { color: '#94a3b8' } }, x: { ticks: { color: '#94a3b8' } } }
+        {
+            icon: '📈',
+            title: 'Oportunidad Detectada',
+            text: 'El mercado está sub-saturado en tu rango de precio. ¡Momento ideal!'
         }
-    });
-}
+    ];
 
-function generatePlatformScores(price) {
-    const container = document.getElementById('platformScores');
-    // Inteligencia: Si el ticket es alto (>100), Google Search es mejor. Si es bajo, TikTok.
-    const platforms = [
-        { name: 'TikTok Ads', score: price < 50 ? 98 : 65, icon: '📱' },
-        { name: 'Instagram Ads', score: price < 150 ? 92 : 70, icon: '📸' },
-        { name: 'Google Search', score: price > 100 ? 95 : 60, icon: '🔍' },
-        { name: 'Facebook Ads', score: 85, icon: '👥' }
-    ].sort((a,b) => b.score - a.score);
-
-    container.innerHTML = platforms.map(p => `
-        <div class="bg-indigo-900/40 p-4 rounded-xl border border-violet-400/20">
-            <div class="flex justify-between mb-2">
-                <span class="text-sm">${p.icon} ${p.name}</span>
-                <span class="text-cyan-400 font-bold">${p.score}%</span>
-            </div>
-            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-gradient-to-r from-violet-500 to-cyan-400 h-full" style="width: ${p.score}%"></div>
+    const container = document.getElementById('aiInsights');
+    container.innerHTML = insights.map(insight => `
+        <div class="bg-indigo-950/50 rounded-lg p-4 border border-violet-400/20">
+            <div class="flex items-start space-x-3">
+                <span class="text-2xl">${insight.icon}</span>
+                <div>
+                    <h4 class="font-semibold text-violet-400 mb-1">${insight.title}</h4>
+                    <p class="text-sm text-gray-300">${insight.text}</p>
+                </div>
             </div>
         </div>
     `).join('');
 }
 
-function renderBuyerPersona(industry) {
-    const p = buyerPersonas[industry] || buyerPersonas.ecommerce;
-    document.getElementById('personaName').textContent = p.name;
-    document.getElementById('personaAge').textContent = p.age;
-    document.getElementById('personaPain').textContent = p.pain;
-    document.getElementById('personaHook').textContent = p.hook;
-}
-
-function renderAdCopies(industry, price) {
-    const p = buyerPersonas[industry] || buyerPersonas.ecommerce;
-    const containers = document.querySelectorAll('#resultsSection .bg-indigo-950\\/50.p-4');
+// Calculate Metrics
+function calculateMetrics() {
+    const industry = document.getElementById('industry').value;
+    const price = parseFloat(document.getElementById('productPrice').value) || 297;
+    const budget = parseFloat(document.getElementById('monthlyBudget').value) || 3000;
+    const convRate = parseFloat(document.getElementById('conversionRate').value) || 2.5;
     
-    // Copy AIDA
-    if(containers[0]) {
-        containers[0].innerHTML = `
-            <p class="text-xs text-violet-400 font-mono mb-2">MODELO AIDA</p>
-            <p class="text-sm"><strong>A:</strong> ¿Te frustra ${p.pain}?</p>
-            <p class="text-sm"><strong>I:</strong> Tenemos la solución por solo $${price}.</p>
-            <p class="text-sm"><strong>D:</strong> Imagina lograr ${p.hook}.</p>
-            <p class="text-sm font-bold text-cyan-400">A: Compra ahora aquí.</p>
-        `;
-    }
-    // Copy PAS
-    if(containers[1]) {
-        containers[1].innerHTML = `
-            <p class="text-xs text-cyan-400 font-mono mb-2">MODELO PAS</p>
-            <p class="text-sm"><strong>P:</strong> El gran problema es ${p.pain}.</p>
-            <p class="text-sm"><strong>A:</strong> No resolverlo te aleja de ${p.hook}.</p>
-            <p class="text-sm font-bold text-violet-400">S: Adquiérelo hoy por $${price}.</p>
-        `;
-    }
-}
-
-function simulateEcosystemImport() {
-    const btn = document.getElementById('syncBtn');
-    btn.innerHTML = '🔄 Conectando...';
+    const data = industryData[industry];
+    const marginText = document.getElementById('importedMargin').textContent;
+    const margin = parseFloat(marginText) || 25;
     
-    // Una espera mínima de 0.8s solo para dar sensación de "conexión" real
-    setTimeout(() => {
-        const simulatedMargin = 38.5;
-        const simulatedBudget = 2450;
-        
-        document.getElementById('budget').value = simulatedBudget;
-        document.getElementById('importedMargin').textContent = simulatedMargin + '%';
-        document.getElementById('importedBudget').textContent = '$' + simulatedBudget.toLocaleString();
-        
-        document.getElementById('syncBanner').classList.add('hidden');
-        document.getElementById('importedData').classList.remove('hidden');
-        btn.innerHTML = '✅ Conectado';
-        
-        ejecutarAnalisisCompleto();
-    }, 800);
+    // CPA Máximo Seguro (70% del margen para seguridad)
+    const maxCPA = (price * (margin / 100) * 0.7).toFixed(2);
+    
+    // Leads proyectados basados en CPC de industria
+    const estimatedCPC = data.avgCPC;
+    const projectedLeads = Math.floor(budget / estimatedCPC);
+    
+    // Ventas esperadas
+    const expectedSales = Math.floor(projectedLeads * (convRate / 100));
+    
+    // ROI
+    const revenue = expectedSales * price;
+    const roi = (((revenue - budget) / budget) * 100).toFixed(1);
+    
+    return {
+        maxCPA,
+        projectedLeads,
+        expectedSales,
+        roi,
+        revenue,
+        budget,
+        price,
+        margin,
+        industry,
+        data
+    };
 }
 
-function exportStrategy() {
-    const budget = document.getElementById('budget').value;
-    const content = `LEADTARGET AI - ESTRATEGIA DE CRECIMIENTO\n\nPresupuesto: $${budget}\nROI Sugerido: ${document.getElementById('statROI').textContent}\n\nCanal Principal: ${document.querySelector('#platformScores span').innerText}`;
-    const blob = new Blob([content], {type: 'text/plain'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'Estrategia_Global.txt';
-    a.click();
+// Display Metrics
+function displayMetrics(metrics) {
+    document.getElementById('maxCPA').textContent = '$' + metrics.maxCPA;
+    document.getElementById('projectedLeads').textContent = metrics.projectedLeads.toLocaleString();
+    document.getElementById('expectedSales').textContent = metrics.expectedSales.toLocaleString();
+    document.getElementById('projectedROI').textContent = metrics.roi + '%';
 }
+
+// Generate Platform Scores
+function generatePlatformScores(price) {
+    const ticketLevel = price < 100 ? 'lowTicket' : price < 500 ? 'medTicket' : 'highTicket';
+    
+    const platforms = [
+        { 
+            name: 'TikTok', 
+            icon: '📱', 
+            score: platformScoring.tiktok[ticketLevel], 
+            color: 'from-pink-500 to-purple-500',
+            strength: platformScoring.tiktok.strength
+        },
+        { 
+            name: 'Instagram', 
+            icon: '📸', 
+            score: platformScoring.instagram[ticketLevel], 
+            color: 'from-purple-500 to-pink-500',
+            strength: platformScoring.instagram.strength
+        },
+        { 
+            name: 'Google Ads', 
+            icon: '🔍', 
+            score: platformScoring.google[ticketLevel], 
+            color: 'from-blue-500 to-green-500',
+            strength: platformScoring.google.strength
+        },
+        { 
+            name: 'LinkedIn', 
+            icon: '💼', 
+            score: platformScoring.linkedin[ticketLevel], 
+            color: 'from-blue-600 to-blue-400',
+            strength: platformScoring.linkedin.strength
+        }
+    ].sort((a, b) => b.score - a.score);
+
+    const container = document.getElementById('platformScores');
+    container.innerHTML = platforms.map(platform => `
+        <div class="platform-score bg-indigo-950/50 rounded-lg p-4 border border-violet-400/20">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">${platform.icon}</span>
+                    <span class="font-semibold">${platform.name}</span>
+                </div>
+                <span class="text-2xl font-bold text-violet-400">${platform.score}</span>
+            </div>
+            <div class="w-full bg-indigo-900 rounded-full h-2 mb-2">
+                <div class="bg-gradient-to-r ${platform.color} h-2 rounded-full transition-all duration-1000" style="width: ${platform.score}%"></div>
+            </div>
+            <p class="text-xs text-gray-400 mb-1">
+                ${platform.score > 85 ? '🔥 Altamente Recomendado' : platform.score > 70 ? '✅ Buena Opción' : '⚠️ Considerar Alternativas'}
+            </p>
+            <p class="text-xs text-gray-500">${platform.strength}</p>
+        </div>
+    `).join('');
+}
+
+// Create Funnel Chart
+function createFunnelChart(metrics) {
+    const ctx = document.getElementById('funnelChart');
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Impresiones', 'Clicks', 'Leads', 'Ventas'],
+            datasets: [{
+                label: 'Cantidad',
+                data: [
+                    metrics.projectedLeads * 50,
+                    metrics.projectedLeads,
+                    metrics.projectedLeads * (metrics.data.avgConversion / 100),
+                    metrics.expectedSales
+                ],
+                backgroundColor: [
+                    'rgba(167, 139, 250, 0.8)',
+                    'rgba(34, 211, 238, 0.8)',
+                    'rgba(34, 197, 94, 0.8)',
+                    'rgba(234, 179, 8, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(167, 139, 250, 1)',
+                    'rgba(34, 211, 238, 1)',
+                    'rgba(34, 197, 94, 1)',
+                    'rgba(234, 179, 8, 1)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(30, 27, 75, 0.9)',
+                    titleColor: '#a78bfa',
+                    bodyColor: '#fff',
+                    borderColor: '#a78bfa',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(167, 139, 250, 0.1)' },
+                    ticks: { color: '#9ca3af' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#9ca3af' }
+                }
+            }
+        }
+    });
+}
+
+// Create LTV Chart
+function createLTVChart(metrics) {
+    const ctx = document.getElementById('ltvChart');
+    const ltvMultiplier = metrics.data.avgLTV;
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Mes 1', 'Mes 3', 'Mes 6', 'Mes 12'],
+            datasets: [{
+                label: 'Revenue Acumulado',
+                data: [
+                    metrics.revenue,
+                    metrics.revenue * 1.5,
+                    metrics.revenue * (1 + ltvMultiplier * 0.5),
+                    metrics.revenue * ltvMultiplier
+                ],
+                borderColor: 'rgba(167, 139, 250, 1)',
+                backgroundColor: 'rgba(167, 139, 250, 0.1)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3
+            }, {
+                label: 'Inversión',
+                data: [metrics.budget, metrics.budget, metrics.budget, metrics.budget],
+                borderColor: 'rgba(239, 68, 68, 1)',
+                borderDash: [5, 5],
+                borderWidth: 2,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    labels: { color: '#9ca3af' }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(30, 27, 75, 0.9)',
+                    titleColor: '#a78bfa',
+                    bodyColor: '#fff',
+                    borderColor: '#a78bfa',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': $' + context.parsed.y.toLocaleString();
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(167, 139, 250, 0.1)' },
+                    ticks: {
+                        color: '#9ca3af',
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#9ca3af' }
+                }
+            }
+        }
+    });
+}
+
+// Generate Buyer Persona
+function generateBuyerPersona(industry) {
+    const persona = personaTemplates[industry];
+    const container = document.getElementById('buyerPersona');
+    
+    container.innerHTML = `
+        <div class="bg-indigo-950/50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-cyan-400 mb-4">🎭 Perfil</h3>
+            <p class="text-xl font-bold mb-2">${persona.name}</p>
+            <p class="text-sm text-gray-400 mb-3">${persona.age}</p>
+            <p class="text-xs text-gray-500">${persona.behavior}</p>
+        </div>
+        <div class="bg-indigo-950/50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-cyan-400 mb-4">💔 Dolor Principal</h3>
+            <p class="text-gray-300 mb-4">${persona.pain}</p>
+            <div class="mt-4">
+                <h4 class="text-sm font-semibold text-violet-400 mb-2">🎣 Gancho Psicológico</h4>
+                <p class="text-sm text-gray-300">${persona.hook}</p>
+            </div>
+        </div>
+        <div class="bg-indigo-950/50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-cyan-400 mb-4">🌐 Dream 100</h3>
+            <p class="text-sm text-gray-400 mb-3">Dónde se congregan:</p>
+            <div class="space-y-2">
+                ${persona.channels.map(channel => `
+                    <div class="flex items-center space-x-2 text-sm">
+                        <div class="w-2 h-2 bg-violet-400 rounded-full"></div>
+                        <span>${channel}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+// Generate Ad Copy
+function generateAdCopy(industry, price) {
+    const productType = price < 100 ? 'producto accesible' : price < 500 ? 'solución premium' : 'inversión estratégica';
+    
+    const copies = {
+        aida: {
+            attention: `🔥 ¿Cansado de [PROBLEMA]? Descubre la solución que [RESULTADO]`,
+            interest: `Miles ya están transformando su [ÁREA] con nuestro ${productType}`,
+            desire: `Imagina despertar sabiendo que [BENEFICIO EMOCIONAL]`,
+            action: `✅ Accede ahora por solo $${price} - Oferta limitada`
+        },
+        pas: {
+            problem: `❌ El 87% de personas en tu situación sufre de [DOLOR ESPECÍFICO]`,
+            agitate: `Cada día que pasa, estás perdiendo [COSTO DE OPORTUNIDAD]`,
+            solution: `Nuestra solución elimina [PROBLEMA] en solo [TIEMPO]. Garantizado.`
+        },
+        story: {
+            act1: `Hace 6 meses, [CLIENTE IDEAL] estaba exactamente donde tú estás ahora...`,
+            act2: `Entonces descubrió [TU SOLUCIÓN] y todo cambió. En 30 días logró [RESULTADO]`,
+            act3: `Hoy, vive [VIDA TRANSFORMADA]. ¿Listo para tu historia de éxito? 👉`
+        }
+    };
+
+    document.
