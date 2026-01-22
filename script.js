@@ -1,3 +1,7 @@
+// Variables globales para los gráficos
+let funnelChart = null;
+let ltvChart = null;
+
 // Simulate Ecosystem Import
 function simulateEcosystemImport() {
     const banner = document.getElementById('syncBanner');
@@ -6,7 +10,6 @@ function simulateEcosystemImport() {
     banner.classList.remove('hidden');
     
     setTimeout(() => {
-        // Simular datos importados de MarginMaster y LiquidezForce
         const simulatedMargin = (Math.random() * 30 + 20).toFixed(1);
         const simulatedBudget = (Math.random() * 5000 + 2000).toFixed(0);
         
@@ -65,17 +68,10 @@ function calculateMetrics() {
     const marginText = document.getElementById('importedMargin').textContent;
     const margin = parseFloat(marginText) || 25;
     
-    // CPA Máximo Seguro (70% del margen para seguridad)
     const maxCPA = (price * (margin / 100) * 0.7).toFixed(2);
-    
-    // Leads proyectados basados en CPC de industria
     const estimatedCPC = data.avgCPC;
     const projectedLeads = Math.floor(budget / estimatedCPC);
-    
-    // Ventas esperadas
     const expectedSales = Math.floor(projectedLeads * (convRate / 100));
-    
-    // ROI
     const revenue = expectedSales * price;
     const roi = (((revenue - budget) / budget) * 100).toFixed(1);
     
@@ -161,7 +157,12 @@ function generatePlatformScores(price) {
 function createFunnelChart(metrics) {
     const ctx = document.getElementById('funnelChart');
     
-    new Chart(ctx, {
+    // Destruir gráfico anterior si existe
+    if (funnelChart) {
+        funnelChart.destroy();
+    }
+    
+    funnelChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: ['Impresiones', 'Clicks', 'Leads', 'Ventas'],
@@ -170,7 +171,7 @@ function createFunnelChart(metrics) {
                 data: [
                     metrics.projectedLeads * 50,
                     metrics.projectedLeads,
-                    metrics.projectedLeads * (metrics.data.avgConversion / 100),
+                    Math.floor(metrics.projectedLeads * (metrics.data.avgConversion / 100)),
                     metrics.expectedSales
                 ],
                 backgroundColor: [
@@ -221,7 +222,12 @@ function createLTVChart(metrics) {
     const ctx = document.getElementById('ltvChart');
     const ltvMultiplier = metrics.data.avgLTV;
     
-    new Chart(ctx, {
+    // Destruir gráfico anterior si existe
+    if (ltvChart) {
+        ltvChart.destroy();
+    }
+    
+    ltvChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: ['Mes 1', 'Mes 3', 'Mes 6', 'Mes 12'],
@@ -438,6 +444,25 @@ Datos basados en benchmarks de industria y análisis predictivo
     URL.revokeObjectURL(url);
 }
 
+// Función para actualizar todo en tiempo real
+function updateAllData() {
+    const metrics = calculateMetrics();
+    const industry = document.getElementById('industry').value;
+    const price = parseFloat(document.getElementById('productPrice').value);
+    
+    displayMetrics(metrics);
+    generatePlatformScores(price);
+    
+    // Solo actualizar gráficos si la sección de resultados está visible
+    if (!document.getElementById('resultsSection').classList.contains('hidden')) {
+        createFunnelChart(metrics);
+        createLTVChart(metrics);
+    }
+    
+    generateBuyerPersona(industry);
+    generateAdCopy(industry, price);
+}
+
 // Event Listeners
 document.getElementById('analyzeBtn').addEventListener('click', () => {
     const metrics = calculateMetrics();
@@ -460,6 +485,13 @@ document.getElementById('analyzeBtn').addEventListener('click', () => {
         });
     }, 300);
 });
+
+// Event listeners para actualización en tiempo real
+document.getElementById('industry').addEventListener('change', updateAllData);
+document.getElementById('productPrice').addEventListener('input', updateAllData);
+document.getElementById('monthlyBudget').addEventListener('input', updateAllData);
+document.getElementById('conversionRate').addEventListener('input', updateAllData);
+document.getElementById('campaignGoal').addEventListener('change', updateAllData);
 
 document.getElementById('exportBtn').addEventListener('click', exportStrategy);
 
