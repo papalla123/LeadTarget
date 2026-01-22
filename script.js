@@ -345,4 +345,125 @@ function generateAdCopy(industry, price) {
         }
     };
 
-    document.
+    document.getElementById('aidaCopy').querySelector('.space-y-2').innerHTML = `
+        <p><strong class="text-violet-400">A:</strong> ${copies.aida.attention}</p>
+        <p><strong class="text-violet-400">I:</strong> ${copies.aida.interest}</p>
+        <p><strong class="text-violet-400">D:</strong> ${copies.aida.desire}</p>
+        <p><strong class="text-violet-400">A:</strong> ${copies.aida.action}</p>
+    `;
+
+    document.getElementById('pasCopy').querySelector('.space-y-2').innerHTML = `
+        <p><strong class="text-cyan-400">P:</strong> ${copies.pas.problem}</p>
+        <p><strong class="text-cyan-400">A:</strong> ${copies.pas.agitate}</p>
+        <p><strong class="text-cyan-400">S:</strong> ${copies.pas.solution}</p>
+    `;
+
+    document.getElementById('storyCopy').querySelector('.space-y-2').innerHTML = `
+        <p><strong class="text-yellow-400">Acto 1:</strong> ${copies.story.act1}</p>
+        <p><strong class="text-yellow-400">Acto 2:</strong> ${copies.story.act2}</p>
+        <p><strong class="text-yellow-400">Acto 3:</strong> ${copies.story.act3}</p>
+    `;
+}
+
+// Export Strategy
+function exportStrategy() {
+    const metrics = calculateMetrics();
+    const industry = document.getElementById('industry').value;
+    const goal = document.getElementById('campaignGoal').value;
+    const persona = personaTemplates[industry];
+    
+    const strategyDoc = `
+═══════════════════════════════════════════════════════════════
+            HOJA DE RUTA DE ESCALAMIENTO - LEADTARGET AI
+═══════════════════════════════════════════════════════════════
+
+📊 ANÁLISIS DE MERCADO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Industria: ${industry.toUpperCase()}
+Precio del Producto: $${metrics.price}
+Margen Neto: ${metrics.margin}%
+Presupuesto Mensual: $${metrics.budget}
+
+🎯 MÉTRICAS CLAVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- CPA Máximo Seguro: $${metrics.maxCPA}
+- Leads Proyectados: ${metrics.projectedLeads}
+- Ventas Esperadas: ${metrics.expectedSales}
+- ROI Proyectado: ${metrics.roi}%
+- Revenue Estimado: $${metrics.revenue.toLocaleString()}
+
+📱 PLATAFORMAS RECOMENDADAS (Orden de Prioridad)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. ${metrics.price < 100 ? 'TikTok (Score: 95)' : metrics.price < 500 ? 'Instagram (Score: 90)' : 'Google Ads (Score: 95)'}
+2. ${metrics.price < 100 ? 'Instagram (Score: 85)' : metrics.price < 500 ? 'Google Ads (Score: 85)' : 'LinkedIn (Score: 98)'}
+
+👤 BUYER PERSONA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Perfil: ${persona.name}
+Dolor: ${persona.pain}
+Gancho: ${persona.hook}
+
+📈 PROYECCIÓN LTV (12 MESES)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Mes 1: $${metrics.revenue.toLocaleString()}
+Mes 6: $${(metrics.revenue * (1 + metrics.data.avgLTV * 0.5)).toLocaleString()}
+Mes 12: $${(metrics.revenue * metrics.data.avgLTV).toLocaleString()}
+
+🚀 PLAN DE ACCIÓN (30 DÍAS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Semana 1: Configuración de campañas en plataforma principal
+Semana 2: Testing de creatividades y audiencias (A/B test)
+Semana 3: Optimización basada en datos (CPA < $${metrics.maxCPA})
+Semana 4: Escalamiento controlado (+20% presupuesto)
+
+⚡ RECOMENDACIONES DE IA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Mantén CPA por debajo de $${metrics.maxCPA} para rentabilidad
+- Foco en ${goal === 'conversion' ? 'conversiones directas' : goal === 'awareness' ? 'alcance masivo' : 'tráfico cualificado'}
+- Reserva 20% del presupuesto para retargeting
+- Implementa pixel tracking desde día 1
+
+═══════════════════════════════════════════════════════════════
+Generado por LeadTarget AI - ${new Date().toLocaleDateString()}
+Datos basados en benchmarks de industria y análisis predictivo
+═══════════════════════════════════════════════════════════════
+    `;
+
+    const blob = new Blob([strategyDoc], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `LeadTarget-Strategy-${Date.now()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Event Listeners
+document.getElementById('analyzeBtn').addEventListener('click', () => {
+    const metrics = calculateMetrics();
+    const industry = document.getElementById('industry').value;
+    const price = parseFloat(document.getElementById('productPrice').value);
+    
+    displayMetrics(metrics);
+    generatePlatformScores(price);
+    createFunnelChart(metrics);
+    createLTVChart(metrics);
+    generateBuyerPersona(industry);
+    generateAdCopy(industry, price);
+    
+    document.getElementById('resultsSection').classList.remove('hidden');
+    
+    setTimeout(() => {
+        document.getElementById('resultsSection').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+    }, 300);
+});
+
+document.getElementById('exportBtn').addEventListener('click', exportStrategy);
+
+// Initialize
+window.addEventListener('load', () => {
+    simulateEcosystemImport();
+});
