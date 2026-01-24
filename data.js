@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════
 // LEADNEXUS AI - DATABASE & ECOSYSTEM BRIDGE
-// Pack 1: Pentagon Architecture + Country Intelligence
+// Pack 2 FINAL: Complete Intelligence Database
 // ═══════════════════════════════════════════════════════════════════
 
 // PENTAGON LINK 5.0 - Centralized Navigation System
@@ -410,7 +410,6 @@ window.INDUSTRY_FUNNELS = {
 
 // ECOSYSTEM DATA BRIDGE
 window.EcosystemBridge = {
-    // Importar datos de SueldoPro
     importSalaryData() {
         try {
             const salesCommission = localStorage.getItem('SALES_COMMISSION_COST');
@@ -420,7 +419,6 @@ window.EcosystemBridge = {
         }
     },
     
-    // Importar datos de Liquidez Force
     importCashData() {
         try {
             const availableCash = localStorage.getItem('AVAILABLE_CASH');
@@ -430,7 +428,6 @@ window.EcosystemBridge = {
         }
     },
     
-    // Exportar CAC al ecosistema
     exportCAC(cac) {
         try {
             localStorage.setItem('GLOBAL_CAC', cac.toString());
@@ -440,7 +437,6 @@ window.EcosystemBridge = {
         }
     },
     
-    // Exportar Burn Rate
     exportBurnRate(burnRate) {
         try {
             localStorage.setItem('MARKETING_BURN_RATE', burnRate.toString());
@@ -450,7 +446,6 @@ window.EcosystemBridge = {
         }
     },
     
-    // Verificar conexión con ecosistema
     checkEcosystemHealth() {
         const connections = {
             sueldopro: !!localStorage.getItem('SALES_COMMISSION_COST'),

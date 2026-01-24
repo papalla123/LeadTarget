@@ -6,6 +6,7 @@
     <title>LeadNexus AI - Simulador de Rentabilidad Publicitaria</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="text-gray-100">
@@ -22,10 +23,26 @@
                         <p class="text-[10px] text-violet-400">Intelligence Marketing Suite</p>
                     </div>
                 </div>
-                <div id="pentagonNav" class="hidden md:flex space-x-4"></div>
+                <div class="flex items-center space-x-4">
+                    <button id="scenarioManagerBtn" class="cyber-btn-sm hidden md:block">
+                        📂 Escenarios
+                    </button>
+                    <div id="pentagonNav" class="hidden md:flex space-x-4"></div>
+                </div>
             </div>
         </div>
     </nav>
+
+    <!-- Scenario Manager Modal -->
+    <div id="scenarioModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-violet-400">📂 Gestor de Escenarios</h2>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div id="scenarioList" class="space-y-3 max-h-96 overflow-y-auto"></div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <div class="pt-24 pb-8">
@@ -40,7 +57,7 @@
                 </p>
                 
                 <!-- Ecosystem Status -->
-                <div id="ecosystemStatus" class="mt-6 flex justify-center space-x-4 text-xs"></div>
+                <div id="ecosystemStatus" class="mt-6 flex flex-wrap justify-center gap-3 text-xs"></div>
             </div>
 
             <!-- Country Selector + Quick Stats -->
@@ -87,11 +104,11 @@
             <!-- Main Campaign Builder -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
                 <!-- Funnel Physics Panel -->
-                <div class="lg:col-span-2 cyber-card p-6">
+                <div class="lg:col-span-2 cyber-card p-4 md:p-6">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold text-violet-400">⚙️ Funnel Physics Simulator</h2>
+                        <h2 class="text-xl md:text-2xl font-bold text-violet-400">⚙️ Funnel Physics Simulator</h2>
                         <button id="autoFillBtn" class="cyber-btn-sm">
-                            🤖 Auto-Completar
+                            🤖 Auto
                         </button>
                     </div>
 
@@ -143,8 +160,8 @@
                 </div>
 
                 <!-- Live Metrics Panel -->
-                <div class="cyber-card p-6">
-                    <h2 class="text-2xl font-bold text-violet-400 mb-6">📊 Métricas en Vivo</h2>
+                <div class="cyber-card p-4 md:p-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">📊 Métricas en Vivo</h2>
                     
                     <div class="space-y-4">
                         <div class="metric-box">
@@ -188,16 +205,16 @@
             <!-- Results Section -->
             <div id="resultsSection" class="hidden space-y-6">
                 <!-- Funnel Visualization -->
-                <div class="cyber-card p-6">
-                    <h2 class="text-2xl font-bold text-violet-400 mb-6">📉 Visualización del Embudo</h2>
-                    <div class="h-80">
+                <div class="cyber-card p-4 md:p-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">📉 Visualización del Embudo</h2>
+                    <div class="h-64 md:h-80">
                         <canvas id="funnelChart"></canvas>
                     </div>
                 </div>
 
                 <!-- Multi-Channel Breakdown -->
-                <div class="cyber-card p-6">
-                    <h2 class="text-2xl font-bold text-violet-400 mb-6">📱 Simulador Multi-Canal</h2>
+                <div class="cyber-card p-4 md:p-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">📱 Simulador Multi-Canal</h2>
                     <p class="text-sm text-gray-400 mb-4">Distribuye tu presupuesto y compara ROAS por plataforma</p>
                     
                     <div id="channelBreakdown" class="space-y-4"></div>
@@ -210,13 +227,104 @@
                     </div>
                 </div>
 
+                <!-- Influencer ROI Calculator -->
+                <div class="cyber-card p-4 md:p-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">🌟 Influencer ROI Calculator</h2>
+                    <p class="text-sm text-gray-400 mb-4">Calcula cuántas ventas necesitas para rentabilizar un influencer</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Fee del Influencer</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-3 text-gray-400" id="influencerSymbol">$</span>
+                                <input type="number" id="influencerFee" class="cyber-input w-full pl-8" placeholder="5000" value="5000">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Tasa de Conversión Estimada (%)</label>
+                            <input type="number" id="influencerConversion" class="cyber-input w-full" placeholder="1.5" value="1.5" step="0.1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Alcance/Followers</label>
+                            <input type="number" id="influencerReach" class="cyber-input w-full" placeholder="100000" value="100000">
+                        </div>
+                    </div>
+
+                    <button id="calculateInfluencerBtn" class="cyber-btn w-full mb-4">
+                        🧮 Calcular Break-Even
+                    </button>
+
+                    <div id="influencerResults" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="metric-box">
+                            <div class="text-xs text-gray-400 mb-1">Ventas Necesarias</div>
+                            <div id="influencerSalesNeeded" class="text-2xl font-bold text-violet-400">0</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="text-xs text-gray-400 mb-1">CPV (Costo por Venta)</div>
+                            <div id="influencerCPV" class="text-2xl font-bold text-cyan-400">$0</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="text-xs text-gray-400 mb-1">ROI Estimado</div>
+                            <div id="influencerROI" class="text-2xl font-bold text-green-400">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Growth Calculator (LATAM Special) -->
+                <div class="cyber-card p-4 md:p-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">💬 WhatsApp Growth (LATAM)</h2>
+                    <p class="text-sm text-gray-400 mb-4">Calcula el costo por conversación iniciada en WhatsApp Business</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Presupuesto Click-to-WhatsApp</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-3 text-gray-400" id="whatsappSymbol">$</span>
+                                <input type="number" id="whatsappBudget" class="cyber-input w-full pl-8" placeholder="1000" value="1000">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Tasa de Respuesta (%)</label>
+                            <input type="number" id="whatsappResponse" class="cyber-input w-full" placeholder="45" value="45">
+                        </div>
+                    </div>
+
+                    <button id="calculateWhatsAppBtn" class="cyber-btn w-full mb-4">
+                        📊 Analizar WhatsApp Funnel
+                    </button>
+
+                    <div id="whatsappResults" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="metric-box">
+                            <div class="text-xs text-gray-400 mb-1">Conversaciones Iniciadas</div>
+                            <div id="whatsappConversations" class="text-2xl font-bold text-violet-400">0</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="text-xs text-gray-400 mb-1">Costo por Conversación</div>
+                            <div id="whatsappCPC" class="text-2xl font-bold text-cyan-400">$0</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="text-xs text-gray-400 mb-1">Ventas Potenciales</div>
+                            <div id="whatsappSales" class="text-2xl font-bold text-green-400">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CMO Diagnostic Dashboard -->
+                <div class="cyber-card p-4 md:p-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">🩺 CMO Health Diagnostic</h2>
+                    <div id="healthDiagnostic" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
                 <!-- Export Actions -->
-                <div class="flex justify-center space-x-4">
+                <div class="flex flex-col md:flex-row justify-center gap-4">
                     <button id="saveScenarioBtn" class="cyber-btn">
                         💾 Guardar Escenario
                     </button>
                     <button id="exportPDFBtn" class="cyber-btn-success">
                         📄 Exportar Reporte PDF
+                    </button>
+                    <button id="exportTXTBtn" class="cyber-btn-alt">
+                        📝 Exportar TXT
                     </button>
                 </div>
             </div>

@@ -24,6 +24,7 @@
 
 body {
     background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
+    background-attachment: fixed;
     min-height: 100vh;
     color: #e2e8f0;
 }
@@ -147,6 +148,55 @@ body {
     box-shadow: 0 8px 24px rgba(16, 185, 129, 0.6);
 }
 
+.cyber-btn-alt {
+    background: linear-gradient(135deg, var(--cyan-electric), #0891b2);
+    color: white;
+    font-weight: 700;
+    padding: 16px 32px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    box-shadow: 0 4px 16px rgba(34, 211, 238, 0.4);
+}
+
+.cyber-btn-alt:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.6);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════════════════════ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(2, 6, 23, 0.95);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.9) 100%);
+    border: 2px solid rgba(139, 92, 246, 0.5);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    FUNNEL STEPS
    ═══════════════════════════════════════════════════════════════════ */
@@ -242,6 +292,27 @@ input[type="range"]::-moz-range-thumb {
     font-weight: 600;
 }
 
+/* Health Indicators */
+.health-excellent {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+    border: 2px solid var(--green-success);
+}
+
+.health-good {
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(8, 145, 178, 0.1));
+    border: 2px solid var(--cyan-electric);
+}
+
+.health-warning {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(202, 138, 4, 0.1));
+    border: 2px solid var(--yellow-alert);
+}
+
+.health-danger {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.1));
+    border: 2px solid var(--red-danger);
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    ANIMATIONS
    ═══════════════════════════════════════════════════════════════════ */
@@ -274,6 +345,19 @@ input[type="range"]::-moz-range-thumb {
     animation: slide-in 0.5s ease-out;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    MOBILE OPTIMIZATION (iPhone/Android First)
    ═══════════════════════════════════════════════════════════════════ */
@@ -288,8 +372,10 @@ input[type="range"]::-moz-range-thumb {
         padding: 14px 16px;
     }
     
-    .cyber-btn {
-        padding: 18px 24px;
+    .cyber-btn,
+    .cyber-btn-success,
+    .cyber-btn-alt {
+        padding: 16px 20px;
         font-size: 16px;
         width: 100%;
     }
@@ -300,14 +386,51 @@ input[type="range"]::-moz-range-thumb {
     
     h1 {
         font-size: 2rem;
+        line-height: 1.2;
     }
     
     h2 {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
     }
     
     .metric-box {
         padding: 12px;
+    }
+    
+    .modal-content {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    /* Touch-friendly buttons */
+    button {
+        min-height: 44px; /* iOS minimum touch target */
+    }
+    
+    /* Larger inputs for mobile */
+    input[type="range"] {
+        height: 12px;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    .cyber-btn-sm {
+        padding: 6px 12px;
+        font-size: 12px;
     }
 }
 
@@ -324,6 +447,7 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 8px;
     font-weight: 500;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -355,6 +479,40 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   SCENARIO CARDS
+   ═══════════════════════════════════════════════════════════════════ */
+
+.scenario-card {
+    padding: 16px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.scenario-card:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(15, 23, 42, 0.8);
+    transform: scale(1.02);
+}
+
+.scenario-delete-btn {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--red-danger);
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.scenario-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    SCROLLBAR STYLING
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -380,7 +538,7 @@ input[type="range"]::-moz-range-thumb {
    ═══════════════════════════════════════════════════════════════════ */
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .text-gradient-violet {
@@ -393,4 +551,28 @@ input[type="range"]::-moz-range-thumb {
 .border-glow {
     border: 1px solid rgba(139, 92, 246, 0.3);
     box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+}
+
+/* Prevent text selection on buttons */
+button {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Loading state */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Success message */
+.success-message {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--green-success);
+    color: var(--green-success);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 12px 0;
 }
