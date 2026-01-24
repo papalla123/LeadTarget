@@ -453,7 +453,6 @@ function calculateWhatsApp() {
     const budget = parseFloat(document.getElementById('whatsappBudget').value) || 0;
     const responseRate = parseFloat(document.getElementById('whatsappResponse').value) || 0;
     const cpc = currentCountry ? currentCountry.cpcEstimated : 0.50;
-    const price = parseFloat(document.getElementById('productPrice').value) || 0;
     
     const clicks = Math.floor(budget / (cpc * 1.2));
     const conversations = Math.floor(clicks * (responseRate / 100));
@@ -600,14 +599,14 @@ function exportToPDF() {
     const doc = new jsPDF();
     
     doc.setFontSize(20);
-    doc.text('LeadNexus AI - Reporte de Campaña', 20, 20);
+    doc.text('LeadNexus AI - Reporte de Campana', 20, 20);
     
     doc.setFontSize(12);
-    doc.text(`País: ${currentCountry.name}`, 20, 35);
+    doc.text(`Pais: ${currentCountry.name}`, 20, 35);
     doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, 20, 42);
     
     doc.setFontSize(14);
-    doc.text('Métricas Principales', 20, 55);
+    doc.text('Metricas Principales', 20, 55);
     
     doc.setFontSize(11);
     doc.text(`Presupuesto: ${currentCountry.symbol}${currentMetrics.budget.toLocaleString()}`, 20, 65);
@@ -617,7 +616,7 @@ function exportToPDF() {
     doc.text(`Revenue: ${currentCountry.symbol}${currentMetrics.revenue.toLocaleString()}`, 20, 93);
     
     doc.setFontSize(14);
-    doc.text('Embudo de Conversión', 20, 110);
+    doc.text('Embudo de Conversion', 20, 110);
     
     doc.setFontSize(11);
     doc.text(`Impresiones: ${document.getElementById('impressions').value}`, 20, 120);
@@ -631,43 +630,37 @@ function exportToPDF() {
     doc.save(`LeadNexus-Report-${Date.now()}.pdf`);
 }
 
-// ═══════════════════════════════════════════════════════════<function_calls>
-<invoke name="artifacts">
-<parameter name="command">update</parameter>
-<parameter name="id">leadnexus_script_complete</parameter>
-<parameter name="old_str">// ═══════════════════════════════════════════════════════════════════</parameter>
-<parameter name="new_str">// ═══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════
 // TXT EXPORT
 // ═══════════════════════════════════════════════════════════════════
+
 function exportToTXT() {
-if (!currentMetrics.sales) {
-alert('Primero calcula las métricas');
-return;
-}
-const report = `
+    if (!currentMetrics.sales) {
+        alert('Primero calcula las métricas');
+        return;
+    }
+    
+    const report = `
 ╔═══════════════════════════════════════════════════════════════════╗
-LEADNEXUS AI - REPORTE DE CAMPAÑA PUBLICITARIA
+       LEADNEXUS AI - REPORTE DE CAMPAÑA PUBLICITARIA
 ╚═══════════════════════════════════════════════════════════════════╝
+
 📅 INFORMACIÓN GENERAL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 País: ${currentCountry.name} ${currentCountry.flag}
 Industria: ${document.getElementById('industrySelect').value}
 Fecha: ${new Date().toLocaleString('es-ES')}
+
 💰 INVERSIÓN Y COSTOS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Presupuesto Mensual: currentCountry.symbol{currentCountry.symbol}
-currentCountry.symbol{currentMetrics.budget.toLocaleString()}
-Impuestos Digitales (currentCountry.digitalTax{currentCountry.digitalTax}%): ${currentCountry.symbol}
-currentCountry.digitalTax{currentMetrics.digitalTax.toFixed(2)}
-Costo Total: currentCountry.symbol{currentCountry.symbol}
-currentCountry.symbol{currentMetrics.totalCost.toLocaleString()}
+Presupuesto Mensual: ${currentCountry.symbol}${currentMetrics.budget.toLocaleString()}
+Impuestos Digitales (${currentCountry.digitalTax}%): ${currentCountry.symbol}${currentMetrics.digitalTax.toFixed(2)}
+Costo Total: ${currentCountry.symbol}${currentMetrics.totalCost.toLocaleString()}
 
 📊 MÉTRICAS DE RENDIMIENTO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CPA (Costo por Adquisición): currentCountry.symbol{currentCountry.symbol}
-currentCountry.symbol{currentMetrics.cpa.toFixed(2)}
-CAC (Customer Acquisition Cost): currentCountry.symbol{currentCountry.symbol}
-currentCountry.symbol{currentMetrics.cac.toFixed(2)}
+CPA (Costo por Adquisición): ${currentCountry.symbol}${currentMetrics.cpa.toFixed(2)}
+CAC (Customer Acquisition Cost): ${currentCountry.symbol}${currentMetrics.cac.toFixed(2)}
 ROAS (Return on Ad Spend): ${currentMetrics.roas.toFixed(2)}x
 ROI Neto: ${currentMetrics.roi.toFixed(1)}%
 
@@ -677,84 +670,91 @@ Impresiones: ${document.getElementById('impressions').value}
 Clicks: ${document.getElementById('clicks').value}
 Leads: ${document.getElementById('leads').value}
 Ventas: ${document.getElementById('sales').value}
+
 💵 RESULTADOS FINANCIEROS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Revenue Total: currentCountry.symbol{currentCountry.symbol}
-currentCountry.symbol{currentMetrics.revenue.toLocaleString()}
-Revenue Neto: currentCountry.symbol{currentCountry.symbol}
-currentCountry.symbol{currentMetrics.netRevenue.toLocaleString()}
-Ganancia/Pérdida: currentCountry.symbol{currentCountry.symbol}
-currentCountry.symbol{(currentMetrics.netRevenue - currentMetrics.totalCost).toLocaleString()}
+Revenue Total: ${currentCountry.symbol}${currentMetrics.revenue.toLocaleString()}
+Revenue Neto: ${currentCountry.symbol}${currentMetrics.netRevenue.toLocaleString()}
+Ganancia/Pérdida: ${currentCountry.symbol}${(currentMetrics.netRevenue - currentMetrics.totalCost).toLocaleString()}
 
 🩺 DIAGNÓSTICO DE SALUD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Estado General: ${currentMetrics.roi >= 50 ? '✅ SALUDABLE' : currentMetrics.roi >= 0 ? '⚠️ PRECAUCIÓN' : '❌ CRÍTICO'}
 Recomendación: ${currentMetrics.roi >= 100 && currentMetrics.roas >= 2.5 ? 'ESCALAR AHORA' : currentMetrics.roi >= 50 ? 'OPTIMIZAR Y ESCALAR' : 'OPTIMIZAR CAMPAÑA'}
+
 ╔═══════════════════════════════════════════════════════════════════╗
-Generado por LeadNexus AI - Pentagon Financial Ecosystem
-© 2026 - Simulación basada en benchmarks de mercado
+  Generado por LeadNexus AI - Pentagon Financial Ecosystem
+  © 2026 - Simulación basada en benchmarks de mercado
 ╚═══════════════════════════════════════════════════════════════════╝
-`;
-const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
-const url = URL.createObjectURL(blob);
-const a = document.createElement('a');
-a.href = url;
-a.download = `LeadNexus-Report-${Date.now()}.txt`;
-a.click();
-URL.revokeObjectURL(url);
+    `;
+    
+    const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `LeadNexus-Report-${Date.now()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
 }
+
 // ═══════════════════════════════════════════════════════════════════
 // EVENT LISTENERS
 // ═══════════════════════════════════════════════════════════════════
+
 function initializeEventListeners() {
-document.getElementById('countrySelect').addEventListener('change', handleCountryChange);
-document.getElementById('productPrice').addEventListener('input', updatePriceInUSD);
-document.getElementById('autoFillBtn').addEventListener('click', autoFillFunnel);
-document.getElementById('calculateBtn').addEventListener('click', calculateROI);
-document.getElementById('ctrSlider').addEventListener('input', updateFunnelMetrics);
-document.getElementById('leadConvSlider').addEventListener('input', updateFunnelMetrics);
-document.getElementById('closeRateSlider').addEventListener('input', updateFunnelMetrics);
-document.getElementById('monthlyBudget').addEventListener('input', updateFunnelMetrics);
-
-document.getElementById('saveScenarioBtn').addEventListener('click', saveScenario);
-document.getElementById('exportPDFBtn').addEventListener('click', exportToPDF);
-document.getElementById('exportTXTBtn').addEventListener('click', exportToTXT);
-
-document.getElementById('calculateInfluencerBtn').addEventListener('click', calculateInfluencer);
-document.getElementById('calculateWhatsAppBtn').addEventListener('click', calculateWhatsApp);
-
-document.getElementById('scenarioManagerBtn').addEventListener('click', openScenarioManager);
-document.getElementById('closeModalBtn').addEventListener('click', closeScenarioManager);
-
-document.getElementById('countrySelect')?.addEventListener('change', (e) => {
-    localStorage.setItem('lastCountry', e.target.value);
-});
+    document.getElementById('countrySelect').addEventListener('change', handleCountryChange);
+    document.getElementById('productPrice').addEventListener('input', updatePriceInUSD);
+    document.getElementById('autoFillBtn').addEventListener('click', autoFillFunnel);
+    document.getElementById('calculateBtn').addEventListener('click', calculateROI);
+    
+    document.getElementById('ctrSlider').addEventListener('input', updateFunnelMetrics);
+    document.getElementById('leadConvSlider').addEventListener('input', updateFunnelMetrics);
+    document.getElementById('closeRateSlider').addEventListener('input', updateFunnelMetrics);
+    document.getElementById('monthlyBudget').addEventListener('input', updateFunnelMetrics);
+    
+    document.getElementById('saveScenarioBtn').addEventListener('click', saveScenario);
+    document.getElementById('exportPDFBtn').addEventListener('click', exportToPDF);
+    document.getElementById('exportTXTBtn').addEventListener('click', exportToTXT);
+    
+    document.getElementById('calculateInfluencerBtn').addEventListener('click', calculateInfluencer);
+    document.getElementById('calculateWhatsAppBtn').addEventListener('click', calculateWhatsApp);
+    
+    document.getElementById('scenarioManagerBtn').addEventListener('click', openScenarioManager);
+    document.getElementById('closeModalBtn').addEventListener('click', closeScenarioManager);
+    
+    document.getElementById('countrySelect')?.addEventListener('change', (e) => {
+        localStorage.setItem('lastCountry', e.target.value);
+    });
 }
+
 // ═══════════════════════════════════════════════════════════════════
 // PERSISTENCE
 // ═══════════════════════════════════════════════════════════════════
-function saveScenario() {
-const scenarioName = prompt('Nombre del escenario:');
-if (!scenarioName) return;
-const data = {
-    country: document.getElementById('countrySelect').value,
-    industry: document.getElementById('industrySelect').value,
-    price: document.getElementById('productPrice').value,
-    budget: document.getElementById('monthlyBudget').value,
-    margin: document.getElementById('netMargin').value,
-    ctr: document.getElementById('ctrSlider').value,
-    leadConv: document.getElementById('leadConvSlider').value,
-    closeRate: document.getElementById('closeRateSlider').value,
-    timestamp: new Date().toISOString()
-};
 
-localStorage.setItem(`scenario_${scenarioName}`, JSON.stringify(data));
-alert('✓ Escenario guardado exitosamente');
+function saveScenario() {
+    const scenarioName = prompt('Nombre del escenario:');
+    if (!scenarioName) return;
+    
+    const data = {
+        country: document.getElementById('countrySelect').value,
+        industry: document.getElementById('industrySelect').value,
+        price: document.getElementById('productPrice').value,
+        budget: document.getElementById('monthlyBudget').value,
+        margin: document.getElementById('netMargin').value,
+        ctr: document.getElementById('ctrSlider').value,
+        leadConv: document.getElementById('leadConvSlider').value,
+        closeRate: document.getElementById('closeRateSlider').value,
+        timestamp: new Date().toISOString()
+    };
+    
+    localStorage.setItem(`scenario_${scenarioName}`, JSON.stringify(data));
+    alert('✓ Escenario guardado exitosamente');
 }
+
 function loadSavedData() {
-const lastCountry = localStorage.getItem('lastCountry');
-if (lastCountry) {
-document.getElementById('countrySelect').value = lastCountry;
-handleCountryChange();
+    const lastCountry = localStorage.getItem('lastCountry');
+    if (lastCountry) {
+        document.getElementById('countrySelect').value = lastCountry;
+        handleCountryChange();
+    }
 }
-}</parameter>
