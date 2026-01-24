@@ -814,4 +814,82 @@ Recomendación: ${currentMetrics.roi >= 100 && currentMetrics.roas >= 2.5 ? 'ESC
     a.download = `LeadNexus-Report-${Date.now()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
+}// ═══════════════════════════════════════════════════════════════════
+// EVENT LISTENERS
+// ═══════════════════════════════════════════════════════════════════
+
+function initializeEventListeners() {
+    document.getElementById('countrySelect').addEventListener('change', handleCountryChange);
+    document.getElementById('productPrice').addEventListener('input', updatePriceInUSD);
+    document.getElementById('monthlyBudget').addEventListener('input', updateFunnelMetrics);
+    document.getElementById('ctrSlider').addEventListener('input', updateFunnelMetrics);
+    document.getElementById('leadConvSlider').addEventListener('input', updateFunnelMetrics);
+    document.getElementById('closeRateSlider').addEventListener('input', updateFunnelMetrics);
+    
+    document.getElementById('autoFillBtn').addEventListener('click', autoFillFunnel);
+    document.getElementById('calculateBtn').addEventListener('click', calculateROI);
+    
+    document.getElementById('calculateInfluencerBtn').addEventListener('click', calculateInfluencer);
+    document.getElementById('calculateWhatsAppBtn').addEventListener('click', calculateWhatsApp);
+    
+    document.getElementById('scenarioManagerBtn').addEventListener('click', openScenarioManager);
+    document.getElementById('closeModalBtn').addEventListener('click', closeScenarioManager);
+    
+    document.getElementById('saveScenarioBtn').addEventListener('click', saveScenario);
+    document.getElementById('exportPDFBtn').addEventListener('click', exportToPDF);
+    document.getElementById('exportTXTBtn').addEventListener('click', exportToTXT);
+    
+    document.getElementById('warModeToggle').addEventListener('change', () => {
+        if (!document.getElementById('resultsSection').classList.contains('hidden')) {
+            calculateROI();
+        }
+    });
+    
+    document.getElementById('includeTaxesToggle').addEventListener('change', () => {
+        if (!document.getElementById('resultsSection').classList.contains('hidden')) {
+            calculateROI();
+        }
+    });
+    
+    // Guardar país seleccionado
+    document.getElementById('countrySelect').addEventListener('change', () => {
+        const country = document.getElementById('countrySelect').value;
+        if (country) {
+            localStorage.setItem('last_country', country);
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SAVE SCENARIO
+// ═══════════════════════════════════════════════════════════════════
+
+function saveScenario() {
+    const name = prompt('Nombre del escenario:');
+    if (!name) return;
+    
+    const scenario = {
+        timestamp: new Date().toISOString(),
+        country: document.getElementById('countrySelect').value,
+        industry: document.getElementById('industrySelect').value,
+        price: parseFloat(document.getElementById('productPrice').value),
+        budget: parseFloat(document.getElementById('monthlyBudget').value),
+        margin: parseFloat(document.getElementById('netMargin').value),
+        ctr: parseFloat(document.getElementById('ctrSlider').value),
+        leadConv: parseFloat(document.getElementById('leadConvSlider').value),
+        closeRate: parseFloat(document.getElementById('closeRateSlider').value),
+        metrics: currentMetrics
+    };
+    
+    localStorage.setItem(`scenario_${name}`, JSON.stringify(scenario));
+    alert('✅ Escenario guardado exitosamente');
+}
+
+function loadSavedData() {
+    // Intentar cargar el último país usado
+    const lastCountry = localStorage.getItem('last_country');
+    if (lastCountry && window.COUNTRY_DATABASE[lastCountry]) {
+        document.getElementById('countrySelect').value = lastCountry;
+        handleCountryChange();
+    }
 }
