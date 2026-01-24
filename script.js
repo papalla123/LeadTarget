@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════
-// LEADNEXUS AI - CORE ENGINE PACK 2 FINAL COMPLETO
-// Complete Marketing Intelligence Suite
+// LEADNEXUS AI - ENTERPRISE INTELLIGENCE SUITE
+// Complete Marketing Intelligence Suite con AI Advisor + Health Score
 // ═══════════════════════════════════════════════════════════════════
 
 let funnelChart = null;
@@ -19,8 +19,6 @@ window.addEventListener('load', async () => {
     await loadForexRates();
     initializeEventListeners();
     loadSavedData();
-    updateInfluencerSymbol();
-    updateWhatsAppSymbol();
 });
 
 // ═══════════════════════════════════════════════════════════════════
@@ -76,15 +74,24 @@ function handleCountryChange() {
     
     currentCountry = window.COUNTRY_DATABASE[code];
     
+    // Mostrar info del país
     document.getElementById('countryInfo').classList.remove('hidden');
     document.getElementById('countryCPC').textContent = `${currentCountry.symbol}${currentCountry.cpcEstimated.toFixed(2)}`;
     document.getElementById('countryTax').textContent = `${currentCountry.digitalTax}% ${currentCountry.taxName}`;
+    
+    // ACTUALIZAR TODOS LOS SÍMBOLOS DE MONEDA
     document.getElementById('currencySymbol').textContent = currentCountry.symbol;
     document.getElementById('budgetSymbol').textContent = currentCountry.symbol;
+    document.getElementById('influencerSymbol').textContent = currentCountry.symbol;
+    document.getElementById('whatsappSymbol').textContent = currentCountry.symbol;
     
-    updateInfluencerSymbol();
-    updateWhatsAppSymbol();
+    // Actualizar precio en USD
+    updatePriceInUSD();
     
+    // Actualizar funnel metrics con nuevo CPC
+    updateFunnelMetrics();
+    
+    // Si ya hay resultados, recalcular
     if (!document.getElementById('resultsSection').classList.contains('hidden')) {
         calculateROI();
     }
@@ -119,18 +126,6 @@ function updatePriceInUSD() {
         document.getElementById('priceUSD').textContent = `≈ $${priceUSD.toFixed(2)} USD`;
     } else {
         document.getElementById('priceUSD').classList.add('hidden');
-    }
-}
-
-function updateInfluencerSymbol() {
-    if (currentCountry) {
-        document.getElementById('influencerSymbol').textContent = currentCountry.symbol;
-    }
-}
-
-function updateWhatsAppSymbol() {
-    if (currentCountry) {
-        document.getElementById('whatsappSymbol').textContent = currentCountry.symbol;
     }
 }
 
@@ -220,7 +215,7 @@ function updateFunnelMetrics() {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// ROI CALCULATOR ENGINE
+// ROI CALCULATOR ENGINE + AI ADVISOR + HEALTH SCORE
 // ═══════════════════════════════════════════════════════════════════
 
 function calculateROI() {
@@ -230,12 +225,20 @@ function calculateROI() {
     }
     
     const budget = parseFloat(document.getElementById('monthlyBudget').value) || 0;
-    const price = parseFloat(document.getElementById('productPrice').value) || 0;
+    let price = parseFloat(document.getElementById('productPrice').value) || 0;
     const margin = parseFloat(document.getElementById('netMargin').value) || 0;
     const sales = parseInt(document.getElementById('sales').value.replace(/,/g, '')) || 0;
     const leads = parseInt(document.getElementById('leads').value.replace(/,/g, '')) || 0;
     
-    const digitalTax = budget * (currentCountry.digitalTax / 100);
+    // GUERRA DE PRECIOS: Reducir precio 15% si está activo
+    const warModeActive = document.getElementById('warModeToggle').checked;
+    if (warModeActive) {
+        price = price * 0.85; // -15%
+    }
+    
+    // IMPUESTOS DIGITALES
+    const includeTaxes = document.getElementById('includeTaxesToggle').checked;
+    const digitalTax = includeTaxes ? (budget * (currentCountry.digitalTax / 100)) : 0;
     const totalCost = budget + digitalTax;
     
     const revenue = sales * price;
@@ -244,10 +247,11 @@ function calculateROI() {
     const cpa = sales > 0 ? (totalCost / sales) : 0;
     const cac = cpa;
     const roas = budget > 0 ? (revenue / budget) : 0;
-    const roi = budget > 0 ? ((netRevenue - totalCost) / totalCost * 100) : 0;
+    const roi = totalCost > 0 ? ((netRevenue - totalCost) / totalCost * 100) : 0;
     
-    currentMetrics = { budget, price, margin, sales, leads, revenue, netRevenue, cpa, cac, roas, roi, totalCost, digitalTax };
+    currentMetrics = { budget, price, margin, sales, leads, revenue, netRevenue, cpa, cac, roas, roi, totalCost, digitalTax, warModeActive };
     
+    // Actualizar displays
     document.getElementById('cpaValue').textContent = `${currentCountry.symbol}${cpa.toFixed(2)}`;
     document.getElementById('cacValue').textContent = `${currentCountry.symbol}${cac.toFixed(2)}`;
     document.getElementById('roasValue').textContent = `${roas.toFixed(2)}x`;
@@ -255,6 +259,13 @@ function calculateROI() {
     
     updateStatusMessages(cpa, roas, roi, price, margin);
     
+    // AI GROWTH ADVISOR
+    updateAIAdvisor(roas, roi, cpa, price, margin);
+    
+    // MARKETING HEALTH SCORE
+    updateHealthScore(roas, cpa, price, margin);
+    
+    // Pentagon Sync
     window.EcosystemBridge.exportCAC(cac);
     window.EcosystemBridge.exportBurnRate(budget);
     
@@ -270,6 +281,107 @@ function calculateROI() {
         document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
     }, 300);
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// AI GROWTH ADVISOR - Tu CMO 24/7
+// ═══════════════════════════════════════════════════════════════════
+
+function updateAIAdvisor(roas, roi, cpa, price, margin) {
+    const hub = document.getElementById('aiInsightHub');
+    const content = document.getElementById('aiInsightContent');
+    
+    let advisor = null;
+    
+    if (roas < 1.5) {
+        advisor = window.AI_ADVISOR_MESSAGES.critical;
+    } else if (roas < 3.0) {
+        advisor = window.AI_ADVISOR_MESSAGES.risk;
+    } else if (roas < 6.0) {
+        advisor = window.AI_ADVISOR_MESSAGES.healthy;
+    } else {
+        advisor = window.AI_ADVISOR_MESSAGES.unicorn;
+    }
+    
+    const borderColor = {
+        red: 'border-red-500',
+        yellow: 'border-yellow-500',
+        green: 'border-green-500',
+        violet: 'border-violet-500'
+    }[advisor.color];
+    
+    const bgColor = {
+        red: 'bg-red-500/10',
+        yellow: 'bg-yellow-500/10',
+        green: 'bg-green-500/10',
+        violet: 'bg-violet-500/10'
+    }[advisor.color];
+    
+    content.className = `p-4 rounded-lg border-2 ${borderColor} ${bgColor} transition-all duration-300`;
+    content.innerHTML = `
+        <div class="flex items-start space-x-3">
+            <span class="text-4xl">${advisor.icon}</span>
+            <div class="flex-1">
+                <h4 class="text-lg font-bold text-${advisor.color}-400 mb-2">${advisor.title}</h4>
+                <p class="text-sm text-gray-300 mb-3">${advisor.message}</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-xs text-gray-400">Acción Recomendada:</span>
+                    <span class="text-xs font-bold text-${advisor.color}-400">${advisor.action}</span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    hub.classList.remove('hidden');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// MARKETING HEALTH SCORE (0-100)
+// ═══════════════════════════════════════════════════════════════════
+
+function updateHealthScore(roas, cpa, price, margin) {
+    const clicks = parseInt(document.getElementById('clicks').value.replace(/,/g, '')) || 0;
+    const leads = parseInt(document.getElementById('leads').value.replace(/,/g, '')) || 0;
+    
+    // Tasa de Conversión (30%)
+    const conversionRate = clicks > 0 ? (leads / clicks) : 0;
+    const conversionScore = Math.min((conversionRate / 0.3) * 30, 30); // 30% óptimo
+    
+    // ROAS (50%)
+    const roasScore = Math.min((roas / 6.0) * 50, 50); // ROAS 6.0 = 100%
+    
+    // Eficiencia de CPC (20%)
+    const maxSafeCPA = price * (margin / 100) * 0.7;
+    const cpaEfficiency = cpa > 0 ? Math.max(0, (1 - (cpa / maxSafeCPA))) : 0;
+    const cpaScore = Math.min(cpaEfficiency * 20, 20);
+    
+    const totalScore = Math.round(conversionScore + roasScore + cpaScore);
+    
+    // Actualizar barra y color
+    const bar = document.getElementById('healthScoreBar');
+    const value = document.getElementById('healthScoreValue');
+    const display = document.getElementById('healthScoreDisplay');
+    
+    bar.style.width = `${totalScore}%`;
+    
+    if (totalScore >= 76) {
+        bar.className = 'h-full bg-green-500 transition-all duration-500';
+        value.className = 'text-sm font-bold text-green-400';
+    } else if (totalScore >= 41) {
+        bar.className = 'h-full bg-yellow-500 transition-all duration-500';
+        value.className = 'text-sm font-bold text-yellow-400';
+    } else {
+        bar.className = 'h-full bg-red-500 transition-all duration-500';
+        value.className = 'text-sm font-bold text-red-400';
+    }
+    
+    value.textContent = totalScore;
+    display.classList.remove('hidden');
+    
+    // Export to Pentagon
+    window.EcosystemBridge.exportMarketingHealth(totalScore);
+}// ═══════════════════════════════════════════════════════════════════
+// STATUS MESSAGES
+// ═══════════════════════════════════════════════════════════════════
 
 function updateStatusMessages(cpa, roas, roi, price, margin) {
     const maxSafeCPA = price * (margin / 100) * 0.7;
@@ -605,24 +717,31 @@ function exportToPDF() {
     doc.text(`Pais: ${currentCountry.name}`, 20, 35);
     doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, 20, 42);
     
-    doc.setFontSize(14);
-    doc.text('Metricas Principales', 20, 55);
-    
-    doc.setFontSize(11);
-    doc.text(`Presupuesto: ${currentCountry.symbol}${currentMetrics.budget.toLocaleString()}`, 20, 65);
-    doc.text(`CAC: ${currentCountry.symbol}${currentMetrics.cac.toFixed(2)}`, 20, 72);
-    doc.text(`ROAS: ${currentMetrics.roas.toFixed(2)}x`, 20, 79);
-    doc.text(`ROI: ${currentMetrics.roi.toFixed(1)}%`, 20, 86);
-    doc.text(`Revenue: ${currentCountry.symbol}${currentMetrics.revenue.toLocaleString()}`, 20, 93);
+    if (currentMetrics.warModeActive) {
+        doc.setTextColor(255, 0, 0);
+        doc.text('MODO GUERRA DE PRECIOS ACTIVO (-15%)', 20, 49);
+        doc.setTextColor(0, 0, 0);
+    }
     
     doc.setFontSize(14);
-    doc.text('Embudo de Conversion', 20, 110);
+    doc.text('Metricas Principales', 20, 60);
     
     doc.setFontSize(11);
-    doc.text(`Impresiones: ${document.getElementById('impressions').value}`, 20, 120);
-    doc.text(`Clicks: ${document.getElementById('clicks').value}`, 20, 127);
-    doc.text(`Leads: ${document.getElementById('leads').value}`, 20, 134);
-    doc.text(`Ventas: ${document.getElementById('sales').value}`, 20, 141);
+    doc.text(`Presupuesto: ${currentCountry.symbol}${currentMetrics.budget.toLocaleString()}`, 20, 70);
+    doc.text(`CAC: ${currentCountry.symbol}${currentMetrics.cac.toFixed(2)}`, 20, 77);
+    doc.text(`ROAS: ${currentMetrics.roas.toFixed(2)}x`, 20, 84);
+    doc.text(`ROI: ${currentMetrics.roi.toFixed(1)}%`, 20, 91);
+    doc.text(`Revenue: ${currentCountry.symbol}${currentMetrics.revenue.toLocaleString()}`, 20, 98);
+    doc.text(`Marketing Health Score: ${document.getElementById('healthScoreValue').textContent}/100`, 20, 105);
+    
+    doc.setFontSize(14);
+    doc.text('Embudo de Conversion', 20, 120);
+    
+    doc.setFontSize(11);
+    doc.text(`Impresiones: ${document.getElementById('impressions').value}`, 20, 130);
+    doc.text(`Clicks: ${document.getElementById('clicks').value}`, 20, 137);
+    doc.text(`Leads: ${document.getElementById('leads').value}`, 20, 144);
+    doc.text(`Ventas: ${document.getElementById('sales').value}`, 20, 151);
     
     doc.setFontSize(8);
     doc.text('Generado por LeadNexus AI - Pentagon Financial Ecosystem', 20, 280);
@@ -640,6 +759,8 @@ function exportToTXT() {
         return;
     }
     
+    const warModeText = currentMetrics.warModeActive ? '\n⚔️ MODO GUERRA DE PRECIOS ACTIVO (-15% precio)' : '';
+    
     const report = `
 ╔═══════════════════════════════════════════════════════════════════╗
        LEADNEXUS AI - REPORTE DE CAMPAÑA PUBLICITARIA
@@ -649,13 +770,14 @@ function exportToTXT() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 País: ${currentCountry.name} ${currentCountry.flag}
 Industria: ${document.getElementById('industrySelect').value}
-Fecha: ${new Date().toLocaleString('es-ES')}
+Fecha: ${new Date().toLocaleString('es-ES')}${warModeText}
 
 💰 INVERSIÓN Y COSTOS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Presupuesto Mensual: ${currentCountry.symbol}${currentMetrics.budget.toLocaleString()}
 Impuestos Digitales (${currentCountry.digitalTax}%): ${currentCountry.symbol}${currentMetrics.digitalTax.toFixed(2)}
 Costo Total: ${currentCountry.symbol}${currentMetrics.totalCost.toLocaleString()}
+Precio de Venta: ${currentCountry.symbol}${currentMetrics.price.toFixed(2)}
 
 📊 MÉTRICAS DE RENDIMIENTO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -663,6 +785,7 @@ CPA (Costo por Adquisición): ${currentCountry.symbol}${currentMetrics.cpa.toFix
 CAC (Customer Acquisition Cost): ${currentCountry.symbol}${currentMetrics.cac.toFixed(2)}
 ROAS (Return on Ad Spend): ${currentMetrics.roas.toFixed(2)}x
 ROI Neto: ${currentMetrics.roi.toFixed(1)}%
+Marketing Health Score: ${document.getElementById('healthScoreValue').textContent}/100
 
 📉 EMBUDO DE CONVERSIÓN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -721,6 +844,19 @@ function initializeEventListeners() {
     
     document.getElementById('scenarioManagerBtn').addEventListener('click', openScenarioManager);
     document.getElementById('closeModalBtn').addEventListener('click', closeScenarioManager);
+    
+    // NUEVO: Event listeners para toggles
+    document.getElementById('warModeToggle').addEventListener('change', () => {
+        if (!document.getElementById('resultsSection').classList.contains('hidden')) {
+            calculateROI();
+        }
+    });
+    
+    document.getElementById('includeTaxesToggle').addEventListener('change', () => {
+        if (!document.getElementById('resultsSection').classList.contains('hidden')) {
+            calculateROI();
+        }
+    });
     
     document.getElementById('countrySelect')?.addEventListener('change', (e) => {
         localStorage.setItem('lastCountry', e.target.value);

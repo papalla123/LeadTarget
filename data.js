@@ -1,9 +1,9 @@
 // ═══════════════════════════════════════════════════════════════════
 // LEADNEXUS AI - DATABASE & ECOSYSTEM BRIDGE
-// Pack 3 FINAL: Enterprise Intelligence Edition
+// Enterprise Intelligence Edition - Pentagon Ecosystem
 // ═══════════════════════════════════════════════════════════════════
 
-// PENTAGON LINK 5.0 - Centralized Navigation System (CORREGIDO)
+// PENTAGON LINK 5.0 - Centralized Navigation System
 window.PENTAGON_LINKS = {
     sueldopro: {
         name: 'SueldoPro Ultra',
@@ -38,43 +38,47 @@ window.PENTAGON_LINKS = {
     }
 };
 
-// AI GROWTH ADVISOR MESSAGES
+// ═══════════════════════════════════════════════════════════════════
+// AI GROWTH ADVISOR MESSAGES - Tu CMO 24/7
+// ═══════════════════════════════════════════════════════════════════
 window.AI_ADVISOR_MESSAGES = {
     critical: {
         threshold: 1.5,
         icon: '🛑',
-        title: 'ALERTA CRÍTICA',
-        message: 'Estás quemando capital. Tu costo de adquisición supera tu ganancia. Revisa el CTR de tus anuncios urgentemente.',
+        title: 'ALERTA CRÍTICA - QUEMANDO CAPITAL',
+        message: 'Estás perdiendo dinero con cada venta. Tu costo de adquisición supera tu ganancia neta. Detén los anuncios inmediatamente y revisa el CTR de tus creativos. Esta campaña necesita una reestructuración total antes de seguir invirtiendo.',
         color: 'red',
-        action: 'Detener gastos y optimizar creativos'
+        action: 'Detener gastos y optimizar creativos urgentemente'
     },
     risk: {
         threshold: 3.0,
         icon: '⚠️',
-        title: 'ZONA DE RIESGO',
-        message: 'Rentabilidad frágil. Un aumento en los costos de pauta te llevará a pérdidas. Mejora tu tasa de cierre.',
+        title: 'ZONA DE RIESGO - RENTABILIDAD FRÁGIL',
+        message: 'Estás en break-even o con margen muy estrecho. Cualquier aumento en costos de pauta o disminución en conversión te llevará a pérdidas. Necesitas mejorar tu tasa de cierre y optimizar el embudo antes de escalar.',
         color: 'yellow',
-        action: 'Optimizar embudo de conversión'
+        action: 'Optimizar embudo de conversión y reducir CAC'
     },
     healthy: {
         threshold: 6.0,
         icon: '✅',
-        title: 'CAMPAÑA SALUDABLE',
-        message: 'Estás escalando con éxito. Momento ideal para probar nuevos creativos.',
+        title: 'CAMPAÑA SALUDABLE - ESCALABLE',
+        message: 'Tu campaña está generando retornos sólidos y sostenibles. Tienes margen suficiente para absorber fluctuaciones del mercado. Este es el momento ideal para probar nuevos creativos y audiencias sin arriesgar la rentabilidad.',
         color: 'green',
-        action: 'Escalar gradualmente'
+        action: 'Escalar gradualmente (+10-20% semanal)'
     },
     unicorn: {
         threshold: Infinity,
         icon: '🚀',
-        title: 'MODO UNICORNIO',
-        message: 'Máquina de imprimir dinero detectada. Aumenta el presupuesto un 20% diario.',
+        title: 'MODO UNICORNIO - MÁQUINA DE DINERO',
+        message: '¡Felicidades! Tienes una máquina de imprimir dinero. Tu ROAS es excepcional y tus márgenes son brutales. Escala agresivamente mientras dure esta ventana de oportunidad. Aumenta presupuesto 20% diario y duplica esfuerzos en remarketing.',
         color: 'violet',
-        action: 'Escalar agresivamente'
+        action: 'Escalar agresivamente (+20% diario)'
     }
 };
 
-// COUNTRY INTELLIGENCE DATABASE (21 PAÍSES + USA + ESPAÑA)
+// ═══════════════════════════════════════════════════════════════════
+// COUNTRY INTELLIGENCE DATABASE - 21 Países LATAM + USA + España
+// ═══════════════════════════════════════════════════════════════════
 window.COUNTRY_DATABASE = {
     AR: {
         name: 'Argentina',
@@ -292,6 +296,18 @@ window.COUNTRY_DATABASE = {
         marketSize: 'Medio',
         trending: ['Turismo', 'Zonas Francas', 'BPO']
     },
+    PR: {
+        name: 'Puerto Rico',
+        flag: '🇵🇷',
+        currency: 'USD',
+        symbol: '$',
+        cpcEstimated: 0.80,
+        digitalTax: 11.5,
+        taxName: 'IVU',
+        region: 'Caribe',
+        marketSize: 'Pequeño',
+        trending: ['Turismo', 'Pharma', 'Tech']
+    },
     ES: {
         name: 'España',
         flag: '🇪🇸',
@@ -315,22 +331,12 @@ window.COUNTRY_DATABASE = {
         region: 'Norteamérica',
         marketSize: 'Gigante',
         trending: ['AI', 'SaaS', 'D2C']
-    },
-    PR: {
-        name: 'Puerto Rico',
-        flag: '🇵🇷',
-        currency: 'USD',
-        symbol: '$',
-        cpcEstimated: 0.80,
-        digitalTax: 11.5,
-        taxName: 'IVU',
-        region: 'Caribe',
-        marketSize: 'Pequeño',
-        trending: ['Turismo', 'Pharma', 'Tech']
     }
 };
 
-// CHANNEL BENCHMARKS
+// ═══════════════════════════════════════════════════════════════════
+// CHANNEL BENCHMARKS - Multi-Platform Intelligence
+// ═══════════════════════════════════════════════════════════════════
 window.CHANNEL_BENCHMARKS = {
     facebook: {
         name: 'Facebook Ads',
@@ -341,7 +347,7 @@ window.CHANNEL_BENCHMARKS = {
         avgConversion: 3.2,
         bestFor: ['E-commerce', 'B2C', 'Local'],
         ageRange: '25-55',
-        strength: 'Alcance masivo y targeting preciso'
+        strength: 'Alcance masivo y targeting preciso por comportamiento'
     },
     instagram: {
         name: 'Instagram Ads',
@@ -352,7 +358,7 @@ window.CHANNEL_BENCHMARKS = {
         avgConversion: 2.8,
         bestFor: ['Fashion', 'Beauty', 'Lifestyle'],
         ageRange: '18-35',
-        strength: 'Engagement visual y shopping nativo'
+        strength: 'Engagement visual alto y shopping nativo integrado'
     },
     google: {
         name: 'Google Ads',
@@ -363,7 +369,7 @@ window.CHANNEL_BENCHMARKS = {
         avgConversion: 4.5,
         bestFor: ['B2B', 'Servicios', 'High Ticket'],
         ageRange: '25-65',
-        strength: 'Intención de búsqueda alta'
+        strength: 'Intención de búsqueda alta - Usuarios listos para comprar'
     },
     tiktok: {
         name: 'TikTok Ads',
@@ -374,7 +380,7 @@ window.CHANNEL_BENCHMARKS = {
         avgConversion: 2.0,
         bestFor: ['Gen Z', 'Viral', 'Impulse Buy'],
         ageRange: '16-28',
-        strength: 'Contenido viral y engagement orgánico'
+        strength: 'Contenido viral orgánico y engagement brutal'
     },
     linkedin: {
         name: 'LinkedIn Ads',
@@ -385,11 +391,13 @@ window.CHANNEL_BENCHMARKS = {
         avgConversion: 2.5,
         bestFor: ['B2B', 'SaaS', 'Executive'],
         ageRange: '30-60',
-        strength: 'Decisores y profesionales'
+        strength: 'Decisores empresariales y profesionales calificados'
     }
 };
 
-// INDUSTRY CONVERSION FUNNELS
+// ═══════════════════════════════════════════════════════════════════
+// INDUSTRY CONVERSION FUNNELS - Benchmarks por Vertical
+// ═══════════════════════════════════════════════════════════════════
 window.INDUSTRY_FUNNELS = {
     ecommerce: {
         impressions: 10000,
@@ -441,8 +449,11 @@ window.INDUSTRY_FUNNELS = {
     }
 };
 
-// ECOSYSTEM DATA BRIDGE (MEJORADO PACK 3)
+// ═══════════════════════════════════════════════════════════════════
+// ECOSYSTEM DATA BRIDGE - Pentagon Sync Protocol
+// ═══════════════════════════════════════════════════════════════════
 window.EcosystemBridge = {
+    // Importar datos de otras apps del ecosistema
     importSalaryData() {
         try {
             const salesCommission = localStorage.getItem('SALES_COMMISSION_COST');
@@ -461,9 +472,10 @@ window.EcosystemBridge = {
         }
     },
     
+    // Exportar datos a otras apps del ecosistema
     exportCAC(cac) {
         try {
-            localStorage.setItem('GLOBAL_CAC', cac.toString());
+            localStorage.setItem('GLOBAL_CAC', cac.toFixed(2));
             localStorage.setItem('CAC_UPDATED_AT', new Date().toISOString());
         } catch (e) {
             console.warn('No se pudo exportar CAC');
@@ -472,14 +484,13 @@ window.EcosystemBridge = {
     
     exportBurnRate(burnRate) {
         try {
-            localStorage.setItem('MARKETING_BURN_RATE', burnRate.toString());
+            localStorage.setItem('MARKETING_BURN_RATE', burnRate.toFixed(2));
             localStorage.setItem('BURN_RATE_UPDATED_AT', new Date().toISOString());
         } catch (e) {
             console.warn('No se pudo exportar Burn Rate');
         }
     },
     
-    // NUEVO PACK 3: Export Marketing Health
     exportMarketingHealth(score) {
         try {
             localStorage.setItem('MARKETING_HEALTH', score.toString());
@@ -489,6 +500,7 @@ window.EcosystemBridge = {
         }
     },
     
+    // Verificar conexiones del ecosistema
     checkEcosystemHealth() {
         const connections = {
             sueldopro: !!localStorage.getItem('SALES_COMMISSION_COST'),
@@ -500,7 +512,9 @@ window.EcosystemBridge = {
     }
 };
 
-// FOREX API CONFIGURATION
+// ═══════════════════════════════════════════════════════════════════
+// FOREX API CONFIGURATION - Real-time Exchange Rates
+// ═══════════════════════════════════════════════════════════════════
 window.FOREX_CONFIG = {
     apiURL: 'https://api.exchangerate-api.com/v4/latest/USD',
     lastUpdate: null,
@@ -514,7 +528,7 @@ window.FOREX_CONFIG = {
             this.lastUpdate = new Date();
             return true;
         } catch (e) {
-            console.warn('No se pudieron actualizar tasas de cambio');
+            console.warn('No se pudieron actualizar tasas de cambio, usando valores estimados');
             return false;
         }
     },
@@ -525,4 +539,17 @@ window.FOREX_CONFIG = {
         const amountInUSD = from === 'USD' ? amount : amount / this.rates[from];
         return to === 'USD' ? amountInUSD : amountInUSD * this.rates[to];
     }
-};
+};@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
+        transform: scale(1.05);
+    }
+}
+
+.pulse-animation {
+    animation: pulse-glow 2s ease-in-out infinite;
+}

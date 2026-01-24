@@ -29,9 +29,9 @@
                         <span class="text-xs font-medium">Health:</span>
                         <div class="flex items-center space-x-2">
                             <div class="w-16 h-2 bg-gray-700 rounded-full overflow-hidden">
-                                <div id="healthScoreBar" class="h-full bg-green-500 transition-all duration-500" style="width: 0%"></div>
+                                <div id="healthScoreBar" class="h-full transition-all duration-500" style="width: 0%"></div>
                             </div>
-                            <span id="healthScoreValue" class="text-sm font-bold text-gray-400">--</span>
+                            <span id="healthScoreValue" class="text-sm font-bold">0</span>
                         </div>
                     </div>
                     <button id="scenarioManagerBtn" class="cyber-btn-sm hidden md:block">
@@ -70,16 +70,16 @@
                 <div id="ecosystemStatus" class="mt-6 flex flex-wrap justify-center gap-3 text-xs"></div>
             </div>
 
-            <!-- AI Insight Hub (NUEVO PACK 3) -->
-            <div id="aiInsightHub" class="cyber-card p-6 mb-6 hidden">
+            <!-- AI Insight Hub -->
+            <div id="aiInsightHub" class="cyber-card p-6 mb-6 hidden slide-in">
                 <div class="flex items-center space-x-3 mb-4">
-                    <span class="text-3xl">🤖</span>
+                    <span class="text-3xl pulse-animation">🤖</span>
                     <div>
                         <h3 class="text-xl font-bold text-violet-400">AI Growth Advisor</h3>
-                        <p class="text-xs text-gray-500">Diagnóstico en tiempo real de tu campaña</p>
+                        <p class="text-xs text-gray-500">Tu CMO Digital 24/7 - Diagnóstico en Tiempo Real</p>
                     </div>
                 </div>
-                <div id="aiInsightContent" class="p-4 rounded-lg border-2"></div>
+                <div id="aiInsightContent" class="p-4 rounded-lg border-2 transition-all duration-300"></div>
             </div>
 
             <!-- Country Selector + Quick Stats -->
@@ -123,7 +123,7 @@
                 </div>
             </div>
 
-            <!-- Advanced Controls (NUEVO PACK 3) -->
+            <!-- Advanced Controls -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <!-- Guerra de Precios Toggle -->
                 <div class="cyber-card p-4">
@@ -132,12 +132,12 @@
                             <span class="text-2xl">⚔️</span>
                             <div>
                                 <p class="font-semibold text-violet-400">Modo Guerra de Precios</p>
-                                <p class="text-xs text-gray-500">Simula -15% en el precio (competencia)</p>
+                                <p class="text-xs text-gray-500">Simula -15% en precio (crisis de mercado)</p>
                             </div>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" id="warModeToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
+                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
                         </label>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
                             <span class="text-2xl">🧾</span>
                             <div>
                                 <p class="font-semibold text-violet-400">Incluir Impuestos Digitales</p>
-                                <p class="text-xs text-gray-500">Suma automática del IVA/Tax</p>
+                                <p class="text-xs text-gray-500">Suma automática del IVA/Tax del país</p>
                             </div>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
