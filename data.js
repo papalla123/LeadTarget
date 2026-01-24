@@ -89,8 +89,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 21,
         taxName: 'IVA + Imp. PAIS',
         region: 'LATAM',
-        marketSize: 'Grande',
-        trending: ['E-commerce', 'Cripto', 'Fintech']
+        marketSize: 'Grande'
     },
     MX: {
         name: 'México',
@@ -101,8 +100,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 16,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Muy Grande',
-        trending: ['E-learning', 'Delivery', 'SaaS']
+        marketSize: 'Muy Grande'
     },
     CO: {
         name: 'Colombia',
@@ -113,8 +111,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 19,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Grande',
-        trending: ['Fintech', 'E-commerce', 'EdTech']
+        marketSize: 'Grande'
     },
     CL: {
         name: 'Chile',
@@ -125,8 +122,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 19,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Medio',
-        trending: ['B2B Tech', 'Sustentabilidad', 'Fintech']
+        marketSize: 'Medio'
     },
     PE: {
         name: 'Perú',
@@ -137,8 +133,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 18,
         taxName: 'IGV',
         region: 'LATAM',
-        marketSize: 'Medio',
-        trending: ['Gastronomía', 'Turismo Digital', 'E-commerce']
+        marketSize: 'Medio'
     },
     BR: {
         name: 'Brasil',
@@ -149,8 +144,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 17,
         taxName: 'ICMS',
         region: 'LATAM',
-        marketSize: 'Gigante',
-        trending: ['E-commerce', 'Agro Tech', 'Fintech']
+        marketSize: 'Gigante'
     },
     EC: {
         name: 'Ecuador',
@@ -161,8 +155,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 12,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Pequeño',
-        trending: ['Exportación', 'Turismo', 'E-learning']
+        marketSize: 'Pequeño'
     },
     UY: {
         name: 'Uruguay',
@@ -173,8 +166,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 22,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Pequeño',
-        trending: ['Tech Hub', 'Cannabis Legal', 'Fintech']
+        marketSize: 'Pequeño'
     },
     PY: {
         name: 'Paraguay',
@@ -185,8 +177,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 10,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Pequeño',
-        trending: ['Agro', 'Energía', 'E-commerce']
+        marketSize: 'Pequeño'
     },
     BO: {
         name: 'Bolivia',
@@ -197,8 +188,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 13,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Pequeño',
-        trending: ['Minería', 'Turismo', 'Agro']
+        marketSize: 'Pequeño'
     },
     VE: {
         name: 'Venezuela',
@@ -209,8 +199,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 16,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Medio',
-        trending: ['Remesas', 'Cripto', 'Servicios']
+        marketSize: 'Medio'
     },
     CR: {
         name: 'Costa Rica',
@@ -221,8 +210,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 13,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Pequeño',
-        trending: ['Ecoturismo', 'Tech', 'BPO']
+        marketSize: 'Pequeño'
     },
     PA: {
         name: 'Panamá',
@@ -233,8 +221,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 7,
         taxName: 'ITBMS',
         region: 'LATAM',
-        marketSize: 'Pequeño',
-        trending: ['Logística', 'Finanzas', 'Turismo']
+        marketSize: 'Pequeño'
     },
     GT: {
         name: 'Guatemala',
@@ -245,8 +232,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 12,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Medio',
-        trending: ['Café', 'Textil', 'BPO']
+        marketSize: 'Medio'
     },
     SV: {
         name: 'El Salvador',
@@ -257,8 +243,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 13,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Pequeño',
-        trending: ['Bitcoin', 'Turismo', 'Remesas']
+        marketSize: 'Pequeño'
     },
     HN: {
         name: 'Honduras',
@@ -269,8 +254,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 15,
         taxName: 'ISV',
         region: 'LATAM',
-        marketSize: 'Pequeño',
-        trending: ['Textil', 'Café', 'Turismo']
+        marketSize: 'Pequeño'
     },
     NI: {
         name: 'Nicaragua',
@@ -281,8 +265,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 15,
         taxName: 'IVA',
         region: 'LATAM',
-        marketSize: 'Pequeño',
-        trending: ['Agro', 'Turismo', 'Textil']
+        marketSize: 'Pequeño'
     },
     DO: {
         name: 'República Dominicana',
@@ -293,8 +276,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 18,
         taxName: 'ITBIS',
         region: 'LATAM',
-        marketSize: 'Medio',
-        trending: ['Turismo', 'Zonas Francas', 'BPO']
+        marketSize: 'Medio'
     },
     PR: {
         name: 'Puerto Rico',
@@ -305,8 +287,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 11.5,
         taxName: 'IVU',
         region: 'Caribe',
-        marketSize: 'Pequeño',
-        trending: ['Turismo', 'Pharma', 'Tech']
+        marketSize: 'Pequeño'
     },
     ES: {
         name: 'España',
@@ -317,8 +298,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 21,
         taxName: 'IVA',
         region: 'Europa',
-        marketSize: 'Grande',
-        trending: ['E-commerce', 'Turismo Digital', 'SaaS']
+        marketSize: 'Grande'
     },
     US: {
         name: 'Estados Unidos',
@@ -329,8 +309,7 @@ window.COUNTRY_DATABASE = {
         digitalTax: 0,
         taxName: 'Varía por Estado',
         region: 'Norteamérica',
-        marketSize: 'Gigante',
-        trending: ['AI', 'SaaS', 'D2C']
+        marketSize: 'Gigante'
     }
 };
 
@@ -346,8 +325,7 @@ window.CHANNEL_BENCHMARKS = {
         avgCTR: 1.8,
         avgConversion: 3.2,
         bestFor: ['E-commerce', 'B2C', 'Local'],
-        ageRange: '25-55',
-        strength: 'Alcance masivo y targeting preciso por comportamiento'
+        strength: 'Alcance masivo y targeting preciso'
     },
     instagram: {
         name: 'Instagram Ads',
@@ -357,8 +335,7 @@ window.CHANNEL_BENCHMARKS = {
         avgCTR: 2.1,
         avgConversion: 2.8,
         bestFor: ['Fashion', 'Beauty', 'Lifestyle'],
-        ageRange: '18-35',
-        strength: 'Engagement visual alto y shopping nativo integrado'
+        strength: 'Engagement visual y shopping nativo'
     },
     google: {
         name: 'Google Ads',
@@ -368,8 +345,7 @@ window.CHANNEL_BENCHMARKS = {
         avgCTR: 3.5,
         avgConversion: 4.5,
         bestFor: ['B2B', 'Servicios', 'High Ticket'],
-        ageRange: '25-65',
-        strength: 'Intención de búsqueda alta - Usuarios listos para comprar'
+        strength: 'Intención de búsqueda alta'
     },
     tiktok: {
         name: 'TikTok Ads',
@@ -379,8 +355,7 @@ window.CHANNEL_BENCHMARKS = {
         avgCTR: 2.5,
         avgConversion: 2.0,
         bestFor: ['Gen Z', 'Viral', 'Impulse Buy'],
-        ageRange: '16-28',
-        strength: 'Contenido viral orgánico y engagement brutal'
+        strength: 'Contenido viral y engagement orgánico'
     },
     linkedin: {
         name: 'LinkedIn Ads',
@@ -390,62 +365,49 @@ window.CHANNEL_BENCHMARKS = {
         avgCTR: 0.8,
         avgConversion: 2.5,
         bestFor: ['B2B', 'SaaS', 'Executive'],
-        ageRange: '30-60',
-        strength: 'Decisores empresariales y profesionales calificados'
+        strength: 'Decisores y profesionales'
     }
 };
 
 // ═══════════════════════════════════════════════════════════════════
-// INDUSTRY CONVERSION FUNNELS - Benchmarks por Vertical
+// INDUSTRY CONVERSION FUNNELS
 // ═══════════════════════════════════════════════════════════════════
 window.INDUSTRY_FUNNELS = {
     ecommerce: {
         impressions: 10000,
         clicks: 200,
         leads: 50,
-        sales: 10,
-        avgTicket: 150,
-        avgLTV: 1.8
+        sales: 10
     },
     services: {
         impressions: 5000,
         clicks: 150,
         leads: 30,
-        sales: 8,
-        avgTicket: 800,
-        avgLTV: 2.5
+        sales: 8
     },
     b2b: {
         impressions: 3000,
         clicks: 90,
         leads: 15,
-        sales: 3,
-        avgTicket: 5000,
-        avgLTV: 4.2
+        sales: 3
     },
     education: {
         impressions: 8000,
         clicks: 240,
         leads: 60,
-        sales: 15,
-        avgTicket: 297,
-        avgLTV: 3.0
+        sales: 15
     },
     health: {
         impressions: 6000,
         clicks: 180,
         leads: 45,
-        sales: 12,
-        avgTicket: 400,
-        avgLTV: 2.8
+        sales: 12
     },
     realestate: {
         impressions: 4000,
         clicks: 120,
         leads: 20,
-        sales: 2,
-        avgTicket: 15000,
-        avgLTV: 5.5
+        sales: 2
     }
 };
 
@@ -453,7 +415,6 @@ window.INDUSTRY_FUNNELS = {
 // ECOSYSTEM DATA BRIDGE - Pentagon Sync Protocol
 // ═══════════════════════════════════════════════════════════════════
 window.EcosystemBridge = {
-    // Importar datos de otras apps del ecosistema
     importSalaryData() {
         try {
             const salesCommission = localStorage.getItem('SALES_COMMISSION_COST');
@@ -472,7 +433,6 @@ window.EcosystemBridge = {
         }
     },
     
-    // Exportar datos a otras apps del ecosistema
     exportCAC(cac) {
         try {
             localStorage.setItem('GLOBAL_CAC', cac.toFixed(2));
@@ -500,7 +460,6 @@ window.EcosystemBridge = {
         }
     },
     
-    // Verificar conexiones del ecosistema
     checkEcosystemHealth() {
         const connections = {
             sueldopro: !!localStorage.getItem('SALES_COMMISSION_COST'),
@@ -513,7 +472,7 @@ window.EcosystemBridge = {
 };
 
 // ═══════════════════════════════════════════════════════════════════
-// FOREX API CONFIGURATION - Real-time Exchange Rates
+// FOREX API CONFIGURATION
 // ═══════════════════════════════════════════════════════════════════
 window.FOREX_CONFIG = {
     apiURL: 'https://api.exchangerate-api.com/v4/latest/USD',
@@ -528,28 +487,14 @@ window.FOREX_CONFIG = {
             this.lastUpdate = new Date();
             return true;
         } catch (e) {
-            console.warn('No se pudieron actualizar tasas de cambio, usando valores estimados');
+            console.warn('No se pudieron actualizar tasas de cambio');
             return false;
         }
     },
     
     convert(amount, from, to) {
         if (!this.rates[from] || !this.rates[to]) return amount;
-        
         const amountInUSD = from === 'USD' ? amount : amount / this.rates[from];
         return to === 'USD' ? amountInUSD : amountInUSD * this.rates[to];
     }
-};@keyframes pulse-glow {
-    0%, 100% {
-        box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-        transform: scale(1);
-    }
-    50% {
-        box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
-        transform: scale(1.05);
-    }
-}
-
-.pulse-animation {
-    animation: pulse-glow 2s ease-in-out infinite;
-}
+};

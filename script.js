@@ -344,10 +344,10 @@ function updateHealthScore(roas, cpa, price, margin) {
     
     // Tasa de Conversión (30%)
     const conversionRate = clicks > 0 ? (leads / clicks) : 0;
-    const conversionScore = Math.min((conversionRate / 0.3) * 30, 30); // 30% óptimo
+    const conversionScore = Math.min((conversionRate / 0.3) * 30, 30);
     
     // ROAS (50%)
-    const roasScore = Math.min((roas / 6.0) * 50, 50); // ROAS 6.0 = 100%
+    const roasScore = Math.min((roas / 6.0) * 50, 50);
     
     // Eficiencia de CPC (20%)
     const maxSafeCPA = price * (margin / 100) * 0.7;
@@ -379,9 +379,7 @@ function updateHealthScore(roas, cpa, price, margin) {
     
     // Export to Pentagon
     window.EcosystemBridge.exportMarketingHealth(totalScore);
-}// ═══════════════════════════════════════════════════════════════════
-// STATUS MESSAGES
-// ═══════════════════════════════════════════════════════════════════
+}
 
 function updateStatusMessages(cpa, roas, roi, price, margin) {
     const maxSafeCPA = price * (margin / 100) * 0.7;
@@ -413,9 +411,7 @@ function updateStatusMessages(cpa, roas, roi, price, margin) {
     } else {
         document.getElementById('roiStatus').innerHTML = '<span class="status-danger">⛔ Pérdida neta</span>';
     }
-}
-
-// ═══════════════════════════════════════════════════════════════════
+}// ═══════════════════════════════════════════════════════════════════
 // CHART VISUALIZATIONS
 // ═══════════════════════════════════════════════════════════════════
 
@@ -818,79 +814,4 @@ Recomendación: ${currentMetrics.roi >= 100 && currentMetrics.roas >= 2.5 ? 'ESC
     a.download = `LeadNexus-Report-${Date.now()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// EVENT LISTENERS
-// ═══════════════════════════════════════════════════════════════════
-
-function initializeEventListeners() {
-    document.getElementById('countrySelect').addEventListener('change', handleCountryChange);
-    document.getElementById('productPrice').addEventListener('input', updatePriceInUSD);
-    document.getElementById('autoFillBtn').addEventListener('click', autoFillFunnel);
-    document.getElementById('calculateBtn').addEventListener('click', calculateROI);
-    
-    document.getElementById('ctrSlider').addEventListener('input', updateFunnelMetrics);
-    document.getElementById('leadConvSlider').addEventListener('input', updateFunnelMetrics);
-    document.getElementById('closeRateSlider').addEventListener('input', updateFunnelMetrics);
-    document.getElementById('monthlyBudget').addEventListener('input', updateFunnelMetrics);
-    
-    document.getElementById('saveScenarioBtn').addEventListener('click', saveScenario);
-    document.getElementById('exportPDFBtn').addEventListener('click', exportToPDF);
-    document.getElementById('exportTXTBtn').addEventListener('click', exportToTXT);
-    
-    document.getElementById('calculateInfluencerBtn').addEventListener('click', calculateInfluencer);
-    document.getElementById('calculateWhatsAppBtn').addEventListener('click', calculateWhatsApp);
-    
-    document.getElementById('scenarioManagerBtn').addEventListener('click', openScenarioManager);
-    document.getElementById('closeModalBtn').addEventListener('click', closeScenarioManager);
-    
-    // NUEVO: Event listeners para toggles
-    document.getElementById('warModeToggle').addEventListener('change', () => {
-        if (!document.getElementById('resultsSection').classList.contains('hidden')) {
-            calculateROI();
-        }
-    });
-    
-    document.getElementById('includeTaxesToggle').addEventListener('change', () => {
-        if (!document.getElementById('resultsSection').classList.contains('hidden')) {
-            calculateROI();
-        }
-    });
-    
-    document.getElementById('countrySelect')?.addEventListener('change', (e) => {
-        localStorage.setItem('lastCountry', e.target.value);
-    });
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// PERSISTENCE
-// ═══════════════════════════════════════════════════════════════════
-
-function saveScenario() {
-    const scenarioName = prompt('Nombre del escenario:');
-    if (!scenarioName) return;
-    
-    const data = {
-        country: document.getElementById('countrySelect').value,
-        industry: document.getElementById('industrySelect').value,
-        price: document.getElementById('productPrice').value,
-        budget: document.getElementById('monthlyBudget').value,
-        margin: document.getElementById('netMargin').value,
-        ctr: document.getElementById('ctrSlider').value,
-        leadConv: document.getElementById('leadConvSlider').value,
-        closeRate: document.getElementById('closeRateSlider').value,
-        timestamp: new Date().toISOString()
-    };
-    
-    localStorage.setItem(`scenario_${scenarioName}`, JSON.stringify(data));
-    alert('✓ Escenario guardado exitosamente');
-}
-
-function loadSavedData() {
-    const lastCountry = localStorage.getItem('lastCountry');
-    if (lastCountry) {
-        document.getElementById('countrySelect').value = lastCountry;
-        handleCountryChange();
-    }
 }
