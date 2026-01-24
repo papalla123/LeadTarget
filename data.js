@@ -1,145 +1,490 @@
-// Industry Benchmarks Data
-const industryData = {
-    ecommerce: { 
-        avgCPC: 0.85, 
-        avgConversion: 2.8, 
-        avgLTV: 1.8, 
-        trend: 'evergreen',
-        description: 'Comercio electrónico con demanda constante'
+// ═══════════════════════════════════════════════════════════════════
+// LEADNEXUS AI - DATABASE & ECOSYSTEM BRIDGE
+// Pack 1: Pentagon Architecture + Country Intelligence
+// ═══════════════════════════════════════════════════════════════════
+
+// PENTAGON LINK 5.0 - Centralized Navigation System
+window.PENTAGON_LINKS = {
+    sueldopro: {
+        name: 'SueldoPro Ultra',
+        url: 'https://sueldopro-2026.vercel.app',
+        icon: '💼',
+        color: 'from-blue-500 to-cyan-500'
     },
-    servicios: { 
-        avgCPC: 2.30, 
-        avgConversion: 3.5, 
-        avgLTV: 2.5, 
-        trend: 'evergreen',
-        description: 'Servicios profesionales de alta demanda'
+    marginaxis: {
+        name: 'MarginAxis Global',
+        url: 'https://margin-axis-global.vercel.app',
+        icon: '📊',
+        color: 'from-green-500 to-emerald-500'
     },
-    b2b: { 
-        avgCPC: 3.50, 
-        avgConversion: 2.1, 
-        avgLTV: 4.2, 
-        trend: 'evergreen',
-        description: 'Soluciones empresariales y SaaS'
+    leadnexus: {
+        name: 'LeadNexus AI',
+        url: 'https://lead-nexus-ai.vercel.app',
+        icon: '🎯',
+        color: 'from-violet-500 to-fuchsia-500',
+        active: true
     },
-    educacion: { 
-        avgCPC: 1.20, 
-        avgConversion: 4.2, 
-        avgLTV: 3.0, 
-        trend: 'creciente',
-        description: 'Formación online en expansión'
+    liquidezforce: {
+        name: 'Liquidez Force',
+        url: 'https://liquidez-force.vercel.app',
+        icon: '💰',
+        color: 'from-yellow-500 to-orange-500'
     },
-    salud: { 
-        avgCPC: 2.80, 
-        avgConversion: 3.8, 
-        avgLTV: 2.8, 
-        trend: 'evergreen',
-        description: 'Bienestar y salud preventiva'
-    },
-    inmobiliaria: { 
-        avgCPC: 4.20, 
-        avgConversion: 1.5, 
-        avgLTV: 5.5, 
-        trend: 'estacional',
-        description: 'Propiedades con alta inversión'
+    wealtharmor: {
+        name: 'Wealth Armor AI',
+        url: 'https://wealth-armor-ai.vercel.app',
+        icon: '🛡️',
+        color: 'from-purple-500 to-pink-500'
     }
 };
 
-// Platform Scoring Algorithm
-const platformScoring = {
-    tiktok: { 
-        lowTicket: 95, 
-        medTicket: 75, 
-        highTicket: 45, 
-        baseCPC: 0.50,
-        strength: 'Viral content, audiencias jóvenes'
+// COUNTRY INTELLIGENCE DATABASE (21 PAÍSES)
+window.COUNTRY_DATABASE = {
+    // LATINOAMÉRICA
+    AR: {
+        name: 'Argentina',
+        flag: '🇦🇷',
+        currency: 'ARS',
+        symbol: '$',
+        cpcEstimated: 0.35,
+        digitalTax: 21,
+        taxName: 'IVA + Imp. PAIS',
+        region: 'LATAM',
+        marketSize: 'Grande',
+        trending: ['E-commerce', 'Cripto', 'Fintech']
     },
-    instagram: { 
-        lowTicket: 85, 
-        medTicket: 90, 
-        highTicket: 70, 
-        baseCPC: 0.75,
-        strength: 'Visual branding, engagement alto'
+    MX: {
+        name: 'México',
+        flag: '🇲🇽',
+        currency: 'MXN',
+        symbol: '$',
+        cpcEstimated: 0.28,
+        digitalTax: 16,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Muy Grande',
+        trending: ['E-learning', 'Delivery', 'SaaS']
     },
-    google: { 
-        lowTicket: 70, 
-        medTicket: 85, 
-        highTicket: 95, 
-        baseCPC: 1.50,
-        strength: 'Intención de compra, search demand'
+    CO: {
+        name: 'Colombia',
+        flag: '🇨🇴',
+        currency: 'COP',
+        symbol: '$',
+        cpcEstimated: 0.22,
+        digitalTax: 19,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Grande',
+        trending: ['Fintech', 'E-commerce', 'EdTech']
     },
-    linkedin: { 
-        lowTicket: 40, 
-        medTicket: 70, 
-        highTicket: 98, 
-        baseCPC: 5.00,
-        strength: 'B2B, profesionales, decisores'
+    CL: {
+        name: 'Chile',
+        flag: '🇨🇱',
+        currency: 'CLP',
+        symbol: '$',
+        cpcEstimated: 0.32,
+        digitalTax: 19,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Medio',
+        trending: ['B2B Tech', 'Sustentabilidad', 'Fintech']
+    },
+    PE: {
+        name: 'Perú',
+        flag: '🇵🇪',
+        currency: 'PEN',
+        symbol: 'S/',
+        cpcEstimated: 0.25,
+        digitalTax: 18,
+        taxName: 'IGV',
+        region: 'LATAM',
+        marketSize: 'Medio',
+        trending: ['Gastronomía', 'Turismo Digital', 'E-commerce']
+    },
+    BR: {
+        name: 'Brasil',
+        flag: '🇧🇷',
+        currency: 'BRL',
+        symbol: 'R$',
+        cpcEstimated: 0.30,
+        digitalTax: 17,
+        taxName: 'ICMS',
+        region: 'LATAM',
+        marketSize: 'Gigante',
+        trending: ['E-commerce', 'Agro Tech', 'Fintech']
+    },
+    EC: {
+        name: 'Ecuador',
+        flag: '🇪🇨',
+        currency: 'USD',
+        symbol: '$',
+        cpcEstimated: 0.20,
+        digitalTax: 12,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Pequeño',
+        trending: ['Exportación', 'Turismo', 'E-learning']
+    },
+    UY: {
+        name: 'Uruguay',
+        flag: '🇺🇾',
+        currency: 'UYU',
+        symbol: '$',
+        cpcEstimated: 0.38,
+        digitalTax: 22,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Pequeño',
+        trending: ['Tech Hub', 'Cannabis Legal', 'Fintech']
+    },
+    PY: {
+        name: 'Paraguay',
+        flag: '🇵🇾',
+        currency: 'PYG',
+        symbol: '₲',
+        cpcEstimated: 0.18,
+        digitalTax: 10,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Pequeño',
+        trending: ['Agro', 'Energía', 'E-commerce']
+    },
+    BO: {
+        name: 'Bolivia',
+        flag: '🇧🇴',
+        currency: 'BOB',
+        symbol: 'Bs',
+        cpcEstimated: 0.15,
+        digitalTax: 13,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Pequeño',
+        trending: ['Minería', 'Turismo', 'Agro']
+    },
+    VE: {
+        name: 'Venezuela',
+        flag: '🇻🇪',
+        currency: 'USD',
+        symbol: '$',
+        cpcEstimated: 0.12,
+        digitalTax: 16,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Medio',
+        trending: ['Remesas', 'Cripto', 'Servicios']
+    },
+    CR: {
+        name: 'Costa Rica',
+        flag: '🇨🇷',
+        currency: 'CRC',
+        symbol: '₡',
+        cpcEstimated: 0.40,
+        digitalTax: 13,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Pequeño',
+        trending: ['Ecoturismo', 'Tech', 'BPO']
+    },
+    PA: {
+        name: 'Panamá',
+        flag: '🇵🇦',
+        currency: 'USD',
+        symbol: '$',
+        cpcEstimated: 0.45,
+        digitalTax: 7,
+        taxName: 'ITBMS',
+        region: 'LATAM',
+        marketSize: 'Pequeño',
+        trending: ['Logística', 'Finanzas', 'Turismo']
+    },
+    GT: {
+        name: 'Guatemala',
+        flag: '🇬🇹',
+        currency: 'GTQ',
+        symbol: 'Q',
+        cpcEstimated: 0.22,
+        digitalTax: 12,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Medio',
+        trending: ['Café', 'Textil', 'BPO']
+    },
+    SV: {
+        name: 'El Salvador',
+        flag: '🇸🇻',
+        currency: 'USD',
+        symbol: '$',
+        cpcEstimated: 0.25,
+        digitalTax: 13,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Pequeño',
+        trending: ['Bitcoin', 'Turismo', 'Remesas']
+    },
+    HN: {
+        name: 'Honduras',
+        flag: '🇭🇳',
+        currency: 'HNL',
+        symbol: 'L',
+        cpcEstimated: 0.20,
+        digitalTax: 15,
+        taxName: 'ISV',
+        region: 'LATAM',
+        marketSize: 'Pequeño',
+        trending: ['Textil', 'Café', 'Turismo']
+    },
+    NI: {
+        name: 'Nicaragua',
+        flag: '🇳🇮',
+        currency: 'NIO',
+        symbol: 'C$',
+        cpcEstimated: 0.18,
+        digitalTax: 15,
+        taxName: 'IVA',
+        region: 'LATAM',
+        marketSize: 'Pequeño',
+        trending: ['Agro', 'Turismo', 'Textil']
+    },
+    DO: {
+        name: 'República Dominicana',
+        flag: '🇩🇴',
+        currency: 'DOP',
+        symbol: 'RD$',
+        cpcEstimated: 0.30,
+        digitalTax: 18,
+        taxName: 'ITBIS',
+        region: 'LATAM',
+        marketSize: 'Medio',
+        trending: ['Turismo', 'Zonas Francas', 'BPO']
+    },
+    
+    // ESPAÑA Y USA
+    ES: {
+        name: 'España',
+        flag: '🇪🇸',
+        currency: 'EUR',
+        symbol: '€',
+        cpcEstimated: 0.65,
+        digitalTax: 21,
+        taxName: 'IVA',
+        region: 'Europa',
+        marketSize: 'Grande',
+        trending: ['E-commerce', 'Turismo Digital', 'SaaS']
+    },
+    US: {
+        name: 'Estados Unidos',
+        flag: '🇺🇸',
+        currency: 'USD',
+        symbol: '$',
+        cpcEstimated: 1.20,
+        digitalTax: 0,
+        taxName: 'Varía por Estado',
+        region: 'Norteamérica',
+        marketSize: 'Gigante',
+        trending: ['AI', 'SaaS', 'D2C']
+    },
+    PR: {
+        name: 'Puerto Rico',
+        flag: '🇵🇷',
+        currency: 'USD',
+        symbol: '$',
+        cpcEstimated: 0.80,
+        digitalTax: 11.5,
+        taxName: 'IVU',
+        region: 'Caribe',
+        marketSize: 'Pequeño',
+        trending: ['Turismo', 'Pharma', 'Tech']
     }
 };
 
-// Buyer Persona Templates
-const personaTemplates = {
+// CHANNEL BENCHMARKS (Meta, Google, TikTok, LinkedIn)
+window.CHANNEL_BENCHMARKS = {
+    facebook: {
+        name: 'Facebook Ads',
+        icon: '📘',
+        color: 'from-blue-600 to-blue-400',
+        avgCPC: 0.45,
+        avgCTR: 1.8,
+        avgConversion: 3.2,
+        bestFor: ['E-commerce', 'B2C', 'Local'],
+        ageRange: '25-55',
+        strength: 'Alcance masivo y targeting preciso'
+    },
+    instagram: {
+        name: 'Instagram Ads',
+        icon: '📸',
+        color: 'from-pink-600 to-purple-500',
+        avgCPC: 0.55,
+        avgCTR: 2.1,
+        avgConversion: 2.8,
+        bestFor: ['Fashion', 'Beauty', 'Lifestyle'],
+        ageRange: '18-35',
+        strength: 'Engagement visual y shopping nativo'
+    },
+    google: {
+        name: 'Google Ads',
+        icon: '🔍',
+        color: 'from-red-500 to-yellow-500',
+        avgCPC: 1.20,
+        avgCTR: 3.5,
+        avgConversion: 4.5,
+        bestFor: ['B2B', 'Servicios', 'High Ticket'],
+        ageRange: '25-65',
+        strength: 'Intención de búsqueda alta'
+    },
+    tiktok: {
+        name: 'TikTok Ads',
+        icon: '🎵',
+        color: 'from-black to-cyan-400',
+        avgCPC: 0.35,
+        avgCTR: 2.5,
+        avgConversion: 2.0,
+        bestFor: ['Gen Z', 'Viral', 'Impulse Buy'],
+        ageRange: '16-28',
+        strength: 'Contenido viral y engagement orgánico'
+    },
+    linkedin: {
+        name: 'LinkedIn Ads',
+        icon: '💼',
+        color: 'from-blue-700 to-blue-500',
+        avgCPC: 5.50,
+        avgCTR: 0.8,
+        avgConversion: 2.5,
+        bestFor: ['B2B', 'SaaS', 'Executive'],
+        ageRange: '30-60',
+        strength: 'Decisores y profesionales'
+    }
+};
+
+// INDUSTRY CONVERSION FUNNELS
+window.INDUSTRY_FUNNELS = {
     ecommerce: {
-        name: 'Compradora Digital Urbana',
-        age: '25-40 años',
-        pain: 'Busca productos únicos sin perder tiempo en tiendas físicas',
-        hook: 'Exclusividad y entrega rápida',
-        channels: ['Instagram', 'TikTok', 'Pinterest'],
-        behavior: 'Compra por impulso, valora reviews'
+        impressions: 10000,
+        clicks: 200,
+        leads: 50,
+        sales: 10,
+        avgTicket: 150,
+        avgLTV: 1.8
     },
-    servicios: {
-        name: 'Profesional en Crecimiento',
-        age: '30-50 años',
-        pain: 'Necesita resolver problemas específicos sin contratar permanente',
-        hook: 'Resultados garantizados y expertise comprobado',
-        channels: ['LinkedIn', 'Google', 'YouTube'],
-        behavior: 'Busca testimonios, compara opciones'
+    services: {
+        impressions: 5000,
+        clicks: 150,
+        leads: 30,
+        sales: 8,
+        avgTicket: 800,
+        avgLTV: 2.5
     },
     b2b: {
-        name: 'Tomador de Decisiones Corporativo',
-        age: '35-55 años',
-        pain: 'Requiere soluciones escalables con ROI medible',
-        hook: 'Reducción de costos operativos y eficiencia',
-        channels: ['LinkedIn', 'Google', 'Webinars'],
-        behavior: 'Proceso de compra largo, necesita demos'
+        impressions: 3000,
+        clicks: 90,
+        leads: 15,
+        sales: 3,
+        avgTicket: 5000,
+        avgLTV: 4.2
     },
-    educacion: {
-        name: 'Aprendiz Ambicioso',
-        age: '22-35 años',
-        pain: 'Quiere adquirir habilidades rentables rápidamente',
-        hook: 'Transformación de carrera y certificaciones',
-        channels: ['YouTube', 'Instagram', 'TikTok'],
-        behavior: 'Consume contenido gratis antes de comprar'
+    education: {
+        impressions: 8000,
+        clicks: 240,
+        leads: 60,
+        sales: 15,
+        avgTicket: 297,
+        avgLTV: 3.0
     },
-    salud: {
-        name: 'Buscador de Bienestar',
-        age: '30-55 años',
-        pain: 'Desea mejorar salud sin métodos invasivos',
-        hook: 'Resultados naturales y testimonios reales',
-        channels: ['Instagram', 'YouTube', 'Google'],
-        behavior: 'Investiga mucho, valora autoridad'
+    health: {
+        impressions: 6000,
+        clicks: 180,
+        leads: 45,
+        sales: 12,
+        avgTicket: 400,
+        avgLTV: 2.8
     },
-    inmobiliaria: {
-        name: 'Inversor o Comprador de Hogar',
-        age: '30-60 años',
-        pain: 'Encontrar la propiedad ideal al mejor precio',
-        hook: 'Oportunidades exclusivas y asesoría experta',
-        channels: ['Google', 'Facebook', 'Instagram'],
-        behavior: 'Decisión meditada, necesita confianza'
+    realestate: {
+        impressions: 4000,
+        clicks: 120,
+        leads: 20,
+        sales: 2,
+        avgTicket: 15000,
+        avgLTV: 5.5
     }
 };
 
-// Ad Copy Framework Templates
-const adCopyFrameworks = {
-    aida: {
-        name: 'AIDA (Attention, Interest, Desire, Action)',
-        structure: ['Captar Atención', 'Generar Interés', 'Crear Deseo', 'Llamado a la Acción']
+// ECOSYSTEM DATA BRIDGE
+window.EcosystemBridge = {
+    // Importar datos de SueldoPro
+    importSalaryData() {
+        try {
+            const salesCommission = localStorage.getItem('SALES_COMMISSION_COST');
+            return salesCommission ? parseFloat(salesCommission) : 0;
+        } catch (e) {
+            return 0;
+        }
     },
-    pas: {
-        name: 'PAS (Problem, Agitate, Solution)',
-        structure: ['Identificar Problema', 'Agitar Dolor', 'Presentar Solución']
+    
+    // Importar datos de Liquidez Force
+    importCashData() {
+        try {
+            const availableCash = localStorage.getItem('AVAILABLE_CASH');
+            return availableCash ? parseFloat(availableCash) : 0;
+        } catch (e) {
+            return 0;
+        }
     },
-    story: {
-        name: 'Storytelling 3 Actos',
-        structure: ['Situación Inicial', 'Conflicto/Transformación', 'Resolución']
+    
+    // Exportar CAC al ecosistema
+    exportCAC(cac) {
+        try {
+            localStorage.setItem('GLOBAL_CAC', cac.toString());
+            localStorage.setItem('CAC_UPDATED_AT', new Date().toISOString());
+        } catch (e) {
+            console.warn('No se pudo exportar CAC');
+        }
+    },
+    
+    // Exportar Burn Rate
+    exportBurnRate(burnRate) {
+        try {
+            localStorage.setItem('MARKETING_BURN_RATE', burnRate.toString());
+            localStorage.setItem('BURN_RATE_UPDATED_AT', new Date().toISOString());
+        } catch (e) {
+            console.warn('No se pudo exportar Burn Rate');
+        }
+    },
+    
+    // Verificar conexión con ecosistema
+    checkEcosystemHealth() {
+        const connections = {
+            sueldopro: !!localStorage.getItem('SALES_COMMISSION_COST'),
+            liquidezforce: !!localStorage.getItem('AVAILABLE_CASH'),
+            marginaxis: !!localStorage.getItem('NET_MARGIN')
+        };
+        
+        return connections;
+    }
+};
+
+// FOREX API CONFIGURATION
+window.FOREX_CONFIG = {
+    apiURL: 'https://api.exchangerate-api.com/v4/latest/USD',
+    lastUpdate: null,
+    rates: {},
+    
+    async updateRates() {
+        try {
+            const response = await fetch(this.apiURL);
+            const data = await response.json();
+            this.rates = data.rates;
+            this.lastUpdate = new Date();
+            return true;
+        } catch (e) {
+            console.warn('No se pudieron actualizar tasas de cambio');
+            return false;
+        }
+    },
+    
+    convert(amount, from, to) {
+        if (!this.rates[from] || !this.rates[to]) return amount;
+        
+        const amountInUSD = from === 'USD' ? amount : amount / this.rates[from];
+        return to === 'USD' ? amountInUSD : amountInUSD * this.rates[to];
     }
 };

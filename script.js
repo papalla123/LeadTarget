@@ -1,166 +1,325 @@
-// Variables globales para los gráficos
+// ═══════════════════════════════════════════════════════════════════
+// LEADNEXUS AI - CORE ENGINE
+// Pack 1: Pentagon Architecture + Funnel Physics + Multi-Channel
+// ═══════════════════════════════════════════════════════════════════
+
 let funnelChart = null;
-let ltvChart = null;
+let currentCountry = null;
+let forexRates = {};
 
-// Simulate Ecosystem Import
-function simulateEcosystemImport() {
-    const banner = document.getElementById('syncBanner');
-    const importedDataDiv = document.getElementById('importedData');
+// ═══════════════════════════════════════════════════════════════════
+// INITIALIZATION
+// ═══════════════════════════════════════════════════════════════════
+
+window.addEventListener('load', async () => {
+    renderPentagonNav();
+    populateCountrySelector();
+    checkEcosystemConnections();
+    await loadForexRates();
+    initializeEventListeners();
+    loadSavedData();
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// PENTAGON NAVIGATION SYSTEM
+// ═══════════════════════════════════════════════════════════════════
+
+function renderPentagonNav() {
+    const navContainer = document.getElementById('pentagonNav');
+    const footerContainer = document.getElementById('pentagonFooter');
     
-    banner.classList.remove('hidden');
-    
-    setTimeout(() => {
-        const simulatedMargin = (Math.random() * 30 + 20).toFixed(1);
-        const simulatedBudget = (Math.random() * 5000 + 2000).toFixed(0);
+    Object.values(window.PENTAGON_LINKS).forEach(link => {
+        // Nav Link
+        const navLink = document.createElement('a');
+        navLink.href = link.url;
+        navLink.className = `nav-link ${link.active ? 'active' : ''}`;
+        navLink.innerHTML = `${link.icon} ${link.name}`;
+        navContainer.appendChild(navLink);
         
-        document.getElementById('importedMargin').textContent = simulatedMargin + '%';
-        document.getElementById('importedBudget').textContent = '$' + simulatedBudget;
-        
-        banner.classList.add('hidden');
-        importedDataDiv.classList.remove('hidden');
-        
-        showAIInsights();
-    }, 2000);
+        // Footer Card
+        const footerCard = document.createElement('a');
+        footerCard.href = link.url;
+        footerCard.className = 'block p-4 bg-gradient-to-br ' + link.color + ' rounded-lg hover:scale-105 transition-transform';
+        footerCard.innerHTML = `
+            <div class="text-center">
+                <span class="text-3xl">${link.icon}</span>
+                <p class="text-xs font-semibold mt-2 text-white">${link.name}</p>
+            </div>
+        `;
+        footerContainer.appendChild(footerCard);
+    });
 }
 
-// Show AI Insights
-function showAIInsights() {
-    const insights = [
-        {
-            icon: '🎯',
-            title: 'Nicho Identificado',
-            text: 'Tu industria muestra tendencia evergreen con estabilidad de demanda'
-        },
-        {
-            icon: '💡',
-            title: 'Recomendación IA',
-            text: 'Optimiza para conversión. Tu ticket permite invertir en calidad de leads'
-        },
-        {
-            icon: '📈',
-            title: 'Oportunidad Detectada',
-            text: 'El mercado está sub-saturado en tu rango de precio. ¡Momento ideal!'
-        }
+// ═══════════════════════════════════════════════════════════════════
+// COUNTRY SELECTOR & INTELLIGENCE
+// ═══════════════════════════════════════════════════════════════════
+
+function populateCountrySelector() {
+    const select = document.getElementById('countrySelect');
+    
+    Object.entries(window.COUNTRY_DATABASE).forEach(([code, country]) => {
+        const option = document.createElement('option');
+        option.value = code;
+        option.textContent = `${country.flag} ${country.name}`;
+        select.appendChild(option);
+    });
+}
+
+function handleCountryChange() {
+    const code = document.getElementById('countrySelect').value;
+    if (!code) {
+        document.getElementById('countryInfo').classList.add('hidden');
+        currentCountry = null;
+        return;
+    }
+    
+    currentCountry = window.COUNTRY_DATABASE[code];
+    
+    // Update UI
+    document.getElementById('countryInfo').classList.remove('hidden');
+    document.getElementById('countryCPC').textContent = `${currentCountry.symbol}${currentCountry.cpcEstimated.toFixed(2)}`;
+    document.getElementById('countryTax').textContent = `${currentCountry.digitalTax}% ${currentCountry.taxName}`;
+    document.getElementById('currencySymbol').textContent = currentCountry.symbol;
+    document.getElementById('budgetSymbol').textContent = currentCountry.symbol;
+    
+    // Recalculate if data exists
+    if (!document.getElementById('resultsSection').classList.contains('hidden')) {
+        calculateROI();
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FOREX INTEGRATION
+// ═══════════════════════════════════════════════════════════════════
+
+async function loadForexRates() {
+    try {
+        await window.FOREX_CONFIG.updateRates();
+        forexRates = window.FOREX_CONFIG.rates;
+    } catch (e) {
+        console.warn('Forex rates not available, using defaults');
+    }
+}
+
+function convertToUSD(amount, currency) {
+    if (!forexRates[currency]) return amount;
+    return window.FOREX_CONFIG.convert(amount, currency, 'USD');
+}
+
+function updatePriceInUSD() {
+    if (!currentCountry) return;
+    
+    const price = parseFloat(document.getElementById('productPrice').value) || 0;
+    const priceUSD = convertToUSD(price, currentCountry.currency);
+    
+    if (currentCountry.currency !== 'USD') {
+        document.getElementById('priceUSD').classList.remove('hidden');
+        document.getElementById('priceUSD').textContent = `≈ $${priceUSD.toFixed(2)} USD`;
+    } else {
+        document.getElementById('priceUSD').classList.add('hidden');
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ECOSYSTEM DATA BRIDGE
+// ═══════════════════════════════════════════════════════════════════
+
+function checkEcosystemConnections() {
+    const status = window.EcosystemBridge.checkEcosystemHealth();
+    const statusContainer = document.getElementById('ecosystemStatus');
+    
+    const connections = [
+        { name: 'SueldoPro', key: 'sueldopro', icon: '💼' },
+        { name: 'LiquidezForce', key: 'liquidezforce', icon: '💰' },
+        { name: 'MarginAxis', key: 'marginaxis', icon: '📊' }
     ];
-
-    const container = document.getElementById('aiInsights');
-    container.innerHTML = insights.map(insight => `
-        <div class="bg-indigo-950/50 rounded-lg p-4 border border-violet-400/20">
-            <div class="flex items-start space-x-3">
-                <span class="text-2xl">${insight.icon}</span>
-                <div>
-                    <h4 class="font-semibold text-violet-400 mb-1">${insight.title}</h4>
-                    <p class="text-sm text-gray-300">${insight.text}</p>
-                </div>
-            </div>
+    
+    statusContainer.innerHTML = connections.map(conn => `
+        <div class="flex items-center space-x-1 ${status[conn.key] ? 'text-green-400' : 'text-gray-600'}">
+            <span>${conn.icon}</span>
+            <span class="text-xs">${conn.name}</span>
+            <span>${status[conn.key] ? '✓' : '○'}</span>
         </div>
     `).join('');
+    
+    // Import margin if available
+    const netMargin = localStorage.getItem('NET_MARGIN');
+    if (netMargin) {
+        document.getElementById('netMargin').value = netMargin;
+    }
 }
 
-// Calculate Metrics
-function calculateMetrics() {
-    const industry = document.getElementById('industry').value;
-    const price = parseFloat(document.getElementById('productPrice').value) || 297;
-    const budget = parseFloat(document.getElementById('monthlyBudget').value) || 3000;
-    const convRate = parseFloat(document.getElementById('conversionRate').value) || 2.5;
+function checkCashAlert(budget) {
+    const availableCash = window.EcosystemBridge.importCashData();
     
-    const data = industryData[industry];
-    const marginText = document.getElementById('importedMargin').textContent;
-    const margin = parseFloat(marginText) || 25;
-    
-    const maxCPA = (price * (margin / 100) * 0.7).toFixed(2);
-    const estimatedCPC = data.avgCPC;
-    const projectedLeads = Math.floor(budget / estimatedCPC);
-    const expectedSales = Math.floor(projectedLeads * (convRate / 100));
-    const revenue = expectedSales * price;
-    const roi = (((revenue - budget) / budget) * 100).toFixed(1);
-    
-    return {
-        maxCPA,
-        projectedLeads,
-        expectedSales,
-        roi,
-        revenue,
-        budget,
-        price,
-        margin,
-        industry,
-        data
-    };
+    if (availableCash > 0 && budget > availableCash) {
+        document.getElementById('cashAlert').classList.remove('hidden');
+        document.getElementById('cashAlertMsg').textContent = 
+            `Tu presupuesto ($${budget.toLocaleString()}) excede tu caja disponible ($${availableCash.toLocaleString()})`;
+    } else {
+        document.getElementById('cashAlert').classList.add('hidden');
+    }
 }
 
-// Display Metrics
-function displayMetrics(metrics) {
-    document.getElementById('maxCPA').textContent = '$' + metrics.maxCPA;
-    document.getElementById('projectedLeads').textContent = metrics.projectedLeads.toLocaleString();
-    document.getElementById('expectedSales').textContent = metrics.expectedSales.toLocaleString();
-    document.getElementById('projectedROI').textContent = metrics.roi + '%';
-}
+// ═══════════════════════════════════════════════════════════════════
+// FUNNEL PHYSICS SIMULATOR
+// ═══════════════════════════════════════════════════════════════════
 
-// Generate Platform Scores
-function generatePlatformScores(price) {
-    const ticketLevel = price < 100 ? 'lowTicket' : price < 500 ? 'medTicket' : 'highTicket';
+function autoFillFunnel() {
+    const industry = document.getElementById('industrySelect').value;
+    const funnel = window.INDUSTRY_FUNNELS[industry];
     
-    const platforms = [
-        { 
-            name: 'TikTok', 
-            icon: '📱', 
-            score: platformScoring.tiktok[ticketLevel], 
-            color: 'from-pink-500 to-purple-500',
-            strength: platformScoring.tiktok.strength
-        },
-        { 
-            name: 'Instagram', 
-            icon: '📸', 
-            score: platformScoring.instagram[ticketLevel], 
-            color: 'from-purple-500 to-pink-500',
-            strength: platformScoring.instagram.strength
-        },
-        { 
-            name: 'Google Ads', 
-            icon: '🔍', 
-            score: platformScoring.google[ticketLevel], 
-            color: 'from-blue-500 to-green-500',
-            strength: platformScoring.google.strength
-        },
-        { 
-            name: 'LinkedIn', 
-            icon: '💼', 
-            score: platformScoring.linkedin[ticketLevel], 
-            color: 'from-blue-600 to-blue-400',
-            strength: platformScoring.linkedin.strength
-        }
-    ].sort((a, b) => b.score - a.score);
-
-    const container = document.getElementById('platformScores');
-    container.innerHTML = platforms.map(platform => `
-        <div class="platform-score bg-indigo-950/50 rounded-lg p-4 border border-violet-400/20">
-            <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center space-x-2">
-                    <span class="text-2xl">${platform.icon}</span>
-                    <span class="font-semibold">${platform.name}</span>
-                </div>
-                <span class="text-2xl font-bold text-violet-400">${platform.score}</span>
-            </div>
-            <div class="w-full bg-indigo-900 rounded-full h-2 mb-2">
-                <div class="bg-gradient-to-r ${platform.color} h-2 rounded-full transition-all duration-1000" style="width: ${platform.score}%"></div>
-            </div>
-            <p class="text-xs text-gray-400 mb-1">
-                ${platform.score > 85 ? '🔥 Altamente Recomendado' : platform.score > 70 ? '✅ Buena Opción' : '⚠️ Considerar Alternativas'}
-            </p>
-            <p class="text-xs text-gray-500">${platform.strength}</p>
-        </div>
-    `).join('');
+    if (!funnel) return;
+    
+    // Set benchmark values
+    const ctr = ((funnel.clicks / funnel.impressions) * 100).toFixed(1);
+    const leadConv = ((funnel.leads / funnel.clicks) * 100).toFixed(0);
+    const closeRate = ((funnel.sales / funnel.leads) * 100).toFixed(0);
+    
+    document.getElementById('ctrSlider').value = ctr;
+    document.getElementById('leadConvSlider').value = leadConv;
+    document.getElementById('closeRateSlider').value = closeRate;
+    
+    updateFunnelMetrics();
 }
 
-// Create Funnel Chart
-function createFunnelChart(metrics) {
+function updateFunnelMetrics() {
+    const budget = parseFloat(document.getElementById('monthlyBudget').value) || 0;
+    const cpc = currentCountry ? currentCountry.cpcEstimated : 0.50;
+    
+    // Calculate impressions and clicks
+    const clicks = Math.floor(budget / cpc);
+    const ctr = parseFloat(document.getElementById('ctrSlider').value);
+    const impressions = Math.floor(clicks / (ctr / 100));
+    
+    // Calculate leads
+    const leadConv = parseFloat(document.getElementById('leadConvSlider').value);
+    const leads = Math.floor(clicks * (leadConv / 100));
+    
+    // Calculate sales
+    const closeRate = parseFloat(document.getElementById('closeRateSlider').value);
+    const sales = Math.floor(leads * (closeRate / 100));
+    
+    // Update displays
+    document.getElementById('ctrDisplay').textContent = ctr + '%';
+    document.getElementById('leadConvDisplay').textContent = leadConv + '%';
+    document.getElementById('closeRateDisplay').textContent = closeRate + '%';
+    
+    document.getElementById('impressions').value = impressions.toLocaleString();
+    document.getElementById('clicks').value = clicks.toLocaleString();
+    document.getElementById('leads').value = leads.toLocaleString();
+    document.getElementById('sales').value = sales.toLocaleString();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ROI CALCULATOR ENGINE
+// ═══════════════════════════════════════════════════════════════════
+
+function calculateROI() {
+    if (!currentCountry) {
+        alert('Por favor selecciona un país primero');
+        return;
+    }
+    
+    const budget = parseFloat(document.getElementById('monthlyBudget').value) || 0;
+    const price = parseFloat(document.getElementById('productPrice').value) || 0;
+    const margin = parseFloat(document.getElementById('netMargin').value) || 0;
+    const sales = parseInt(document.getElementById('sales').value.replace(/,/g, '')) || 0;
+    const leads = parseInt(document.getElementById('leads').value.replace(/,/g, '')) || 0;
+    
+    // Calculate digital tax
+    const digitalTax = budget * (currentCountry.digitalTax / 100);
+    const totalCost = budget + digitalTax;
+    
+    // Calculate revenue
+    const revenue = sales * price;
+    const netRevenue = revenue * (margin / 100);
+    
+    // Calculate metrics
+    const cpa = sales > 0 ? (totalCost / sales) : 0;
+    const cac = cpa; // Simplified, can include commissions
+    const roas = budget > 0 ? (revenue / budget) : 0;
+    const roi = budget > 0 ? ((netRevenue - totalCost) / totalCost * 100) : 0;
+    
+    // Update UI
+    document.getElementById('cpaValue').textContent = `${currentCountry.symbol}${cpa.toFixed(2)}`;
+    document.getElementById('cacValue').textContent = `${currentCountry.symbol}${cac.toFixed(2)}`;
+    document.getElementById('roasValue').textContent = `${roas.toFixed(2)}x`;
+    document.getElementById('roiValue').textContent = `${roi.toFixed(1)}%`;
+    
+    // Status messages
+    updateStatusMessages(cpa, roas, roi, price, margin);
+    
+    // Export to ecosystem
+    window.EcosystemBridge.exportCAC(cac);
+    window.EcosystemBridge.exportBurnRate(budget);
+    
+    // Check cash alert
+    checkCashAlert(budget);
+    
+    // Show results
+    document.getElementById('resultsSection').classList.remove('hidden');
+    
+    // Create visualizations
+    createFunnelChart();
+    createChannelBreakdown(budget);
+    
+    // Scroll to results
+    setTimeout(() => {
+        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+}
+
+function updateStatusMessages(cpa, roas, roi, price, margin) {
+    const maxSafeCPA = price * (margin / 100) * 0.7;
+    
+    // CPA Status
+    if (cpa <= maxSafeCPA) {
+        document.getElementById('cpaStatus').innerHTML = '<span class="status-excellent">✓ Dentro del rango seguro</span>';
+    } else if (cpa <= maxSafeCPA * 1.2) {
+        document.getElementById('cpaStatus').innerHTML = '<span class="status-warning">⚠️ Cerca del límite</span>';
+    } else {
+        document.getElementById('cpaStatus').innerHTML = '<span class="status-danger">⛔ Muy alto, reduce costos</span>';
+    }
+    
+    // ROAS Status
+    if (roas >= 4) {
+        document.getElementById('roasStatus').innerHTML = '<span class="status-excellent">🔥 Excelente retorno</span>';
+    } else if (roas >= 2) {
+        document.getElementById('roasStatus').innerHTML = '<span class="status-good">✓ Buen retorno</span>';
+    } else if (roas >= 1) {
+        document.getElementById('roasStatus').innerHTML = '<span class="status-warning">⚠️ Margen estrecho</span>';
+    } else {
+        document.getElementById('roasStatus').innerHTML = '<span class="status-danger">⛔ Perdiendo dinero</span>';
+    }
+    
+    // ROI Status
+    if (roi >= 100) {
+        document.getElementById('roiStatus').innerHTML = '<span class="status-excellent">🚀 ¡Escala ahora!</span>';
+    } else if (roi >= 50) {
+        document.getElementById('roiStatus').innerHTML = '<span class="status-good">✓ Rentable</span>';
+    } else if (roi >= 0) {
+        document.getElementById('roiStatus').innerHTML = '<span class="status-warning">⚠️ Margen bajo</span>';
+    } else {
+        document.getElementById('roiStatus').innerHTML = '<span class="status-danger">⛔ Pérdida neta</span>';
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CHART VISUALIZATIONS
+// ═══════════════════════════════════════════════════════════════════
+
+function createFunnelChart() {
     const ctx = document.getElementById('funnelChart');
     
-    // Destruir gráfico anterior si existe
     if (funnelChart) {
         funnelChart.destroy();
     }
+    
+    const impressions = parseInt(document.getElementById('impressions').value.replace(/,/g, '')) || 0;
+    const clicks = parseInt(document.getElementById('clicks').value.replace(/,/g, '')) || 0;
+    const leads = parseInt(document.getElementById('leads').value.replace(/,/g, '')) || 0;
+    const sales = parseInt(document.getElementById('sales').value.replace(/,/g, '')) || 0;
     
     funnelChart = new Chart(ctx, {
         type: 'bar',
@@ -168,23 +327,18 @@ function createFunnelChart(metrics) {
             labels: ['Impresiones', 'Clicks', 'Leads', 'Ventas'],
             datasets: [{
                 label: 'Cantidad',
-                data: [
-                    metrics.projectedLeads * 50,
-                    metrics.projectedLeads,
-                    Math.floor(metrics.projectedLeads * (metrics.data.avgConversion / 100)),
-                    metrics.expectedSales
-                ],
+                data: [impressions, clicks, leads, sales],
                 backgroundColor: [
-                    'rgba(167, 139, 250, 0.8)',
+                    'rgba(139, 92, 246, 0.8)',
+                    'rgba(217, 70, 239, 0.8)',
                     'rgba(34, 211, 238, 0.8)',
-                    'rgba(34, 197, 94, 0.8)',
-                    'rgba(234, 179, 8, 0.8)'
+                    'rgba(16, 185, 129, 0.8)'
                 ],
                 borderColor: [
-                    'rgba(167, 139, 250, 1)',
+                    'rgba(139, 92, 246, 1)',
+                    'rgba(217, 70, 239, 1)',
                     'rgba(34, 211, 238, 1)',
-                    'rgba(34, 197, 94, 1)',
-                    'rgba(234, 179, 8, 1)'
+                    'rgba(16, 185, 129, 1)'
                 ],
                 borderWidth: 2
             }]
@@ -195,307 +349,139 @@ function createFunnelChart(metrics) {
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: 'rgba(30, 27, 75, 0.9)',
-                    titleColor: '#a78bfa',
+                    backgroundColor: 'rgba(2, 6, 23, 0.95)',
+                    titleColor: '#8b5cf6',
                     bodyColor: '#fff',
-                    borderColor: '#a78bfa',
+                    borderColor: '#8b5cf6',
                     borderWidth: 1
                 }
             },
             scales: {
                 y: {
                     beginAtZero: true,
-                    grid: { color: 'rgba(167, 139, 250, 0.1)' },
-                    ticks: { color: '#9ca3af' }
+                    grid: { color: 'rgba(139, 92, 246, 0.1)' },
+                    ticks: { color: '#94a3b8' }
                 },
                 x: {
                     grid: { display: false },
-                    ticks: { color: '#9ca3af' }
+                    ticks: { color: '#94a3b8' }
                 }
             }
         }
     });
 }
 
-// Create LTV Chart
-function createLTVChart(metrics) {
-    const ctx = document.getElementById('ltvChart');
-    const ltvMultiplier = metrics.data.avgLTV;
-    
-    // Destruir gráfico anterior si existe
-    if (ltvChart) {
-        ltvChart.destroy();
-    }
-    
-    ltvChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Mes 1', 'Mes 3', 'Mes 6', 'Mes 12'],
-            datasets: [{
-                label: 'Revenue Acumulado',
-                data: [
-                    metrics.revenue,
-                    metrics.revenue * 1.5,
-                    metrics.revenue * (1 + ltvMultiplier * 0.5),
-                    metrics.revenue * ltvMultiplier
-                ],
-                borderColor: 'rgba(167, 139, 250, 1)',
-                backgroundColor: 'rgba(167, 139, 250, 0.1)',
-                fill: true,
-                tension: 0.4,
-                borderWidth: 3
-            }, {
-                label: 'Inversión',
-                data: [metrics.budget, metrics.budget, metrics.budget, metrics.budget],
-                borderColor: 'rgba(239, 68, 68, 1)',
-                borderDash: [5, 5],
-                borderWidth: 2,
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    labels: { color: '#9ca3af' }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(30, 27, 75, 0.9)',
-                    titleColor: '#a78bfa',
-                    bodyColor: '#fff',
-                    borderColor: '#a78bfa',
-                    borderWidth: 1,
-                    callbacks: {
-                        label: function(context) {
-                            return context.dataset.label + ': $' + context.parsed.y.toLocaleString();
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: { color: 'rgba(167, 139, 250, 0.1)' },
-                    ticks: {
-                        color: '#9ca3af',
-                        callback: function(value) {
-                            return '$' + value.toLocaleString();
-                        }
-                    }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#9ca3af' }
-                }
-            }
-        }
-    });
-}
+// ═══════════════════════════════════════════════════════════════════
+// MULTI-CHANNEL SIMULATOR
+// ═══════════════════════════════════════════════════════════════════
 
-// Generate Buyer Persona
-function generateBuyerPersona(industry) {
-    const persona = personaTemplates[industry];
-    const container = document.getElementById('buyerPersona');
+function createChannelBreakdown(totalBudget) {
+    const container = document.getElementById('channelBreakdown');
+    const channels = window.CHANNEL_BENCHMARKS;
     
-    container.innerHTML = `
-        <div class="bg-indigo-950/50 rounded-lg p-6">
-            <h3 class="text-lg font-semibold text-cyan-400 mb-4">🎭 Perfil</h3>
-            <p class="text-xl font-bold mb-2">${persona.name}</p>
-            <p class="text-sm text-gray-400 mb-3">${persona.age}</p>
-            <p class="text-xs text-gray-500">${persona.behavior}</p>
-        </div>
-        <div class="bg-indigo-950/50 rounded-lg p-6">
-            <h3 class="text-lg font-semibold text-cyan-400 mb-4">💔 Dolor Principal</h3>
-            <p class="text-gray-300 mb-4">${persona.pain}</p>
-            <div class="mt-4">
-                <h4 class="text-sm font-semibold text-violet-400 mb-2">🎣 Gancho Psicológico</h4>
-                <p class="text-sm text-gray-300">${persona.hook}</p>
-            </div>
-        </div>
-        <div class="bg-indigo-950/50 rounded-lg p-6">
-            <h3 class="text-lg font-semibold text-cyan-400 mb-4">🌐 Dream 100</h3>
-            <p class="text-sm text-gray-400 mb-3">Dónde se congregan:</p>
-            <div class="space-y-2">
-                ${persona.channels.map(channel => `
-                    <div class="flex items-center space-x-2 text-sm">
-                        <div class="w-2 h-2 bg-violet-400 rounded-full"></div>
-                        <span>${channel}</span>
+    let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+    let totalROAS = 0;
+    let channelCount = 0;
+    
+    Object.entries(channels).forEach(([key, channel]) => {
+        const allocation = totalBudget * 0.2; // 20% per channel for demo
+        const estimatedRevenue = allocation * (channel.avgConversion / 100) * parseFloat(document.getElementById('productPrice').value);
+        const channelROAS = allocation > 0 ? (estimatedRevenue / allocation) : 0;
+        
+        totalROAS += channelROAS;
+        channelCount++;
+        
+        html += `
+            <div class="channel-card">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl">${channel.icon}</span>
+                        <div>
+                            <p class="font-semibold">${channel.name}</p>
+                            <p class="text-xs text-gray-500">${channel.bestFor.join(', ')}</p>
+                        </div>
                     </div>
-                `).join('')}
+                    <div class="text-right">
+                        <p class="text-lg font-bold text-violet-400">${channelROAS.toFixed(2)}x</p>
+                        <p class="text-xs text-gray-500">ROAS</p>
+                    </div>
+                </div>
+                <div class="w-full bg-obsidian-light rounded-full h-2">
+                    <div class="bg-gradient-to-r ${channel.color} h-2 rounded-full" style="width: ${Math.min(channelROAS * 25, 100)}%"></div>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">${channel.strength}</p>
             </div>
-        </div>
-    `;
+        `;
+    });
+    
+    html += '</div>';
+    container.innerHTML = html;
+    
+    // Update blended ROAS
+    const blendedROAS = totalROAS / channelCount;
+    document.getElementById('blendedROAS').textContent = blendedROAS.toFixed(2) + 'x';
 }
 
-// Generate Ad Copy
-function generateAdCopy(industry, price) {
-    const productType = price < 100 ? 'producto accesible' : price < 500 ? 'solución premium' : 'inversión estratégica';
+// ═══════════════════════════════════════════════════════════════════
+// EVENT LISTENERS
+// ═══════════════════════════════════════════════════════════════════
+
+function initializeEventListeners() {
+    document.getElementById('countrySelect').addEventListener('change', handleCountryChange);
+    document.getElementById('productPrice').addEventListener('input', updatePriceInUSD);
+    document.getElementById('autoFillBtn').addEventListener('click', autoFillFunnel);
+    document.getElementById('calculateBtn').addEventListener('click', calculateROI);
     
-    const copies = {
-        aida: {
-            attention: `🔥 ¿Cansado de [PROBLEMA]? Descubre la solución que [RESULTADO]`,
-            interest: `Miles ya están transformando su [ÁREA] con nuestro ${productType}`,
-            desire: `Imagina despertar sabiendo que [BENEFICIO EMOCIONAL]`,
-            action: `✅ Accede ahora por solo $${price} - Oferta limitada`
-        },
-        pas: {
-            problem: `❌ El 87% de personas en tu situación sufre de [DOLOR ESPECÍFICO]`,
-            agitate: `Cada día que pasa, estás perdiendo [COSTO DE OPORTUNIDAD]`,
-            solution: `Nuestra solución elimina [PROBLEMA] en solo [TIEMPO]. Garantizado.`
-        },
-        story: {
-            act1: `Hace 6 meses, [CLIENTE IDEAL] estaba exactamente donde tú estás ahora...`,
-            act2: `Entonces descubrió [TU SOLUCIÓN] y todo cambió. En 30 días logró [RESULTADO]`,
-            act3: `Hoy, vive [VIDA TRANSFORMADA]. ¿Listo para tu historia de éxito? 👉`
-        }
+    // Funnel sliders
+    document.getElementById('ctrSlider').addEventListener('input', updateFunnelMetrics);
+    document.getElementById('leadConvSlider').addEventListener('input', updateFunnelMetrics);
+    document.getElementById('closeRateSlider').addEventListener('input', updateFunnelMetrics);
+    document.getElementById('monthlyBudget').addEventListener('input', updateFunnelMetrics);
+    
+    // Save & Export
+    document.getElementById('saveScenarioBtn').addEventListener('click', saveScenario);
+    document.getElementById('exportPDFBtn').addEventListener('click', exportToPDF);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PERSISTENCE
+// ═══════════════════════════════════════════════════════════════════
+
+function saveScenario() {
+    const scenarioName = prompt('Nombre del escenario:');
+    if (!scenarioName) return;
+    
+    const data = {
+        country: document.getElementById('countrySelect').value,
+        industry: document.getElementById('industrySelect').value,
+        price: document.getElementById('productPrice').value,
+        budget: document.getElementById('monthlyBudget').value,
+        margin: document.getElementById('netMargin').value,
+        ctr: document.getElementById('ctrSlider').value,
+        leadConv: document.getElementById('leadConvSlider').value,
+        closeRate: document.getElementById('closeRateSlider').value,
+        timestamp: new Date().toISOString()
     };
-
-    document.getElementById('aidaCopy').querySelector('.space-y-2').innerHTML = `
-        <p><strong class="text-violet-400">A:</strong> ${copies.aida.attention}</p>
-        <p><strong class="text-violet-400">I:</strong> ${copies.aida.interest}</p>
-        <p><strong class="text-violet-400">D:</strong> ${copies.aida.desire}</p>
-        <p><strong class="text-violet-400">A:</strong> ${copies.aida.action}</p>
-    `;
-
-    document.getElementById('pasCopy').querySelector('.space-y-2').innerHTML = `
-        <p><strong class="text-cyan-400">P:</strong> ${copies.pas.problem}</p>
-        <p><strong class="text-cyan-400">A:</strong> ${copies.pas.agitate}</p>
-        <p><strong class="text-cyan-400">S:</strong> ${copies.pas.solution}</p>
-    `;
-
-    document.getElementById('storyCopy').querySelector('.space-y-2').innerHTML = `
-        <p><strong class="text-yellow-400">Acto 1:</strong> ${copies.story.act1}</p>
-        <p><strong class="text-yellow-400">Acto 2:</strong> ${copies.story.act2}</p>
-        <p><strong class="text-yellow-400">Acto 3:</strong> ${copies.story.act3}</p>
-    `;
+    
+    localStorage.setItem(`scenario_${scenarioName}`, JSON.stringify(data));
+    alert('✓ Escenario guardado exitosamente');
 }
 
-// Export Strategy
-function exportStrategy() {
-    const metrics = calculateMetrics();
-    const industry = document.getElementById('industry').value;
-    const goal = document.getElementById('campaignGoal').value;
-    const persona = personaTemplates[industry];
-    
-    const strategyDoc = `
-═══════════════════════════════════════════════════════════════
-            HOJA DE RUTA DE ESCALAMIENTO - LEADTARGET AI
-═══════════════════════════════════════════════════════════════
-
-📊 ANÁLISIS DE MERCADO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Industria: ${industry.toUpperCase()}
-Precio del Producto: $${metrics.price}
-Margen Neto: ${metrics.margin}%
-Presupuesto Mensual: $${metrics.budget}
-
-🎯 MÉTRICAS CLAVE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- CPA Máximo Seguro: $${metrics.maxCPA}
-- Leads Proyectados: ${metrics.projectedLeads}
-- Ventas Esperadas: ${metrics.expectedSales}
-- ROI Proyectado: ${metrics.roi}%
-- Revenue Estimado: $${metrics.revenue.toLocaleString()}
-
-📱 PLATAFORMAS RECOMENDADAS (Orden de Prioridad)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. ${metrics.price < 100 ? 'TikTok (Score: 95)' : metrics.price < 500 ? 'Instagram (Score: 90)' : 'Google Ads (Score: 95)'}
-2. ${metrics.price < 100 ? 'Instagram (Score: 85)' : metrics.price < 500 ? 'Google Ads (Score: 85)' : 'LinkedIn (Score: 98)'}
-
-👤 BUYER PERSONA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Perfil: ${persona.name}
-Dolor: ${persona.pain}
-Gancho: ${persona.hook}
-
-📈 PROYECCIÓN LTV (12 MESES)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Mes 1: $${metrics.revenue.toLocaleString()}
-Mes 6: $${(metrics.revenue * (1 + metrics.data.avgLTV * 0.5)).toLocaleString()}
-Mes 12: $${(metrics.revenue * metrics.data.avgLTV).toLocaleString()}
-
-🚀 PLAN DE ACCIÓN (30 DÍAS)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Semana 1: Configuración de campañas en plataforma principal
-Semana 2: Testing de creatividades y audiencias (A/B test)
-Semana 3: Optimización basada en datos (CPA < $${metrics.maxCPA})
-Semana 4: Escalamiento controlado (+20% presupuesto)
-
-⚡ RECOMENDACIONES DE IA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- Mantén CPA por debajo de $${metrics.maxCPA} para rentabilidad
-- Foco en ${goal === 'conversion' ? 'conversiones directas' : goal === 'awareness' ? 'alcance masivo' : 'tráfico cualificado'}
-- Reserva 20% del presupuesto para retargeting
-- Implementa pixel tracking desde día 1
-
-═══════════════════════════════════════════════════════════════
-Generado por LeadTarget AI - ${new Date().toLocaleDateString()}
-Datos basados en benchmarks de industria y análisis predictivo
-═══════════════════════════════════════════════════════════════
-    `;
-
-    const blob = new Blob([strategyDoc], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `LeadTarget-Strategy-${Date.now()}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-// Función para actualizar todo en tiempo real
-function updateAllData() {
-    const metrics = calculateMetrics();
-    const industry = document.getElementById('industry').value;
-    const price = parseFloat(document.getElementById('productPrice').value);
-    
-    displayMetrics(metrics);
-    generatePlatformScores(price);
-    
-    // Solo actualizar gráficos si la sección de resultados está visible
-    if (!document.getElementById('resultsSection').classList.contains('hidden')) {
-        createFunnelChart(metrics);
-        createLTVChart(metrics);
+function loadSavedData() {
+    // Check if there's auto-saved data
+    const lastCountry = localStorage.getItem('lastCountry');
+    if (lastCountry) {
+        document.getElementById('countrySelect').value = lastCountry;
+        handleCountryChange();
     }
-    
-    generateBuyerPersona(industry);
-    generateAdCopy(industry, price);
 }
 
-// Event Listeners
-document.getElementById('analyzeBtn').addEventListener('click', () => {
-    const metrics = calculateMetrics();
-    const industry = document.getElementById('industry').value;
-    const price = parseFloat(document.getElementById('productPrice').value);
-    
-    displayMetrics(metrics);
-    generatePlatformScores(price);
-    createFunnelChart(metrics);
-    createLTVChart(metrics);
-    generateBuyerPersona(industry);
-    generateAdCopy(industry, price);
-    
-    document.getElementById('resultsSection').classList.remove('hidden');
-    
-    setTimeout(() => {
-        document.getElementById('resultsSection').scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-        });
-    }, 300);
-});
+function exportToPDF() {
+    alert('📄 Función de exportación PDF en Pack 2');
+    // Will be implemented in Pack 2
+}
 
-// Event listeners para actualización en tiempo real
-document.getElementById('industry').addEventListener('change', updateAllData);
-document.getElementById('productPrice').addEventListener('input', updateAllData);
-document.getElementById('monthlyBudget').addEventListener('input', updateAllData);
-document.getElementById('conversionRate').addEventListener('input', updateAllData);
-document.getElementById('campaignGoal').addEventListener('change', updateAllData);
-
-document.getElementById('exportBtn').addEventListener('click', exportStrategy);
-
-// Initialize
-window.addEventListener('load', () => {
-    simulateEcosystemImport();
+// Auto-save country selection
+document.getElementById('countrySelect')?.addEventListener('change', (e) => {
+    localStorage.setItem('lastCountry', e.target.value);
 });
