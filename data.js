@@ -1,9 +1,9 @@
 // ═══════════════════════════════════════════════════════════════════
 // LEADNEXUS AI - DATABASE & ECOSYSTEM BRIDGE
-// Pack 2 FINAL: Complete Intelligence Database
+// Pack 3 FINAL: Enterprise Intelligence Edition
 // ═══════════════════════════════════════════════════════════════════
 
-// PENTAGON LINK 5.0 - Centralized Navigation System
+// PENTAGON LINK 5.0 - Centralized Navigation System (CORREGIDO)
 window.PENTAGON_LINKS = {
     sueldopro: {
         name: 'SueldoPro Ultra',
@@ -12,8 +12,8 @@ window.PENTAGON_LINKS = {
         color: 'from-blue-500 to-cyan-500'
     },
     marginaxis: {
-        name: 'MarginAxis Global',
-        url: 'https://margin-axis-global.vercel.app',
+        name: 'MarginMaster Pro',
+        url: 'https://margin-master-pro-pboy.vercel.app',
         icon: '📊',
         color: 'from-green-500 to-emerald-500'
     },
@@ -38,9 +38,44 @@ window.PENTAGON_LINKS = {
     }
 };
 
-// COUNTRY INTELLIGENCE DATABASE (21 PAÍSES)
+// AI GROWTH ADVISOR MESSAGES
+window.AI_ADVISOR_MESSAGES = {
+    critical: {
+        threshold: 1.5,
+        icon: '🛑',
+        title: 'ALERTA CRÍTICA',
+        message: 'Estás quemando capital. Tu costo de adquisición supera tu ganancia. Revisa el CTR de tus anuncios urgentemente.',
+        color: 'red',
+        action: 'Detener gastos y optimizar creativos'
+    },
+    risk: {
+        threshold: 3.0,
+        icon: '⚠️',
+        title: 'ZONA DE RIESGO',
+        message: 'Rentabilidad frágil. Un aumento en los costos de pauta te llevará a pérdidas. Mejora tu tasa de cierre.',
+        color: 'yellow',
+        action: 'Optimizar embudo de conversión'
+    },
+    healthy: {
+        threshold: 6.0,
+        icon: '✅',
+        title: 'CAMPAÑA SALUDABLE',
+        message: 'Estás escalando con éxito. Momento ideal para probar nuevos creativos.',
+        color: 'green',
+        action: 'Escalar gradualmente'
+    },
+    unicorn: {
+        threshold: Infinity,
+        icon: '🚀',
+        title: 'MODO UNICORNIO',
+        message: 'Máquina de imprimir dinero detectada. Aumenta el presupuesto un 20% diario.',
+        color: 'violet',
+        action: 'Escalar agresivamente'
+    }
+};
+
+// COUNTRY INTELLIGENCE DATABASE (21 PAÍSES + USA + ESPAÑA)
 window.COUNTRY_DATABASE = {
-    // LATINOAMÉRICA
     AR: {
         name: 'Argentina',
         flag: '🇦🇷',
@@ -257,8 +292,6 @@ window.COUNTRY_DATABASE = {
         marketSize: 'Medio',
         trending: ['Turismo', 'Zonas Francas', 'BPO']
     },
-    
-    // ESPAÑA Y USA
     ES: {
         name: 'España',
         flag: '🇪🇸',
@@ -297,7 +330,7 @@ window.COUNTRY_DATABASE = {
     }
 };
 
-// CHANNEL BENCHMARKS (Meta, Google, TikTok, LinkedIn)
+// CHANNEL BENCHMARKS
 window.CHANNEL_BENCHMARKS = {
     facebook: {
         name: 'Facebook Ads',
@@ -408,7 +441,7 @@ window.INDUSTRY_FUNNELS = {
     }
 };
 
-// ECOSYSTEM DATA BRIDGE
+// ECOSYSTEM DATA BRIDGE (MEJORADO PACK 3)
 window.EcosystemBridge = {
     importSalaryData() {
         try {
@@ -443,6 +476,16 @@ window.EcosystemBridge = {
             localStorage.setItem('BURN_RATE_UPDATED_AT', new Date().toISOString());
         } catch (e) {
             console.warn('No se pudo exportar Burn Rate');
+        }
+    },
+    
+    // NUEVO PACK 3: Export Marketing Health
+    exportMarketingHealth(score) {
+        try {
+            localStorage.setItem('MARKETING_HEALTH', score.toString());
+            localStorage.setItem('MARKETING_HEALTH_UPDATED_AT', new Date().toISOString());
+        } catch (e) {
+            console.warn('No se pudo exportar Marketing Health');
         }
     },
     
