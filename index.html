@@ -3,29 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LeadTarget - Central de Crecimiento del Pentágono Financiero. Simulación de embudos de venta e inteligencia de mercado en tiempo real para Perú.">
-    <title>LeadTarget | War Room - Pentágono Financiero</title>
+    <meta name="description" content="LeadTarget Premium - Central de Crecimiento del Pentágono Financiero. Simulación de embudos de venta e inteligencia de mercado en tiempo real para Perú.">
+    <meta name="theme-color" content="#d4af37">
+    <title>LeadTarget Premium | Pentágono Financiero</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
+    
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- NEWS TICKER BAR -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div style="background: linear-gradient(90deg, rgba(18, 18, 18, 0.98), rgba(10, 10, 10, 0.95)); border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding: 12px 0; overflow: hidden; position: sticky; top: 0; z-index: 60; backdrop-filter: blur(12px);">
+        <div style="max-width: 1600px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; min-width: fit-content;">
+                <span style="font-size: 18px;">📰</span>
+                <span style="font-size: 12px; font-weight: 800; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px;">Market Pulse</span>
+            </div>
+            <div id="newsTicker" style="flex: 1; overflow: hidden; white-space: nowrap;">
+                <div style="display: inline-block; animation: scroll-ticker 60s linear infinite;">
+                    <span style="font-size: 13px; color: var(--slate-300); font-weight: 500;">Cargando noticias del mercado...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes scroll-ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+
     <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- NAVIGATION BAR -->
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <nav style="position: sticky; top: 0; z-index: 50; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(12px); border-bottom: 2px solid #991b1b; padding: 16px 0;">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <span style="font-size: 32px;">🎯</span>
+    <nav style="position: sticky; top: 52px; z-index: 50; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(212, 175, 55, 0.15); padding: 18px 0;">
+        <div style="max-width: 1600px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <span style="font-size: 36px;">🎯</span>
                 <div>
-                    <h1 style="font-size: 24px; font-weight: 900; color: #dc2626; margin: 0; line-height: 1;">LeadTarget</h1>
-                    <p style="font-size: 11px; color: #6b7280; margin: 0; font-weight: 600; letter-spacing: 1px;">WAR ROOM · PENTÁGONO FINANCIERO</p>
+                    <h1 style="font-size: 28px; font-weight: 900; background: linear-gradient(135deg, var(--gold-bright), var(--gold-primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 0; line-height: 1; font-family: 'Outfit', sans-serif;">LeadTarget</h1>
+                    <p style="font-size: 11px; color: var(--slate-500); margin: 4px 0 0 0; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;">Premium Intelligence · Pentágono Financiero</p>
                 </div>
             </div>
             
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <a href="#funnel" class="nav-link active">🎯 Funnel Builder</a>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                <a href="#funnel" class="nav-link active">🎯 Funnel Simulator</a>
                 <a href="#news" class="nav-link">📰 Market Intel</a>
                 <a href="#pentagon" class="nav-link">⬟ Pentagon Hub</a>
-                <a href="#scenarios" class="nav-link">💼 Mis Escenarios</a>
+                <a href="#scenarios" class="nav-link">💼 Escenarios</a>
             </div>
         </div>
     </nav>
@@ -33,111 +61,113 @@
     <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- MAIN CONTAINER -->
     <!-- ═══════════════════════════════════════════════════════════ -->
-    <div style="max-width: 1400px; margin: 0 auto; padding: 32px 24px;">
+    <div style="max-width: 1600px; margin: 0 auto; padding: 40px 24px;">
         
         <!-- HERO SECTION -->
-        <div class="war-room-hero" style="text-align: center; margin-bottom: 48px; padding: 48px 24px; background: linear-gradient(135deg, rgba(153, 27, 27, 0.15), rgba(220, 38, 38, 0.05)); border-radius: 20px; border: 2px solid rgba(153, 27, 27, 0.3);">
-            <h2 style="font-size: 48px; font-weight: 900; margin-bottom: 16px; background: linear-gradient(135deg, #dc2626, #991b1b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1;">
-                El Radar de Negocios
+        <div style="text-align: center; margin-bottom: 48px; padding: 56px 32px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(184, 134, 11, 0.05)); border-radius: 24px; border: 1px solid rgba(212, 175, 55, 0.2); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);"></div>
+            <h2 class="gold-gradient-text" style="font-size: 52px; margin-bottom: 20px; line-height: 1.1; font-family: 'Outfit', sans-serif;">
+                El Radar de Crecimiento
             </h2>
-            <p style="font-size: 18px; color: #9ca3af; max-width: 700px; margin: 0 auto; font-weight: 500;">
-                Simula embudos de venta ultra-precisos para Perú mientras te mantienes conectado con la realidad económica en tiempo real.
+            <p style="font-size: 19px; color: var(--slate-300); max-width: 800px; margin: 0 auto 28px auto; font-weight: 500; line-height: 1.6;">
+                Simulación de embudos de venta ultra-precisos con inteligencia de mercado en tiempo real, diseñado exclusivamente para el ecosistema empresarial peruano.
             </p>
-            <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(220, 38, 38, 0.1); border-radius: 8px; border: 1px solid rgba(220, 38, 38, 0.3);">
-                    <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 12px #10b981; animation: pulse-glow 2s infinite;"></span>
-                    <span style="font-size: 13px; font-weight: 700; color: #10b981;">SISTEMA ACTIVO</span>
+            <div style="display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 10px; padding: 10px 20px; background: rgba(212, 175, 55, 0.12); border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.25);">
+                    <span style="width: 10px; height: 10px; background: var(--success-green); border-radius: 50%; box-shadow: 0 0 16px var(--success-green); animation: pulse-gold 2s infinite;"></span>
+                    <span style="font-size: 13px; font-weight: 800; color: var(--success-green); text-transform: uppercase; letter-spacing: 0.8px;">Sistema Activo</span>
                 </div>
-                <div style="font-size: 13px; color: #6b7280;">
-                    <strong style="color: #dc2626;">6</strong> noticias cargadas · 
-                    <strong style="color: #dc2626;">10</strong> industrias disponibles
+                <div style="font-size: 13px; color: var(--slate-400); font-weight: 600;">
+                    <strong style="color: var(--gold-primary);">8</strong> noticias cargadas · 
+                    <strong style="color: var(--gold-primary);">10</strong> industrias · 
+                    <strong style="color: var(--gold-primary);">5</strong> plataformas
                 </div>
             </div>
         </div>
 
-        <!-- MAIN GRID LAYOUT -->
-        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 24px; margin-bottom: 48px;">
+        <!-- MAIN 3-COLUMN GRID LAYOUT -->
+        <div style="display: grid; grid-template-columns: 1fr 520px 380px; gap: 28px; margin-bottom: 52px;" id="mainGrid">
             
             <!-- LEFT COLUMN: FUNNEL BUILDER -->
             <div>
                 <!-- FUNNEL BUILDER CARD -->
-                <div id="funnel" class="war-room-card" style="margin-bottom: 24px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+                <div id="funnel" class="premium-card" style="margin-bottom: 28px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px solid rgba(212, 175, 55, 0.15);">
                         <div>
-                            <h3 style="font-size: 24px; font-weight: 800; color: #dc2626; margin: 0;">Funnel Builder Pro</h3>
-                            <p style="font-size: 13px; color: #6b7280; margin: 4px 0 0 0;">Simulación de embudo de ventas con datos reales Perú 2026</p>
+                            <h3 style="font-size: 26px; font-weight: 900; color: var(--gold-primary); margin: 0; font-family: 'Outfit', sans-serif;">Funnel Gold Simulator</h3>
+                            <p style="font-size: 13px; color: var(--slate-400); margin: 6px 0 0 0; font-weight: 500;">Proyección inteligente con datos reales Perú 2026</p>
                         </div>
-                        <button id="saveScenarioBtn" class="crimson-btn-sm" style="display: none;">
-                            💾 Guardar Escenario
+                        <button id="saveScenarioBtn" class="golden-btn-sm" style="display: none;">
+                            💾 Guardar
                         </button>
                     </div>
 
                     <!-- INDUSTRY SELECTOR -->
                     <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
-                            🏭 INDUSTRIA / SECTOR
+                        <label style="display: block; font-size: 13px; font-weight: 800; color: var(--gold-primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.8px; font-family: 'Outfit', sans-serif;">
+                            🏭 Industria / Sector
                         </label>
-                        <select id="industrySelect" class="crimson-input" style="cursor: pointer;">
+                        <select id="industrySelect" class="premium-input">
                             <option value="">-- Selecciona tu industria --</option>
                         </select>
                     </div>
 
                     <!-- AD PLATFORM SELECTOR -->
                     <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
-                            📱 PLATAFORMA DE PUBLICIDAD
+                        <label style="display: block; font-size: 13px; font-weight: 800; color: var(--gold-primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.8px; font-family: 'Outfit', sans-serif;">
+                            📱 Plataforma Publicitaria
                         </label>
-                        <select id="platformSelect" class="crimson-input" style="cursor: pointer;">
+                        <select id="platformSelect" class="premium-input">
                             <option value="">-- Selecciona plataforma --</option>
                         </select>
-                        <div id="platformInfo" style="margin-top: 12px; padding: 12px; background: rgba(220, 38, 38, 0.05); border-radius: 8px; border: 1px solid rgba(220, 38, 38, 0.2); display: none;">
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 13px;">
+                        <div id="platformInfo" style="margin-top: 14px; padding: 14px; background: rgba(212, 175, 55, 0.06); border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.15); display: none;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; font-size: 13px;">
                                 <div>
-                                    <span style="color: #6b7280;">CPM Lima:</span>
-                                    <strong id="platformCPMLima" style="color: #dc2626; margin-left: 4px;">-</strong>
+                                    <span style="color: var(--slate-400); font-weight: 600;">CPM Lima:</span>
+                                    <strong id="platformCPMLima" style="color: var(--gold-primary); margin-left: 6px; font-weight: 800;">-</strong>
                                 </div>
                                 <div>
-                                    <span style="color: #6b7280;">CPC Lima:</span>
-                                    <strong id="platformCPCLima" style="color: #dc2626; margin-left: 4px;">-</strong>
+                                    <span style="color: var(--slate-400); font-weight: 600;">CPC Lima:</span>
+                                    <strong id="platformCPCLima" style="color: var(--gold-primary); margin-left: 6px; font-weight: 800;">-</strong>
                                 </div>
                                 <div>
-                                    <span style="color: #6b7280;">Nivel Saturación:</span>
-                                    <strong id="platformSaturation" style="margin-left: 4px;">-</strong>
+                                    <span style="color: var(--slate-400); font-weight: 600;">Saturación:</span>
+                                    <strong id="platformSaturation" style="margin-left: 6px; font-weight: 800;">-</strong>
                                 </div>
                                 <div>
-                                    <span style="color: #6b7280;">Presup. Mínimo:</span>
-                                    <strong id="platformMinBudget" style="color: #dc2626; margin-left: 4px;">-</strong>
+                                    <span style="color: var(--slate-400); font-weight: 600;">Presup. Mínimo:</span>
+                                    <strong id="platformMinBudget" style="color: var(--gold-primary); margin-left: 6px; font-weight: 800;">-</strong>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- LOCATION & BUDGET -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px;">
                         <div>
-                            <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
-                                📍 UBICACIÓN
+                            <label style="display: block; font-size: 13px; font-weight: 800; color: var(--gold-primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.8px; font-family: 'Outfit', sans-serif;">
+                                📍 Ubicación
                             </label>
-                            <select id="locationSelect" class="crimson-input" style="cursor: pointer;">
+                            <select id="locationSelect" class="premium-input">
                                 <option value="lima">Lima Metropolitana</option>
                                 <option value="provincias">Provincias</option>
                             </select>
                         </div>
                         <div>
-                            <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
-                                💵 PRESUPUESTO MENSUAL
+                            <label style="display: block; font-size: 13px; font-weight: 800; color: var(--gold-primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.8px; font-family: 'Outfit', sans-serif;">
+                                💵 Presupuesto
                             </label>
-                            <input type="number" id="budgetInput" class="crimson-input" placeholder="Ej: 2000" min="100" step="100">
+                            <input type="number" id="budgetInput" class="premium-input" placeholder="Ej: 2000" min="100" step="100">
                         </div>
                     </div>
 
                     <!-- LEAD QUALITY SLIDER -->
-                    <div style="margin-bottom: 32px;">
-                        <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
-                            🔥 CALIDAD DE LEADS: <span id="leadQualityLabel" style="color: #f59e0b;">WARM (Templados)</span>
+                    <div style="margin-bottom: 34px;">
+                        <label style="display: block; font-size: 13px; font-weight: 800; color: var(--gold-primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.8px; font-family: 'Outfit', sans-serif;">
+                            🔥 Calidad de Leads: <span id="leadQualityLabel" style="color: var(--warning-amber); font-weight: 900;">WARM</span>
                         </label>
                         <input type="range" id="leadQualityRange" min="1" max="3" value="2" step="1" style="width: 100%;">
-                        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #6b7280; margin-top: 4px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--slate-500); margin-top: 6px; font-weight: 600;">
                             <span>Cold (Fríos)</span>
                             <span>Warm (Templados)</span>
                             <span>Hot (Calientes)</span>
@@ -145,63 +175,63 @@
                     </div>
 
                     <!-- CALCULATE BUTTON -->
-                    <button id="calculateBtn" class="crimson-btn" style="width: 100%; margin-bottom: 24px;">
-                        ⚡ CALCULAR PROYECCIÓN
+                    <button id="calculateBtn" class="golden-btn" style="width: 100%; margin-bottom: 28px;">
+                        ⚡ Calcular Proyección
                     </button>
 
                     <!-- RESULTS SECTION -->
                     <div id="resultsSection" style="display: none;">
-                        <div style="padding: 20px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(153, 27, 27, 0.05)); border-radius: 12px; border: 2px solid rgba(220, 38, 38, 0.4); margin-bottom: 24px;">
-                            <h4 style="font-size: 16px; font-weight: 800; color: #dc2626; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;">
+                        <div style="padding: 24px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(184, 134, 11, 0.05)); border-radius: 14px; border: 1px solid rgba(212, 175, 55, 0.25); margin-bottom: 28px;">
+                            <h4 style="font-size: 17px; font-weight: 900; color: var(--gold-primary); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; font-family: 'Outfit', sans-serif;">
                                 📊 Proyección del Embudo
                             </h4>
                             
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px;">
-                                <div class="metric-box-crimson">
-                                    <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">LEADS ESTIMADOS</div>
-                                    <div style="font-size: 28px; font-weight: 900; color: #dc2626;" id="estimatedLeads">-</div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 24px;">
+                                <div class="metric-box-premium">
+                                    <div style="font-size: 11px; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Leads Estimados</div>
+                                    <div style="font-size: 32px; font-weight: 900; color: var(--gold-primary); font-family: 'Outfit', sans-serif;" id="estimatedLeads">-</div>
                                 </div>
-                                <div class="metric-box-crimson">
-                                    <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">COSTO POR LEAD</div>
-                                    <div style="font-size: 28px; font-weight: 900; color: #dc2626;" id="costPerLead">-</div>
+                                <div class="metric-box-premium">
+                                    <div style="font-size: 11px; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Costo por Lead</div>
+                                    <div style="font-size: 32px; font-weight: 900; color: var(--gold-primary); font-family: 'Outfit', sans-serif;" id="costPerLead">-</div>
                                 </div>
-                                <div class="metric-box-crimson">
-                                    <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">VENTAS PROYECTADAS</div>
-                                    <div style="font-size: 28px; font-weight: 900; color: #10b981;" id="projectedSales">-</div>
+                                <div class="metric-box-premium">
+                                    <div style="font-size: 11px; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Ventas Proyectadas</div>
+                                    <div style="font-size: 32px; font-weight: 900; color: var(--success-green); font-family: 'Outfit', sans-serif;" id="projectedSales">-</div>
                                 </div>
-                                <div class="metric-box-crimson">
-                                    <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">INGRESOS TOTALES</div>
-                                    <div style="font-size: 28px; font-weight: 900; color: #10b981;" id="totalRevenue">-</div>
+                                <div class="metric-box-premium">
+                                    <div style="font-size: 11px; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Ingresos Totales</div>
+                                    <div style="font-size: 32px; font-weight: 900; color: var(--success-green); font-family: 'Outfit', sans-serif;" id="totalRevenue">-</div>
                                 </div>
                             </div>
 
                             <!-- FUNNEL VISUALIZATION -->
-                            <div id="funnelVisualization" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(153, 27, 27, 0.3);"></div>
+                            <div id="funnelVisualization" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(212, 175, 55, 0.15);"></div>
 
                             <!-- ROAS CALCULATION -->
-                            <div id="roasSection" style="margin-top: 20px; padding: 16px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border: 2px solid #10b981;">
+                            <div id="roasSection" style="margin-top: 24px; padding: 20px; background: rgba(16, 185, 129, 0.08); border-radius: 12px; border: 2px solid var(--success-green);">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <div>
-                                        <div style="font-size: 12px; color: #6b7280; font-weight: 600;">ROAS PROYECTADO</div>
-                                        <div style="font-size: 36px; font-weight: 900; color: #10b981;" id="roasValue">-</div>
+                                        <div style="font-size: 12px; color: var(--slate-400); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">ROAS Proyectado</div>
+                                        <div style="font-size: 42px; font-weight: 900; color: var(--success-green); font-family: 'Outfit', sans-serif;" id="roasValue">-</div>
                                     </div>
                                     <div style="text-align: right;">
-                                        <div style="font-size: 12px; color: #6b7280; font-weight: 600;">GANANCIA NETA</div>
-                                        <div style="font-size: 24px; font-weight: 800; color: #10b981;" id="netProfit">-</div>
+                                        <div style="font-size: 12px; color: var(--slate-400); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Ganancia Neta</div>
+                                        <div style="font-size: 28px; font-weight: 900; color: var(--success-green); font-family: 'Outfit', sans-serif;" id="netProfit">-</div>
                                     </div>
                                 </div>
-                                <div id="roasHealthBadge" style="margin-top: 12px; padding: 8px; border-radius: 6px; text-align: center; font-size: 13px; font-weight: 700;"></div>
+                                <div id="roasHealthBadge" style="margin-top: 14px; padding: 10px; border-radius: 8px; text-align: center; font-size: 13px; font-weight: 700; font-family: 'Outfit', sans-serif;"></div>
                             </div>
                         </div>
 
                         <!-- WHATSAPP SCRIPT GENERATOR -->
-                        <div id="whatsappSection" style="padding: 20px; background: rgba(37, 211, 102, 0.05); border-radius: 12px; border: 2px solid rgba(37, 211, 102, 0.3);">
-                            <h4 style="font-size: 16px; font-weight: 800; color: #25d366; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 24px;">📱</span>
+                        <div id="whatsappSection" style="padding: 22px; background: rgba(37, 211, 102, 0.06); border-radius: 14px; border: 1px solid rgba(37, 211, 102, 0.25);">
+                            <h4 style="font-size: 17px; font-weight: 900; color: var(--whatsapp-green); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; font-family: 'Outfit', sans-serif;">
+                                <span style="font-size: 26px;">📱</span>
                                 Script WhatsApp Optimizado
                             </h4>
-                            <div id="whatsappScript" style="background: rgba(10, 10, 10, 0.6); padding: 16px; border-radius: 8px; font-size: 14px; line-height: 1.6; color: #e5e7eb; margin-bottom: 12px; border: 1px solid rgba(37, 211, 102, 0.2);"></div>
-                            <button id="copyWhatsappBtn" class="crimson-btn-success" style="width: 100%;">
+                            <div id="whatsappScript" style="background: rgba(10, 10, 10, 0.7); padding: 18px; border-radius: 10px; font-size: 14px; line-height: 1.7; color: var(--slate-200); margin-bottom: 14px; border: 1px solid rgba(37, 211, 102, 0.2); font-weight: 500;"></div>
+                            <button id="copyWhatsappBtn" class="golden-btn-success" style="width: 100%;">
                                 📋 Copiar Script
                             </button>
                         </div>
@@ -209,59 +239,60 @@
                 </div>
 
                 <!-- GROWTH STRATEGIES -->
-                <div class="war-room-card">
-                    <h3 style="font-size: 20px; font-weight: 800; color: #dc2626; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+                <div class="premium-card">
+                    <h3 style="font-size: 22px; font-weight: 900; color: var(--gold-primary); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid rgba(212, 175, 55, 0.15); font-family: 'Outfit', sans-serif;">
                         🚀 Estrategias de Crecimiento Perú
                     </h3>
-                    <div id="strategiesContainer" style="display: grid; gap: 12px;"></div>
+                    <div id="strategiesContainer" style="display: grid; gap: 14px;"></div>
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN: NEWS PULSE & PENTAGON HUB -->
+            <!-- MIDDLE COLUMN: NEWS PULSE -->
             <div>
-                <!-- NEWS PULSE -->
-                <div id="news" class="war-room-card" style="margin-bottom: 24px; position: sticky; top: 100px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
-                        <h3 style="font-size: 18px; font-weight: 800; color: #dc2626; margin: 0; display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 24px;">📰</span>
+                <div id="news" class="premium-card" style="position: sticky; top: 160px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid rgba(212, 175, 55, 0.15);">
+                        <h3 style="font-size: 20px; font-weight: 900; color: var(--gold-primary); margin: 0; display: flex; align-items: center; gap: 10px; font-family: 'Outfit', sans-serif;">
+                            <span style="font-size: 26px;">📰</span>
                             News Pulse
                         </h3>
-                        <button id="refreshNewsBtn" class="crimson-btn-sm">
+                        <button id="refreshNewsBtn" class="golden-btn-sm">
                             🔄 Actualizar
                         </button>
                     </div>
                     
-                    <div style="margin-bottom: 16px; padding: 12px; background: rgba(220, 38, 38, 0.05); border-radius: 8px; border: 1px solid rgba(220, 38, 38, 0.2);">
-                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">ESTADO DEL MERCADO</div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="width: 10px; height: 10px; background: #10b981; border-radius: 50%; box-shadow: 0 0 12px #10b981;"></span>
-                            <span style="font-size: 14px; font-weight: 700; color: #10b981;">ACTIVO</span>
-                            <span style="font-size: 12px; color: #6b7280; margin-left: auto;">Última actualización: <strong id="lastUpdate">ahora</strong></span>
+                    <div style="margin-bottom: 18px; padding: 14px; background: rgba(212, 175, 55, 0.06); border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.15);">
+                        <div style="font-size: 11px; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Estado del Mercado</div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 12px; height: 12px; background: var(--success-green); border-radius: 50%; box-shadow: 0 0 16px var(--success-green);"></span>
+                            <span style="font-size: 15px; font-weight: 800; color: var(--success-green); font-family: 'Outfit', sans-serif;">ACTIVO</span>
+                            <span style="font-size: 12px; color: var(--slate-500); margin-left: auto; font-weight: 600;">Actualizado: <strong id="lastUpdate">ahora</strong></span>
                         </div>
                     </div>
 
-                    <div id="newsContainer" style="display: flex; flex-direction: column; gap: 12px; max-height: 600px; overflow-y: auto; padding-right: 8px;"></div>
+                    <div id="newsContainer" style="display: flex; flex-direction: column; gap: 14px; max-height: 700px; overflow-y: auto; padding-right: 10px;"></div>
                 </div>
+            </div>
 
-                <!-- PENTAGON HUB -->
-                <div id="pentagon" class="war-room-card">
-                    <h3 style="font-size: 18px; font-weight: 800; color: #dc2626; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+            <!-- RIGHT COLUMN: PENTAGON HUB -->
+            <div>
+                <div id="pentagon" class="premium-card">
+                    <h3 style="font-size: 20px; font-weight: 900; color: var(--gold-primary); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid rgba(212, 175, 55, 0.15); font-family: 'Outfit', sans-serif;">
                         ⬟ Pentagon Hub
                     </h3>
-                    <div id="pentagonTools" style="display: grid; gap: 10px;"></div>
+                    <div id="pentagonTools" style="display: grid; gap: 12px;"></div>
                 </div>
             </div>
         </div>
 
         <!-- SAVED SCENARIOS SECTION -->
-        <div id="scenarios" class="war-room-card" style="margin-top: 48px;">
-            <h3 style="font-size: 24px; font-weight: 800; color: #dc2626; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+        <div id="scenarios" class="premium-card" style="margin-top: 52px;">
+            <h3 style="font-size: 26px; font-weight: 900; color: var(--gold-primary); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(212, 175, 55, 0.15); font-family: 'Outfit', sans-serif;">
                 💼 Mis Escenarios Guardados
             </h3>
-            <div id="scenariosContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
-                <div style="padding: 40px; text-align: center; color: #6b7280; border: 2px dashed rgba(153, 27, 27, 0.3); border-radius: 12px;">
-                    <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.5;">📊</div>
-                    <p style="font-size: 14px; margin: 0;">No hay escenarios guardados aún.<br>Calcula una proyección y guárdala.</p>
+            <div id="scenariosContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;">
+                <div style="padding: 44px; text-align: center; color: var(--slate-500); border: 2px dashed rgba(212, 175, 55, 0.2); border-radius: 14px;">
+                    <div style="font-size: 52px; margin-bottom: 14px; opacity: 0.4;">📊</div>
+                    <p style="font-size: 14px; margin: 0; font-weight: 600; line-height: 1.5;">No hay escenarios guardados aún.<br>Calcula una proyección y guárdala para referencia futura.</p>
                 </div>
             </div>
         </div>
@@ -271,15 +302,19 @@
     <div id="modalContainer"></div>
 
     <!-- FOOTER -->
-    <footer style="margin-top: 64px; padding: 32px 24px; background: rgba(10, 10, 10, 0.8); border-top: 2px solid #991b1b;">
-        <div style="max-width: 1400px; margin: 0 auto; text-align: center;">
-            <div style="display: flex; justify-content: center; gap: 32px; margin-bottom: 16px; flex-wrap: wrap;">
-                <a href="#" style="color: #6b7280; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#6b7280'">Documentación</a>
-                <a href="#" style="color: #6b7280; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#6b7280'">API Status</a>
-                <a href="#" style="color: #6b7280; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#6b7280'">Soporte</a>
+    <footer style="margin-top: 72px; padding: 40px 24px; background: rgba(10, 10, 10, 0.9); border-top: 1px solid rgba(212, 175, 55, 0.15);">
+        <div style="max-width: 1600px; margin: 0 auto; text-align: center;">
+            <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 20px; flex-wrap: wrap;">
+                <a href="#" style="color: var(--slate-500); text-decoration: none; font-size: 14px; font-weight: 700; transition: color 0.3s; font-family: 'Outfit', sans-serif;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--slate-500)'">Documentación</a>
+                <a href="#" style="color: var(--slate-500); text-decoration: none; font-size: 14px; font-weight: 700; transition: color 0.3s; font-family: 'Outfit', sans-serif;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--slate-500)'">API Status</a>
+                <a href="#" style="color: var(--slate-500); text-decoration: none; font-size: 14px; font-weight: 700; transition: color 0.3s; font-family: 'Outfit', sans-serif;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--slate-500)'">Soporte Premium</a>
+                <a href="#" style="color: var(--slate-500); text-decoration: none; font-size: 14px; font-weight: 700; transition: color 0.3s; font-family: 'Outfit', sans-serif;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='var(--slate-500)'">Contacto</a>
             </div>
-            <p style="font-size: 12px; color: #4b5563; margin: 0;">
-                LeadTarget · Pentágono Financiero © 2026 · Diseñado para el mercado peruano
+            <p style="font-size: 13px; color: var(--slate-600); margin: 0; font-weight: 600;">
+                LeadTarget Premium · Pentágono Financiero © 2026 · Diseñado exclusivamente para el mercado peruano
+            </p>
+            <p style="font-size: 11px; color: var(--slate-700); margin: 8px 0 0 0; font-weight: 600;">
+                Powered by Intelligence & Growth Strategy
             </p>
         </div>
     </footer>

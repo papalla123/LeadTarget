@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // LEADTARGET DATA ENGINE - PENTÁGONO FINANCIERO
 // Market Intelligence & Sales Funnel Database - Perú 2026
+// Premium Tech Edition - Golden Success
 // ═══════════════════════════════════════════════════════════════
 
 const MARKET_NEWS_PERU = [
@@ -30,7 +31,7 @@ const MARKET_NEWS_PERU = [
         summary: "El tipo de cambio subió 0.8% esta semana. Importadores reportan incremento en costos de insumos para Q1 2026.",
         impact: "NEGATIVE",
         source: "Bloomberg Línea",
-        url: "https://bloomberg.com",
+        url: "https://www.bloomberglinea.com/peru/",
         date: "2026-01-28",
         category: "FOREX"
     },
@@ -50,7 +51,7 @@ const MARKET_NEWS_PERU = [
         summary: "CPM promedio alcanza $8.50 en Facebook/Instagram. Marcas migran a TikTok Ads donde CPM se mantiene en $4.20 con mejor engagement.",
         impact: "NEGATIVE",
         source: "Mercado Negro",
-        url: "https://mercanegro.pe",
+        url: "https://www.mercadonegro.pe",
         date: "2026-01-25",
         category: "DIGITAL_ADS"
     },
@@ -63,6 +64,26 @@ const MARKET_NEWS_PERU = [
         url: "https://gestion.pe",
         date: "2026-01-24",
         category: "REGULATION"
+    },
+    {
+        id: 7,
+        title: "Inversión extranjera directa en Perú sube 15% en 2025",
+        summary: "Sectores tecnología y energías renovables lideran captación de capital. Lima y Arequipa concentran el 78% de los proyectos.",
+        impact: "POSITIVE",
+        source: "Semana Económica",
+        url: "https://semanaeconomica.com",
+        date: "2026-01-23",
+        category: "INVESTMENT"
+    },
+    {
+        id: 8,
+        title: "Startups peruanas captan $420M en financiamiento durante 2025",
+        summary: "El ecosistema tech local muestra madurez con 3 nuevos unicornios. Fintechs y e-commerce lideran la innovación regional.",
+        impact: "POSITIVE",
+        source: "El Comercio",
+        url: "https://elcomercio.pe",
+        date: "2026-01-22",
+        category: "STARTUPS"
     }
 ];
 
@@ -287,53 +308,115 @@ const GROWTH_STRATEGIES_PERU = [
 ];
 
 const PENTAGON_TOOLS = {
-    sueldopro: {
-        name: "SueldoPro",
-        icon: "💰",
-        description: "Calculadora Salarial Inteligente",
-        color: "#059669",
-        available: true
-    },
-    marginaxis: {
-        name: "MarginAxis",
+    marginmaster: {
+        name: "MarginMaster Pro",
         icon: "📊",
-        description: "Optimizador de Márgenes",
-        color: "#0891b2",
+        description: "Optimizador de Márgenes de Ganancia",
+        color: "#d4af37",
+        url: "https://margin-master-pro-pboy.vercel.app",
         available: true
     },
     liquidezforce: {
-        name: "LiquidezForce",
+        name: "Liquidez Force",
         icon: "💎",
-        description: "Monitor de Flujo de Caja",
-        color: "#7c3aed",
+        description: "Monitor de Flujo de Caja en Tiempo Real",
+        color: "#b8860b",
+        url: "https://liquidez-force.vercel.app",
         available: true
     },
     wealtharmor: {
-        name: "WealthArmor",
+        name: "Wealth Armor AI",
         icon: "🛡️",
-        description: "Escudo Patrimonial",
-        color: "#dc2626",
+        description: "Escudo Patrimonial Inteligente",
+        color: "#daa520",
+        url: "https://wealth-armor-ai.vercel.app",
+        available: true
+    },
+    sueldopro: {
+        name: "SueldoPro 2026",
+        icon: "💰",
+        description: "Calculadora Salarial Avanzada",
+        color: "#ffd700",
+        url: "https://sueldopro-2026.vercel.app",
         available: true
     },
     leadtarget: {
         name: "LeadTarget",
         icon: "🎯",
-        description: "Central de Crecimiento",
-        color: "#991b1b",
+        description: "Central de Crecimiento & Marketing",
+        color: "#d4af37",
+        url: "#",
         available: true
     }
 };
 
 const NEWS_SOURCES_CREDIBILITY = {
-    gestion: { name: "Gestión", trust: 95, category: "BUSINESS" },
-    elcomercio: { name: "El Comercio", trust: 90, category: "GENERAL" },
-    bloomberg: { name: "Bloomberg Línea", trust: 98, category: "FINANCE" },
-    rpp: { name: "RPP Noticias", trust: 88, category: "GENERAL" },
-    mercanegro: { name: "Mercado Negro", trust: 85, category: "MARKETING" },
-    semanaeconomica: { name: "Semana Económica", trust: 92, category: "BUSINESS" }
+    gestion: { 
+        name: "Gestión", 
+        trust: 95, 
+        category: "BUSINESS",
+        url: "https://gestion.pe"
+    },
+    elcomercio: { 
+        name: "El Comercio", 
+        trust: 90, 
+        category: "GENERAL",
+        url: "https://elcomercio.pe"
+    },
+    bloomberg: { 
+        name: "Bloomberg Línea", 
+        trust: 98, 
+        category: "FINANCE",
+        url: "https://www.bloomberglinea.com/peru/"
+    },
+    rpp: { 
+        name: "RPP Noticias", 
+        trust: 88, 
+        category: "GENERAL",
+        url: "https://rpp.pe"
+    },
+    mercanegro: { 
+        name: "Mercado Negro", 
+        trust: 85, 
+        category: "MARKETING",
+        url: "https://www.mercadonegro.pe"
+    },
+    semanaeconomica: { 
+        name: "Semana Económica", 
+        trust: 92, 
+        category: "BUSINESS",
+        url: "https://semanaeconomica.com"
+    }
 };
 
-// Export para uso en script.js
+const PLATFORM_PERFORMANCE_2026 = {
+    facebook: {
+        growthRate: -12,
+        bestAudience: "35-54 años",
+        peakHours: "19:00-22:00"
+    },
+    tiktok: {
+        growthRate: 45,
+        bestAudience: "18-34 años",
+        peakHours: "12:00-14:00, 20:00-23:00"
+    },
+    google: {
+        growthRate: 8,
+        bestAudience: "25-65 años",
+        peakHours: "9:00-18:00"
+    },
+    youtube: {
+        growthRate: 22,
+        bestAudience: "18-44 años",
+        peakHours: "18:00-23:00"
+    },
+    linkedin: {
+        growthRate: 18,
+        bestAudience: "25-54 años",
+        peakHours: "8:00-10:00, 17:00-19:00"
+    }
+};
+
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         MARKET_NEWS_PERU,
@@ -343,6 +426,7 @@ if (typeof module !== 'undefined' && module.exports) {
         CONVERSION_FUNNEL_STAGES,
         GROWTH_STRATEGIES_PERU,
         PENTAGON_TOOLS,
-        NEWS_SOURCES_CREDIBILITY
+        NEWS_SOURCES_CREDIBILITY,
+        PLATFORM_PERFORMANCE_2026
     };
 }

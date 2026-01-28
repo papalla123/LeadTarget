@@ -1,11 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-// LEADTARGET ENGINE - SCRIPT.JS
-// War Room Intelligence System - Pentágono Financiero
+// LEADTARGET PREMIUM ENGINE - SCRIPT.JS
+// Intelligence & Growth Strategy System - Pentágono Financiero
+// Golden Edition - Perú 2026
 // ═══════════════════════════════════════════════════════════════
-
-// ══════════════════════════════════════════════════════════════════════════
-// GLOBAL STATE MANAGEMENT
-// ══════════════════════════════════════════════════════════════════════════
 
 const AppState = {
     currentIndustry: null,
@@ -14,50 +11,37 @@ const AppState = {
     currentBudget: 0,
     currentLeadQuality: 'warm',
     lastCalculation: null,
-    savedScenarios: JSON.parse(localStorage.getItem('leadtarget_scenarios')) || [],
-    newsData: MARKET_NEWS_PERU || []
+    savedScenarios: JSON.parse(localStorage.getItem('leadtarget_premium_scenarios')) || [],
+    newsData: MARKET_NEWS_PERU || [],
+    marginMasterData: null
 };
-
-// ══════════════════════════════════════════════════════════════════════════
-// INITIALIZATION
-// ══════════════════════════════════════════════════════════════════════════
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
 });
 
 function initializeApp() {
-    console.log('🎯 LeadTarget War Room - Initializing...');
+    console.log('%c🎯 LeadTarget Premium', 'font-size: 26px; font-weight: 900; color: #d4af37; text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);');
+    console.log('%cPentágono Financiero © 2026', 'font-size: 13px; color: #64748b; font-weight: 700;');
+    console.log('%cGolden Intelligence System', 'font-size: 15px; color: #94a3b8; font-weight: 600;');
+    console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #d4af37;');
     
-    // Load industries
     populateIndustrySelector();
-    
-    // Load ad platforms
     populateAdPlatformSelector();
-    
-    // Load news feed
     loadNewsFeed();
-    
-    // Load growth strategies
+    loadNewsTicker();
     loadGrowthStrategies();
-    
-    // Load Pentagon tools
     loadPentagonTools();
-    
-    // Load saved scenarios
     loadSavedScenarios();
-    
-    // Attach event listeners
     attachEventListeners();
-    
-    // Update last update time
     updateLastUpdateTime();
+    loadMarginMasterData();
     
-    console.log('✅ LeadTarget War Room - Ready');
+    console.log('✅ Sistema inicializado correctamente');
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// NEWS PULSE - REAL-TIME FETCHER
+// NEWS PULSE - DYNAMIC LOADER
 // ══════════════════════════════════════════════════════════════════════════
 
 async function loadNewsFeed() {
@@ -65,31 +49,31 @@ async function loadNewsFeed() {
     
     if (!container) return;
     
-    // Show loading state
-    container.innerHTML = '<div style="text-align: center; padding: 20px; color: #6b7280;">📡 Cargando noticias del mercado...</div>';
+    container.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--slate-500); font-weight: 600;">📡 Cargando inteligencia de mercado...</div>';
     
     try {
-        // Simulate API call (in production, this would fetch from a real endpoint)
         const news = await fetchMarketNews();
         
         if (news && news.length > 0) {
             renderNews(news);
         } else {
-            container.innerHTML = '<div style="text-align: center; padding: 20px; color: #6b7280;">No hay noticias disponibles</div>';
+            container.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--slate-500); font-weight: 600;">No hay noticias disponibles</div>';
         }
     } catch (error) {
-        console.error('Error loading news:', error);
-        // Fallback to local data
+        console.error('Error cargando noticias:', error);
         renderNews(MARKET_NEWS_PERU);
     }
 }
 
 async function fetchMarketNews() {
-    // Simulate async API call with delay
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve(MARKET_NEWS_PERU);
-        }, 800);
+            const sortedNews = [...MARKET_NEWS_PERU].sort((a, b) => {
+                const priorityOrder = { POSITIVE: 1, NEUTRAL: 2, NEGATIVE: 3 };
+                return priorityOrder[a.impact] - priorityOrder[b.impact];
+            });
+            resolve(sortedNews);
+        }, 600);
     });
 }
 
@@ -117,15 +101,30 @@ function renderNews(newsArray) {
     `).join('');
 }
 
+function loadNewsTicker() {
+    const ticker = document.getElementById('newsTicker');
+    
+    if (!ticker) return;
+    
+    const tickerContent = MARKET_NEWS_PERU.map(news => 
+        `<span style="margin-right: 40px; display: inline-flex; align-items: center; gap: 8px;">
+            <span style="color: var(--gold-primary); font-weight: 700;">${news.source}:</span>
+            <span>${news.title}</span>
+        </span>`
+    ).join('');
+    
+    ticker.innerHTML = `<div style="display: inline-block; animation: scroll-ticker 60s linear infinite;">${tickerContent} ${tickerContent}</div>`;
+}
+
 function openNewsLink(url) {
     window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 function refreshNews() {
     loadNewsFeed();
+    loadNewsTicker();
     updateLastUpdateTime();
     
-    // Visual feedback
     const btn = document.getElementById('refreshNewsBtn');
     if (btn) {
         btn.textContent = '🔄 Actualizando...';
@@ -134,7 +133,7 @@ function refreshNews() {
         setTimeout(() => {
             btn.textContent = '🔄 Actualizar';
             btn.disabled = false;
-        }, 1000);
+        }, 800);
     }
 }
 
@@ -182,15 +181,10 @@ function populateAdPlatformSelector() {
 
 function onIndustryChange(industryKey) {
     AppState.currentIndustry = industryKey;
-    
-    // Show relevant platforms for this industry
-    updatePlatformRecommendations(industryKey);
 }
 
 function onPlatformChange(platformKey) {
     AppState.currentPlatform = platformKey;
-    
-    // Show platform details
     showPlatformInfo(platformKey);
 }
 
@@ -208,18 +202,8 @@ function showPlatformInfo(platformKey) {
     
     const saturationEl = document.getElementById('platformSaturation');
     saturationEl.textContent = platform.saturationLevel;
-    saturationEl.style.color = platform.saturationLevel === 'HIGH' ? '#ef4444' : 
-                                platform.saturationLevel === 'MEDIUM' ? '#f59e0b' : '#10b981';
-}
-
-function updatePlatformRecommendations(industryKey) {
-    const industry = INDUSTRIES_PERU[industryKey];
-    const platformSelect = document.getElementById('platformSelect');
-    
-    if (!industry || !platformSelect) return;
-    
-    // Visual feedback for recommended platforms could be added here
-    console.log(`Recommended platforms for ${industry.name}:`, industry);
+    saturationEl.style.color = platform.saturationLevel === 'HIGH' ? 'var(--danger-red)' : 
+                                platform.saturationLevel === 'MEDIUM' ? 'var(--warning-amber)' : 'var(--success-green)';
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -228,8 +212,8 @@ function updatePlatformRecommendations(industryKey) {
 
 function onLeadQualityChange(value) {
     const qualities = ['cold', 'warm', 'hot'];
-    const labels = ['COLD (Fríos)', 'WARM (Templados)', 'HOT (Calientes)'];
-    const colors = ['#06b6d4', '#f59e0b', '#ef4444'];
+    const labels = ['COLD', 'WARM', 'HOT'];
+    const colors = ['var(--info-cyan)', 'var(--warning-amber)', 'var(--danger-red)'];
     
     AppState.currentLeadQuality = qualities[value - 1];
     
@@ -241,58 +225,51 @@ function onLeadQualityChange(value) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// FUNNEL CALCULATION ENGINE
+// FUNNEL CALCULATION ENGINE - OPTIMIZED
 // ══════════════════════════════════════════════════════════════════════════
 
 function calculateFunnel() {
-    // Get inputs
     const industryKey = document.getElementById('industrySelect').value;
     const platformKey = document.getElementById('platformSelect').value;
     const location = document.getElementById('locationSelect').value;
     const budget = parseFloat(document.getElementById('budgetInput').value);
     const leadQualityValue = parseInt(document.getElementById('leadQualityRange').value);
     
-    // Validation
     if (!industryKey) {
-        showAlert('Por favor selecciona una industria', 'warning');
+        showPremiumAlert('Por favor selecciona una industria', 'warning');
         return;
     }
     
     if (!platformKey) {
-        showAlert('Por favor selecciona una plataforma publicitaria', 'warning');
+        showPremiumAlert('Por favor selecciona una plataforma publicitaria', 'warning');
         return;
     }
     
     if (!budget || budget < 100) {
-        showAlert('Por favor ingresa un presupuesto válido (mínimo S/100)', 'warning');
+        showPremiumAlert('Por favor ingresa un presupuesto válido (mínimo S/100)', 'warning');
         return;
     }
     
-    // Get data
     const industry = INDUSTRIES_PERU[industryKey];
     const platform = AD_PLATFORMS_PERU_2026[platformKey];
     const leadQualityMap = ['cold', 'warm', 'hot'];
     const leadQuality = leadQualityMap[leadQualityValue - 1];
     const benchmarks = COST_PER_LEAD_BENCHMARKS_2026[location][leadQuality];
     
-    // Calculate metrics
     const costPerLead = benchmarks.avg;
     const estimatedLeads = Math.floor(budget / costPerLead);
     const conversionRate = industry.conversionRate / 100;
     const projectedSales = Math.floor(estimatedLeads * conversionRate);
     const totalRevenue = projectedSales * industry.avgTicket;
     
-    // Calculate funnel stages
     const funnelData = calculateFunnelStages(estimatedLeads, industry);
     
-    // Calculate ROAS
-    const marginData = getMarginFromMarginAxis();
+    const marginData = getMarginFromMarginMaster();
     const netMargin = marginData ? marginData.netMargin : industry.avgMargin;
     const grossProfit = totalRevenue * (netMargin / 100);
     const netProfit = grossProfit - budget;
     const roas = budget > 0 ? (totalRevenue / budget).toFixed(2) : 0;
     
-    // Store calculation
     AppState.lastCalculation = {
         timestamp: Date.now(),
         industry: industryKey,
@@ -308,16 +285,14 @@ function calculateFunnel() {
         totalRevenue,
         roas,
         netProfit,
+        netMargin,
         funnelData
     };
     
-    // Render results
     renderResults(AppState.lastCalculation);
     
-    // Show save button
     document.getElementById('saveScenarioBtn').style.display = 'inline-block';
     
-    // Scroll to results
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -340,26 +315,18 @@ function calculateFunnelStages(totalLeads, industry) {
 }
 
 function renderResults(calculation) {
-    // Show results section
     document.getElementById('resultsSection').style.display = 'block';
     
-    // Update metrics
     document.getElementById('estimatedLeads').textContent = calculation.estimatedLeads.toLocaleString('es-PE');
     document.getElementById('costPerLead').textContent = `S/${calculation.costPerLead.toFixed(2)}`;
     document.getElementById('projectedSales').textContent = calculation.projectedSales.toLocaleString('es-PE');
     document.getElementById('totalRevenue').textContent = `S/${calculation.totalRevenue.toLocaleString('es-PE')}`;
     
-    // Update ROAS
     document.getElementById('roasValue').textContent = `${calculation.roas}x`;
     document.getElementById('netProfit').textContent = `S/${calculation.netProfit.toLocaleString('es-PE')}`;
     
-    // Update ROAS health badge
     updateROASHealthBadge(parseFloat(calculation.roas));
-    
-    // Render funnel visualization
     renderFunnelVisualization(calculation.funnelData);
-    
-    // Generate WhatsApp script
     generateWhatsAppScript(calculation.industryName);
 }
 
@@ -374,20 +341,20 @@ function updateROASHealthBadge(roas) {
     
     if (roas >= 4) {
         message = '🔥 EXCELENTE - Campaña altamente rentable';
-        bgColor = 'rgba(16, 185, 129, 0.2)';
-        textColor = '#10b981';
+        bgColor = 'rgba(16, 185, 129, 0.15)';
+        textColor = 'var(--success-green)';
     } else if (roas >= 2.5) {
-        message = '✅ BUENO - Campaña rentable';
-        bgColor = 'rgba(34, 211, 238, 0.2)';
-        textColor = '#06b6d4';
+        message = '✅ BUENO - Campaña rentable y saludable';
+        bgColor = 'rgba(6, 182, 212, 0.15)';
+        textColor = 'var(--info-cyan)';
     } else if (roas >= 1.5) {
         message = '⚠️ REGULAR - Optimización requerida';
-        bgColor = 'rgba(245, 158, 11, 0.2)';
-        textColor = '#f59e0b';
+        bgColor = 'rgba(245, 158, 11, 0.15)';
+        textColor = 'var(--warning-amber)';
     } else {
         message = '🚨 CRÍTICO - Revisar estrategia urgente';
-        bgColor = 'rgba(239, 68, 68, 0.2)';
-        textColor = '#ef4444';
+        bgColor = 'rgba(239, 68, 68, 0.15)';
+        textColor = 'var(--danger-red)';
     }
     
     badge.style.background = bgColor;
@@ -443,36 +410,48 @@ function copyWhatsAppScript() {
         const originalText = btn.textContent;
         
         btn.textContent = '✅ Script Copiado!';
-        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        btn.style.background = 'linear-gradient(135deg, var(--success-green), #059669)';
         
         setTimeout(() => {
             btn.textContent = originalText;
             btn.style.background = '';
         }, 2000);
     }).catch(err => {
-        console.error('Error copying script:', err);
-        showAlert('Error al copiar el script', 'danger');
+        console.error('Error copiando script:', err);
+        showPremiumAlert('Error al copiar el script', 'danger');
     });
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// MARGINAXIS INTEGRATION
+// PENTAGON BRIDGE - MARGINMASTER INTEGRATION
 // ══════════════════════════════════════════════════════════════════════════
 
-function getMarginFromMarginAxis() {
-    // Try to get margin data from MarginAxis via localStorage
+function loadMarginMasterData() {
     try {
-        const marginAxisData = localStorage.getItem('marginaxis_calculation');
+        const marginData = localStorage.getItem('marginmaster_calculation');
         
-        if (marginAxisData) {
-            const data = JSON.parse(marginAxisData);
+        if (marginData) {
+            AppState.marginMasterData = JSON.parse(marginData);
+            console.log('✅ Datos de MarginMaster Pro cargados:', AppState.marginMasterData);
+        }
+    } catch (error) {
+        console.warn('No se pudo cargar datos de MarginMaster:', error);
+    }
+}
+
+function getMarginFromMarginMaster() {
+    try {
+        const marginData = localStorage.getItem('marginmaster_calculation');
+        
+        if (marginData) {
+            const data = JSON.parse(marginData);
             return {
                 netMargin: data.netMargin || data.margin || 0,
                 timestamp: data.timestamp
             };
         }
     } catch (error) {
-        console.warn('Could not retrieve MarginAxis data:', error);
+        console.warn('No se pudo recuperar margen de MarginMaster:', error);
     }
     
     return null;
@@ -489,21 +468,21 @@ function loadGrowthStrategies() {
     
     container.innerHTML = GROWTH_STRATEGIES_PERU.map(strategy => `
         <div class="strategy-card">
-            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
-                <h4 style="font-size: 15px; font-weight: 700; color: #f3f4f6; margin: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                <h4 style="font-size: 15px; font-weight: 800; color: var(--slate-100); margin: 0; font-family: 'Outfit', sans-serif;">
                     ${strategy.strategy}
                 </h4>
-                <span style="font-size: 11px; font-weight: 700; padding: 4px 8px; background: rgba(16, 185, 129, 0.2); color: #10b981; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                <span style="font-size: 11px; font-weight: 800; padding: 5px 10px; background: rgba(16, 185, 129, 0.12); color: var(--success-green); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.25); font-family: 'Outfit', sans-serif;">
                     ROI: ${strategy.roi}%
                 </span>
             </div>
-            <div style="font-size: 12px; color: #9ca3af; margin-bottom: 6px;">
+            <div style="font-size: 12px; color: var(--slate-400); margin-bottom: 8px; font-weight: 500;">
                 ${strategy.bestFor.join(' · ')}
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #6b7280;">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--slate-500); font-weight: 600;">
                 <span>⏱️ ${strategy.timeToResults}</span>
-                <span style="color: ${strategy.difficulty === 'LOW' ? '#10b981' : strategy.difficulty === 'MEDIUM' ? '#f59e0b' : '#ef4444'};">
-                    Dificultad: ${strategy.difficulty}
+                <span style="color: ${strategy.difficulty === 'LOW' ? 'var(--success-green)' : strategy.difficulty === 'MEDIUM' ? 'var(--warning-amber)' : 'var(--danger-red)'};">
+                    ${strategy.difficulty}
                 </span>
             </div>
         </div>
@@ -511,7 +490,7 @@ function loadGrowthStrategies() {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// PENTAGON TOOLS HUB
+// PENTAGON TOOLS HUB - WITH REAL LINKS
 // ══════════════════════════════════════════════════════════════════════════
 
 function loadPentagonTools() {
@@ -522,15 +501,14 @@ function loadPentagonTools() {
     const tools = Object.values(PENTAGON_TOOLS).filter(tool => tool.available);
     
     container.innerHTML = tools.map(tool => `
-        <a href="#" class="pentagon-tool" style="--tool-color: ${tool.color}; --tool-color-rgb: ${hexToRgb(tool.color)};" 
-           onclick="openPentagonTool('${tool.name.toLowerCase().replace(/\s+/g, '')}'); return false;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <span style="font-size: 28px;">${tool.icon}</span>
+        <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="pentagon-tool" style="text-decoration: none;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <span style="font-size: 32px;">${tool.icon}</span>
                 <div style="flex: 1;">
-                    <div style="font-size: 14px; font-weight: 800; color: ${tool.color}; margin-bottom: 2px;">
+                    <div style="font-size: 15px; font-weight: 900; color: ${tool.color}; margin-bottom: 4px; font-family: 'Outfit', sans-serif;">
                         ${tool.name}
                     </div>
-                    <div style="font-size: 11px; color: #9ca3af;">
+                    <div style="font-size: 11px; color: var(--slate-400); font-weight: 600;">
                         ${tool.description}
                     </div>
                 </div>
@@ -539,55 +517,32 @@ function loadPentagonTools() {
     `).join('');
 }
 
-function openPentagonTool(toolName) {
-    showAlert(`Navegando a ${toolName}... 🚀`, 'info');
-    
-    // In production, this would navigate to actual tool URLs
-    setTimeout(() => {
-        console.log(`Opening ${toolName}`);
-    }, 500);
-}
-
-function hexToRgb(hex) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? 
-        `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
-        '220, 38, 38';
-}
-
 // ══════════════════════════════════════════════════════════════════════════
 // SCENARIO MANAGEMENT
 // ══════════════════════════════════════════════════════════════════════════
 
 function saveScenario() {
     if (!AppState.lastCalculation) {
-        showAlert('No hay cálculo para guardar', 'warning');
+        showPremiumAlert('No hay cálculo para guardar', 'warning');
         return;
     }
     
-    // Generate unique ID
     const scenarioId = `scenario_${Date.now()}`;
     
-    // Create scenario object
     const scenario = {
         id: scenarioId,
         ...AppState.lastCalculation,
         savedAt: new Date().toISOString()
     };
     
-    // Add to scenarios array
     AppState.savedScenarios.push(scenario);
     
-    // Save to localStorage
-    localStorage.setItem('leadtarget_scenarios', JSON.stringify(AppState.savedScenarios));
+    localStorage.setItem('leadtarget_premium_scenarios', JSON.stringify(AppState.savedScenarios));
     
-    // Reload scenarios display
     loadSavedScenarios();
     
-    // Show feedback
-    showAlert('✅ Escenario guardado exitosamente', 'success');
+    showPremiumAlert('✅ Escenario guardado exitosamente', 'success');
     
-    // Hide save button
     document.getElementById('saveScenarioBtn').style.display = 'none';
 }
 
@@ -598,9 +553,9 @@ function loadSavedScenarios() {
     
     if (AppState.savedScenarios.length === 0) {
         container.innerHTML = `
-            <div style="padding: 40px; text-align: center; color: #6b7280; border: 2px dashed rgba(153, 27, 27, 0.3); border-radius: 12px;">
-                <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.5;">📊</div>
-                <p style="font-size: 14px; margin: 0;">No hay escenarios guardados aún.<br>Calcula una proyección y guárdala.</p>
+            <div style="padding: 44px; text-align: center; color: var(--slate-500); border: 2px dashed rgba(212, 175, 55, 0.2); border-radius: 14px;">
+                <div style="font-size: 52px; margin-bottom: 14px; opacity: 0.4;">📊</div>
+                <p style="font-size: 14px; margin: 0; font-weight: 600; line-height: 1.5;">No hay escenarios guardados aún.<br>Calcula una proyección y guárdala para referencia futura.</p>
             </div>
         `;
         return;
@@ -608,32 +563,32 @@ function loadSavedScenarios() {
     
     container.innerHTML = AppState.savedScenarios.map(scenario => `
         <div class="scenario-card" onclick="viewScenario('${scenario.id}')">
-            <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 14px;">
                 <div style="flex: 1;">
-                    <h4 style="font-size: 16px; font-weight: 800; color: #dc2626; margin: 0 0 4px 0;">
+                    <h4 style="font-size: 17px; font-weight: 900; color: var(--gold-primary); margin: 0 0 6px 0; font-family: 'Outfit', sans-serif;">
                         ${scenario.industryName}
                     </h4>
-                    <p style="font-size: 12px; color: #9ca3af; margin: 0;">
+                    <p style="font-size: 12px; color: var(--slate-400); margin: 0; font-weight: 600;">
                         ${scenario.platformName} · ${scenario.location === 'lima' ? 'Lima' : 'Provincias'}
                     </p>
                 </div>
                 <button class="scenario-delete-btn" onclick="deleteScenario('${scenario.id}', event)">
-                    🗑️ Eliminar
+                    🗑️
                 </button>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px;">
-                <div style="padding: 8px; background: rgba(220, 38, 38, 0.1); border-radius: 6px; border: 1px solid rgba(220, 38, 38, 0.2);">
-                    <div style="font-size: 10px; color: #6b7280; font-weight: 600; margin-bottom: 2px;">PRESUPUESTO</div>
-                    <div style="font-size: 16px; font-weight: 900; color: #dc2626;">S/${scenario.budget.toLocaleString('es-PE')}</div>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px;">
+                <div style="padding: 10px; background: rgba(212, 175, 55, 0.08); border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.15);">
+                    <div style="font-size: 10px; color: var(--slate-500); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Presupuesto</div>
+                    <div style="font-size: 18px; font-weight: 900; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">S/${scenario.budget.toLocaleString('es-PE')}</div>
                 </div>
-                <div style="padding: 8px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.2);">
-                    <div style="font-size: 10px; color: #6b7280; font-weight: 600; margin-bottom: 2px;">ROAS</div>
-                    <div style="font-size: 16px; font-weight: 900; color: #10b981;">${scenario.roas}x</div>
+                <div style="padding: 10px; background: rgba(16, 185, 129, 0.08); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.15);">
+                    <div style="font-size: 10px; color: var(--slate-500); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">ROAS</div>
+                    <div style="font-size: 18px; font-weight: 900; color: var(--success-green); font-family: 'Outfit', sans-serif;">${scenario.roas}x</div>
                 </div>
             </div>
             
-            <div style="font-size: 11px; color: #6b7280; display: flex; justify-content: space-between;">
+            <div style="font-size: 11px; color: var(--slate-500); display: flex; justify-content: space-between; font-weight: 600;">
                 <span>📊 ${scenario.estimatedLeads} leads</span>
                 <span>💰 ${scenario.projectedSales} ventas</span>
             </div>
@@ -646,7 +601,6 @@ function viewScenario(scenarioId) {
     
     if (!scenario) return;
     
-    // Show modal with scenario details
     showScenarioModal(scenario);
 }
 
@@ -655,82 +609,79 @@ function deleteScenario(scenarioId, event) {
     
     if (!confirm('¿Estás seguro de eliminar este escenario?')) return;
     
-    // Remove from array
     AppState.savedScenarios = AppState.savedScenarios.filter(s => s.id !== scenarioId);
     
-    // Update localStorage
-    localStorage.setItem('leadtarget_scenarios', JSON.stringify(AppState.savedScenarios));
+    localStorage.setItem('leadtarget_premium_scenarios', JSON.stringify(AppState.savedScenarios));
     
-    // Reload display
     loadSavedScenarios();
     
-    showAlert('Escenario eliminado', 'info');
+    showPremiumAlert('Escenario eliminado', 'info');
 }
 
 function showScenarioModal(scenario) {
     const modal = `
         <div class="modal-overlay" onclick="closeModal(event)">
             <div class="modal-content" onclick="event.stopPropagation()">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px solid rgba(212, 175, 55, 0.15);">
                     <div>
-                        <h3 style="font-size: 24px; font-weight: 900; color: #dc2626; margin: 0 0 8px 0;">
+                        <h3 style="font-size: 26px; font-weight: 900; color: var(--gold-primary); margin: 0 0 10px 0; font-family: 'Outfit', sans-serif;">
                             ${scenario.industryName}
                         </h3>
-                        <p style="font-size: 14px; color: #9ca3af; margin: 0;">
+                        <p style="font-size: 14px; color: var(--slate-400); margin: 0; font-weight: 600;">
                             Guardado el ${new Date(scenario.savedAt).toLocaleDateString('es-PE')}
                         </p>
                     </div>
-                    <button onclick="closeModal()" class="crimson-btn-sm">✕ Cerrar</button>
+                    <button onclick="closeModal()" class="golden-btn-sm">✕ Cerrar</button>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
-                    <div class="metric-box-crimson">
-                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">PRESUPUESTO</div>
-                        <div style="font-size: 28px; font-weight: 900; color: #dc2626;">S/${scenario.budget.toLocaleString('es-PE')}</div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 28px;">
+                    <div class="metric-box-premium">
+                        <div style="font-size: 11px; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Presupuesto</div>
+                        <div style="font-size: 32px; font-weight: 900; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">S/${scenario.budget.toLocaleString('es-PE')}</div>
                     </div>
-                    <div class="metric-box-crimson">
-                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">LEADS ESTIMADOS</div>
-                        <div style="font-size: 28px; font-weight: 900; color: #dc2626;">${scenario.estimatedLeads.toLocaleString('es-PE')}</div>
+                    <div class="metric-box-premium">
+                        <div style="font-size: 11px; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Leads Estimados</div>
+                        <div style="font-size: 32px; font-weight: 900; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">${scenario.estimatedLeads.toLocaleString('es-PE')}</div>
                     </div>
-                    <div class="metric-box-crimson">
-                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">VENTAS PROYECTADAS</div>
-                        <div style="font-size: 28px; font-weight: 900; color: #10b981;">${scenario.projectedSales.toLocaleString('es-PE')}</div>
+                    <div class="metric-box-premium">
+                        <div style="font-size: 11px; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Ventas Proyectadas</div>
+                        <div style="font-size: 32px; font-weight: 900; color: var(--success-green); font-family: 'Outfit', sans-serif;">${scenario.projectedSales.toLocaleString('es-PE')}</div>
                     </div>
-                    <div class="metric-box-crimson">
-                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">INGRESOS TOTALES</div>
-                        <div style="font-size: 28px; font-weight: 900; color: #10b981;">S/${scenario.totalRevenue.toLocaleString('es-PE')}</div>
+                    <div class="metric-box-premium">
+                        <div style="font-size: 11px; color: var(--slate-500); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Ingresos Totales</div>
+                        <div style="font-size: 32px; font-weight: 900; color: var(--success-green); font-family: 'Outfit', sans-serif;">S/${scenario.totalRevenue.toLocaleString('es-PE')}</div>
                     </div>
                 </div>
                 
-                <div style="padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border: 2px solid #10b981; margin-bottom: 20px;">
+                <div style="padding: 22px; background: rgba(16, 185, 129, 0.08); border-radius: 14px; border: 2px solid var(--success-green); margin-bottom: 24px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <div style="font-size: 12px; color: #6b7280; font-weight: 600;">ROAS PROYECTADO</div>
-                            <div style="font-size: 42px; font-weight: 900; color: #10b981;">${scenario.roas}x</div>
+                            <div style="font-size: 13px; color: var(--slate-400); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">ROAS Proyectado</div>
+                            <div style="font-size: 48px; font-weight: 900; color: var(--success-green); font-family: 'Outfit', sans-serif;">${scenario.roas}x</div>
                         </div>
                         <div style="text-align: right;">
-                            <div style="font-size: 12px; color: #6b7280; font-weight: 600;">GANANCIA NETA</div>
-                            <div style="font-size: 28px; font-weight: 800; color: #10b981;">S/${scenario.netProfit.toLocaleString('es-PE')}</div>
+                            <div style="font-size: 13px; color: var(--slate-400); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Ganancia Neta</div>
+                            <div style="font-size: 32px; font-weight: 900; color: var(--success-green); font-family: 'Outfit', sans-serif;">S/${scenario.netProfit.toLocaleString('es-PE')}</div>
                         </div>
                     </div>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 13px;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; font-size: 14px;">
                     <div>
-                        <strong style="color: #dc2626;">Plataforma:</strong>
-                        <span style="color: #9ca3af;">${scenario.platformName}</span>
+                        <strong style="color: var(--gold-primary); font-weight: 800;">Plataforma:</strong>
+                        <span style="color: var(--slate-300); font-weight: 600;">${scenario.platformName}</span>
                     </div>
                     <div>
-                        <strong style="color: #dc2626;">Ubicación:</strong>
-                        <span style="color: #9ca3af;">${scenario.location === 'lima' ? 'Lima Metropolitana' : 'Provincias'}</span>
+                        <strong style="color: var(--gold-primary); font-weight: 800;">Ubicación:</strong>
+                        <span style="color: var(--slate-300); font-weight: 600;">${scenario.location === 'lima' ? 'Lima Metropolitana' : 'Provincias'}</span>
                     </div>
                     <div>
-                        <strong style="color: #dc2626;">Calidad de Leads:</strong>
-                        <span style="color: #9ca3af;">${scenario.leadQuality.toUpperCase()}</span>
+                        <strong style="color: var(--gold-primary); font-weight: 800;">Calidad:</strong>
+                        <span style="color: var(--slate-300); font-weight: 600;">${scenario.leadQuality.toUpperCase()}</span>
                     </div>
                     <div>
-                        <strong style="color: #dc2626;">CPL:</strong>
-                        <span style="color: #9ca3af;">S/${scenario.costPerLead.toFixed(2)}</span>
+                        <strong style="color: var(--gold-primary); font-weight: 800;">CPL:</strong>
+                        <span style="color: var(--slate-300); font-weight: 600;">S/${scenario.costPerLead.toFixed(2)}</span>
                     </div>
                 </div>
             </div>
@@ -750,49 +701,41 @@ function closeModal(event) {
 // ══════════════════════════════════════════════════════════════════════════
 
 function attachEventListeners() {
-    // Industry selector
     const industrySelect = document.getElementById('industrySelect');
     if (industrySelect) {
         industrySelect.addEventListener('change', (e) => onIndustryChange(e.target.value));
     }
     
-    // Platform selector
     const platformSelect = document.getElementById('platformSelect');
     if (platformSelect) {
         platformSelect.addEventListener('change', (e) => onPlatformChange(e.target.value));
     }
     
-    // Lead quality slider
     const leadQualityRange = document.getElementById('leadQualityRange');
     if (leadQualityRange) {
         leadQualityRange.addEventListener('input', (e) => onLeadQualityChange(e.target.value));
     }
     
-    // Calculate button
     const calculateBtn = document.getElementById('calculateBtn');
     if (calculateBtn) {
         calculateBtn.addEventListener('click', calculateFunnel);
     }
     
-    // Save scenario button
     const saveScenarioBtn = document.getElementById('saveScenarioBtn');
     if (saveScenarioBtn) {
         saveScenarioBtn.addEventListener('click', saveScenario);
     }
     
-    // Copy WhatsApp button
     const copyWhatsappBtn = document.getElementById('copyWhatsappBtn');
     if (copyWhatsappBtn) {
         copyWhatsappBtn.addEventListener('click', copyWhatsAppScript);
     }
     
-    // Refresh news button
     const refreshNewsBtn = document.getElementById('refreshNewsBtn');
     if (refreshNewsBtn) {
         refreshNewsBtn.addEventListener('click', refreshNews);
     }
     
-    // Escape key to close modal
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeModal();
@@ -801,64 +744,77 @@ function attachEventListeners() {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// UTILITY FUNCTIONS
+// PREMIUM ALERT SYSTEM
 // ══════════════════════════════════════════════════════════════════════════
 
-function showAlert(message, type = 'info') {
+function showPremiumAlert(message, type = 'info') {
     const colors = {
-        success: '#10b981',
-        warning: '#f59e0b',
-        danger: '#ef4444',
-        info: '#06b6d4'
+        success: 'var(--success-green)',
+        warning: 'var(--warning-amber)',
+        danger: 'var(--danger-red)',
+        info: 'var(--gold-primary)'
     };
     
     const alert = document.createElement('div');
     alert.style.cssText = `
         position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 16px 24px;
-        background: linear-gradient(135deg, rgba(23, 23, 23, 0.98), rgba(10, 10, 10, 0.95));
+        top: 24px;
+        right: 24px;
+        padding: 18px 28px;
+        background: linear-gradient(135deg, rgba(18, 18, 18, 0.98), rgba(10, 10, 10, 0.96));
         border: 2px solid ${colors[type] || colors.info};
-        border-radius: 12px;
+        border-radius: 14px;
         color: ${colors[type] || colors.info};
-        font-weight: 700;
+        font-weight: 800;
         font-size: 14px;
         z-index: 1000;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 30px ${colors[type] || colors.info}33;
         animation: slideIn 0.3s ease;
+        backdrop-filter: blur(12px);
+        font-family: 'Outfit', sans-serif;
     `;
     alert.textContent = message;
     
     document.body.appendChild(alert);
     
     setTimeout(() => {
-        alert.style.animation = 'slideOut 0.3s ease';
+        alert.style.animation = 'fadeOut 0.3s ease';
         setTimeout(() => alert.remove(), 300);
-    }, 3000);
+    }, 3500);
 }
 
-// Add slideOut animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideOut {
+const alertStyle = document.createElement('style');
+alertStyle.textContent = `
+    @keyframes fadeOut {
         from {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0);
         }
         to {
             opacity: 0;
-            transform: translateX(100px);
+            transform: translateY(-20px);
         }
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(alertStyle);
 
 // ══════════════════════════════════════════════════════════════════════════
-// CONSOLE BRANDING
+// RESPONSIVE LAYOUT ADJUSTMENTS
 // ══════════════════════════════════════════════════════════════════════════
 
-console.log('%c🎯 LeadTarget War Room', 'font-size: 24px; font-weight: 900; color: #dc2626; text-shadow: 0 0 10px rgba(220, 38, 38, 0.5);');
-console.log('%cPentágono Financiero © 2026', 'font-size: 12px; color: #6b7280;');
-console.log('%cCentral de Crecimiento + Inteligencia de Mercado', 'font-size: 14px; color: #9ca3af;');
-console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #dc2626;');
+function adjustLayoutForMobile() {
+    const mainGrid = document.getElementById('mainGrid');
+    
+    if (!mainGrid) return;
+    
+    if (window.innerWidth < 1024) {
+        mainGrid.style.gridTemplateColumns = '1fr';
+    } else if (window.innerWidth < 1400) {
+        mainGrid.style.gridTemplateColumns = '1fr 420px';
+    } else {
+        mainGrid.style.gridTemplateColumns = '1fr 520px 380px';
+    }
+}
+
+window.addEventListener('resize', adjustLayoutForMobile);
+adjustLayoutForMobile();
