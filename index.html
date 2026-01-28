@@ -3,405 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadNexus AI - Enterprise Intelligence Suite</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <meta name="description" content="LeadTarget - Central de Crecimiento del Pentágono Financiero. Simulación de embudos de venta e inteligencia de mercado en tiempo real para Perú.">
+    <title>LeadTarget | War Room - Pentágono Financiero</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="text-gray-100">
-    <!-- Pentagon Navigation -->
-    <nav class="fixed top-0 w-full bg-obsidian/95 backdrop-blur-xl border-b border-violet-500/30 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-xl flex items-center justify-center glow-strong">
-                        <span class="text-2xl">🎯</span>
-                    </div>
-                    <div>
-                        <span class="text-xl font-bold glow-text">LeadNexus AI</span>
-                        <p class="text-[10px] text-violet-400">Enterprise Intelligence Suite</p>
-                    </div>
+<body>
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- NAVIGATION BAR -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <nav style="position: sticky; top: 0; z-index: 50; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(12px); border-bottom: 2px solid #991b1b; padding: 16px 0;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-size: 32px;">🎯</span>
+                <div>
+                    <h1 style="font-size: 24px; font-weight: 900; color: #dc2626; margin: 0; line-height: 1;">LeadTarget</h1>
+                    <p style="font-size: 11px; color: #6b7280; margin: 0; font-weight: 600; letter-spacing: 1px;">WAR ROOM · PENTÁGONO FINANCIERO</p>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <!-- Marketing Health Score -->
-                    <div id="healthScoreDisplay" class="hidden md:flex items-center space-x-2 bg-obsidian-light px-4 py-2 rounded-lg border border-violet-500/30">
-                        <span class="text-xs font-medium">Health:</span>
-                        <div class="flex items-center space-x-2">
-                            <div class="w-16 h-2 bg-gray-700 rounded-full overflow-hidden">
-                                <div id="healthScoreBar" class="h-full transition-all duration-500" style="width: 0%"></div>
-                            </div>
-                            <span id="healthScoreValue" class="text-sm font-bold">0</span>
-                        </div>
-                    </div>
-                    <button id="scenarioManagerBtn" class="cyber-btn-sm hidden md:block">
-                        📂 Escenarios
-                    </button>
-                    <div id="pentagonNav" class="hidden md:flex space-x-4"></div>
-                </div>
+            </div>
+            
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="#funnel" class="nav-link active">🎯 Funnel Builder</a>
+                <a href="#news" class="nav-link">📰 Market Intel</a>
+                <a href="#pentagon" class="nav-link">⬟ Pentagon Hub</a>
+                <a href="#scenarios" class="nav-link">💼 Mis Escenarios</a>
             </div>
         </div>
     </nav>
 
-    <!-- Scenario Manager Modal -->
-    <div id="scenarioModal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-violet-400">📂 Gestor de Escenarios</h2>
-                <button id="closeModalBtn" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- MAIN CONTAINER -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div style="max-width: 1400px; margin: 0 auto; padding: 32px 24px;">
+        
+        <!-- HERO SECTION -->
+        <div class="war-room-hero" style="text-align: center; margin-bottom: 48px; padding: 48px 24px; background: linear-gradient(135deg, rgba(153, 27, 27, 0.15), rgba(220, 38, 38, 0.05)); border-radius: 20px; border: 2px solid rgba(153, 27, 27, 0.3);">
+            <h2 style="font-size: 48px; font-weight: 900; margin-bottom: 16px; background: linear-gradient(135deg, #dc2626, #991b1b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1;">
+                El Radar de Negocios
+            </h2>
+            <p style="font-size: 18px; color: #9ca3af; max-width: 700px; margin: 0 auto; font-weight: 500;">
+                Simula embudos de venta ultra-precisos para Perú mientras te mantienes conectado con la realidad económica en tiempo real.
+            </p>
+            <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(220, 38, 38, 0.1); border-radius: 8px; border: 1px solid rgba(220, 38, 38, 0.3);">
+                    <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 12px #10b981; animation: pulse-glow 2s infinite;"></span>
+                    <span style="font-size: 13px; font-weight: 700; color: #10b981;">SISTEMA ACTIVO</span>
+                </div>
+                <div style="font-size: 13px; color: #6b7280;">
+                    <strong style="color: #dc2626;">6</strong> noticias cargadas · 
+                    <strong style="color: #dc2626;">10</strong> industrias disponibles
+                </div>
             </div>
-            <div id="scenarioList" class="space-y-3 max-h-96 overflow-y-auto"></div>
         </div>
-    </div>
 
-    <!-- Hero Section -->
-    <div class="pt-24 pb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Header -->
-            <div class="text-center mb-8">
-                <h1 class="text-4xl md:text-6xl font-black mb-3 glow-text gradient-text">
-                    Simulador de Rentabilidad Publicitaria
-                </h1>
-                <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
-                    El cerebro de marketing que predice tu ROI real antes de gastar el primer dólar
-                </p>
-                
-                <!-- Ecosystem Status -->
-                <div id="ecosystemStatus" class="mt-6 flex flex-wrap justify-center gap-3 text-xs"></div>
-            </div>
-
-            <!-- AI Insight Hub -->
-            <div id="aiInsightHub" class="cyber-card p-6 mb-6 hidden slide-in">
-                <div class="flex items-center space-x-3 mb-4">
-                    <span class="text-3xl pulse-animation">🤖</span>
-                    <div>
-                        <h3 class="text-xl font-bold text-violet-400">AI Growth Advisor</h3>
-                        <p class="text-xs text-gray-500">Tu CMO Digital 24/7 - Diagnóstico en Tiempo Real</p>
-                    </div>
-                </div>
-                <div id="aiInsightContent" class="p-4 rounded-lg border-2 transition-all duration-300"></div>
-            </div>
-
-            <!-- Country Selector + Quick Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="cyber-card p-4">
-                    <label class="block text-sm font-medium mb-2 text-violet-400">🌎 País de Operación</label>
-                    <select id="countrySelect" class="cyber-input w-full text-base">
-                        <option value="">Seleccionar país...</option>
-                    </select>
-                    <div id="countryInfo" class="mt-3 text-xs text-gray-400 hidden">
-                        <div class="flex justify-between mb-1">
-                            <span>CPC Estimado:</span>
-                            <span id="countryCPC" class="text-violet-400 font-semibold">$0.00</span>
+        <!-- MAIN GRID LAYOUT -->
+        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 24px; margin-bottom: 48px;">
+            
+            <!-- LEFT COLUMN: FUNNEL BUILDER -->
+            <div>
+                <!-- FUNNEL BUILDER CARD -->
+                <div id="funnel" class="war-room-card" style="margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+                        <div>
+                            <h3 style="font-size: 24px; font-weight: 800; color: #dc2626; margin: 0;">Funnel Builder Pro</h3>
+                            <p style="font-size: 13px; color: #6b7280; margin: 4px 0 0 0;">Simulación de embudo de ventas con datos reales Perú 2026</p>
                         </div>
-                        <div class="flex justify-between">
-                            <span>Impuesto Digital:</span>
-                            <span id="countryTax" class="text-fuchsia-400 font-semibold">0%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="cyber-card p-4">
-                    <label class="block text-sm font-medium mb-2 text-violet-400">💼 Industria</label>
-                    <select id="industrySelect" class="cyber-input w-full text-base">
-                        <option value="ecommerce">E-commerce</option>
-                        <option value="services">Servicios Profesionales</option>
-                        <option value="b2b">B2B/SaaS</option>
-                        <option value="education">Educación Online</option>
-                        <option value="health">Salud y Bienestar</option>
-                        <option value="realestate">Inmobiliaria</option>
-                    </select>
-                </div>
-
-                <div class="cyber-card p-4">
-                    <label class="block text-sm font-medium mb-2 text-violet-400">💰 Precio Producto/Servicio</label>
-                    <div class="relative">
-                        <span id="currencySymbol" class="absolute left-3 top-3 text-gray-400">$</span>
-                        <input type="number" id="productPrice" value="297" class="cyber-input w-full pl-8 text-base" placeholder="297">
-                    </div>
-                    <div id="priceUSD" class="mt-2 text-xs text-gray-500 hidden"></div>
-                </div>
-            </div>
-
-            <!-- Advanced Controls -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <!-- Guerra de Precios Toggle -->
-                <div class="cyber-card p-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-2xl">⚔️</span>
-                            <div>
-                                <p class="font-semibold text-violet-400">Modo Guerra de Precios</p>
-                                <p class="text-xs text-gray-500">Simula -15% en precio (crisis de mercado)</p>
-                            </div>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="warModeToggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Incluir Impuestos Checkbox -->
-                <div class="cyber-card p-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-2xl">🧾</span>
-                            <div>
-                                <p class="font-semibold text-violet-400">Incluir Impuestos Digitales</p>
-                                <p class="text-xs text-gray-500">Suma automática del IVA/Tax del país</p>
-                            </div>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="includeTaxesToggle" class="sr-only peer" checked>
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Campaign Builder -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                <!-- Funnel Physics Panel -->
-                <div class="lg:col-span-2 cyber-card p-4 md:p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl md:text-2xl font-bold text-violet-400">⚙️ Funnel Physics Simulator</h2>
-                        <button id="autoFillBtn" class="cyber-btn-sm">
-                            🤖 Auto
+                        <button id="saveScenarioBtn" class="crimson-btn-sm" style="display: none;">
+                            💾 Guardar Escenario
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">💵 Presupuesto Mensual</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-3 text-gray-400" id="budgetSymbol">$</span>
-                                <input type="number" id="monthlyBudget" value="3000" class="cyber-input w-full pl-8" placeholder="3000">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium mb-2">💰 Margen Neto (%)</label>
-                            <input type="number" id="netMargin" value="25" step="0.1" class="cyber-input w-full" placeholder="25">
-                            <p class="text-xs text-gray-500 mt-1">Importado de MarginMaster si disponible</p>
-                        </div>
+                    <!-- INDUSTRY SELECTOR -->
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
+                            🏭 INDUSTRIA / SECTOR
+                        </label>
+                        <select id="industrySelect" class="crimson-input" style="cursor: pointer;">
+                            <option value="">-- Selecciona tu industria --</option>
+                        </select>
                     </div>
 
-                    <!-- Funnel Steps -->
-                    <div class="space-y-3">
-                        <div class="funnel-step">
-                            <label class="text-sm font-medium">👁️ Impresiones Estimadas</label>
-                            <input type="number" id="impressions" class="cyber-input w-full mt-1" value="10000" readonly>
-                        </div>
-
-                        <div class="funnel-step">
-                            <label class="text-sm font-medium">👆 Clicks (CTR: <span id="ctrDisplay">2.0%</span>)</label>
-                            <input type="range" id="ctrSlider" min="0.5" max="10" step="0.1" value="2" class="w-full mt-1">
-                            <input type="number" id="clicks" class="cyber-input w-full mt-2" readonly>
-                        </div>
-
-                        <div class="funnel-step">
-                            <label class="text-sm font-medium">📝 Leads (Conv: <span id="leadConvDisplay">25%</span>)</label>
-                            <input type="range" id="leadConvSlider" min="5" max="60" step="1" value="25" class="w-full mt-1">
-                            <input type="number" id="leads" class="cyber-input w-full mt-2" readonly>
-                        </div>
-
-                        <div class="funnel-step">
-                            <label class="text-sm font-medium">✅ Ventas (Close: <span id="closeRateDisplay">20%</span>)</label>
-                            <input type="range" id="closeRateSlider" min="5" max="50" step="1" value="20" class="w-full mt-1">
-                            <input type="number" id="sales" class="cyber-input w-full mt-2" readonly>
-                        </div>
-                    </div>
-
-                    <button id="calculateBtn" class="cyber-btn w-full mt-6">
-                        🚀 Calcular ROI y Proyecciones
-                    </button>
-                </div>
-
-                <!-- Live Metrics Panel -->
-                <div class="cyber-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">📊 Métricas en Vivo</h2>
-                    
-                    <div class="space-y-4">
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">CPA (Costo por Adquisición)</div>
-                            <div id="cpaValue" class="text-2xl font-bold text-violet-400">$0.00</div>
-                            <div id="cpaStatus" class="text-xs mt-1"></div>
-                        </div>
-
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">CAC (Customer Acquisition Cost)</div>
-                            <div id="cacValue" class="text-2xl font-bold text-cyan-400">$0.00</div>
-                            <div class="text-xs text-gray-500 mt-1">Incluye impuestos digitales</div>
-                        </div>
-
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">ROAS (Return on Ad Spend)</div>
-                            <div id="roasValue" class="text-2xl font-bold text-green-400">0.0x</div>
-                            <div id="roasStatus" class="text-xs mt-1"></div>
-                        </div>
-
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">ROI Neto</div>
-                            <div id="roiValue" class="text-3xl font-black text-fuchsia-400">0%</div>
-                            <div id="roiStatus" class="text-xs mt-1"></div>
-                        </div>
-
-                        <!-- Cash Alert -->
-                        <div id="cashAlert" class="hidden p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-                            <div class="flex items-start space-x-2">
-                                <span class="text-yellow-400">⚠️</span>
-                                <div class="text-xs text-yellow-300">
-                                    <p class="font-semibold">Alerta de Liquidez</p>
-                                    <p id="cashAlertMsg"></p>
+                    <!-- AD PLATFORM SELECTOR -->
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
+                            📱 PLATAFORMA DE PUBLICIDAD
+                        </label>
+                        <select id="platformSelect" class="crimson-input" style="cursor: pointer;">
+                            <option value="">-- Selecciona plataforma --</option>
+                        </select>
+                        <div id="platformInfo" style="margin-top: 12px; padding: 12px; background: rgba(220, 38, 38, 0.05); border-radius: 8px; border: 1px solid rgba(220, 38, 38, 0.2); display: none;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 13px;">
+                                <div>
+                                    <span style="color: #6b7280;">CPM Lima:</span>
+                                    <strong id="platformCPMLima" style="color: #dc2626; margin-left: 4px;">-</strong>
+                                </div>
+                                <div>
+                                    <span style="color: #6b7280;">CPC Lima:</span>
+                                    <strong id="platformCPCLima" style="color: #dc2626; margin-left: 4px;">-</strong>
+                                </div>
+                                <div>
+                                    <span style="color: #6b7280;">Nivel Saturación:</span>
+                                    <strong id="platformSaturation" style="margin-left: 4px;">-</strong>
+                                </div>
+                                <div>
+                                    <span style="color: #6b7280;">Presup. Mínimo:</span>
+                                    <strong id="platformMinBudget" style="color: #dc2626; margin-left: 4px;">-</strong>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- LOCATION & BUDGET -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                        <div>
+                            <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
+                                📍 UBICACIÓN
+                            </label>
+                            <select id="locationSelect" class="crimson-input" style="cursor: pointer;">
+                                <option value="lima">Lima Metropolitana</option>
+                                <option value="provincias">Provincias</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
+                                💵 PRESUPUESTO MENSUAL
+                            </label>
+                            <input type="number" id="budgetInput" class="crimson-input" placeholder="Ej: 2000" min="100" step="100">
+                        </div>
+                    </div>
+
+                    <!-- LEAD QUALITY SLIDER -->
+                    <div style="margin-bottom: 32px;">
+                        <label style="display: block; font-size: 14px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">
+                            🔥 CALIDAD DE LEADS: <span id="leadQualityLabel" style="color: #f59e0b;">WARM (Templados)</span>
+                        </label>
+                        <input type="range" id="leadQualityRange" min="1" max="3" value="2" step="1" style="width: 100%;">
+                        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #6b7280; margin-top: 4px;">
+                            <span>Cold (Fríos)</span>
+                            <span>Warm (Templados)</span>
+                            <span>Hot (Calientes)</span>
+                        </div>
+                    </div>
+
+                    <!-- CALCULATE BUTTON -->
+                    <button id="calculateBtn" class="crimson-btn" style="width: 100%; margin-bottom: 24px;">
+                        ⚡ CALCULAR PROYECCIÓN
+                    </button>
+
+                    <!-- RESULTS SECTION -->
+                    <div id="resultsSection" style="display: none;">
+                        <div style="padding: 20px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(153, 27, 27, 0.05)); border-radius: 12px; border: 2px solid rgba(220, 38, 38, 0.4); margin-bottom: 24px;">
+                            <h4 style="font-size: 16px; font-weight: 800; color: #dc2626; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;">
+                                📊 Proyección del Embudo
+                            </h4>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px;">
+                                <div class="metric-box-crimson">
+                                    <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">LEADS ESTIMADOS</div>
+                                    <div style="font-size: 28px; font-weight: 900; color: #dc2626;" id="estimatedLeads">-</div>
+                                </div>
+                                <div class="metric-box-crimson">
+                                    <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">COSTO POR LEAD</div>
+                                    <div style="font-size: 28px; font-weight: 900; color: #dc2626;" id="costPerLead">-</div>
+                                </div>
+                                <div class="metric-box-crimson">
+                                    <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">VENTAS PROYECTADAS</div>
+                                    <div style="font-size: 28px; font-weight: 900; color: #10b981;" id="projectedSales">-</div>
+                                </div>
+                                <div class="metric-box-crimson">
+                                    <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">INGRESOS TOTALES</div>
+                                    <div style="font-size: 28px; font-weight: 900; color: #10b981;" id="totalRevenue">-</div>
+                                </div>
+                            </div>
+
+                            <!-- FUNNEL VISUALIZATION -->
+                            <div id="funnelVisualization" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(153, 27, 27, 0.3);"></div>
+
+                            <!-- ROAS CALCULATION -->
+                            <div id="roasSection" style="margin-top: 20px; padding: 16px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border: 2px solid #10b981;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-size: 12px; color: #6b7280; font-weight: 600;">ROAS PROYECTADO</div>
+                                        <div style="font-size: 36px; font-weight: 900; color: #10b981;" id="roasValue">-</div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-size: 12px; color: #6b7280; font-weight: 600;">GANANCIA NETA</div>
+                                        <div style="font-size: 24px; font-weight: 800; color: #10b981;" id="netProfit">-</div>
+                                    </div>
+                                </div>
+                                <div id="roasHealthBadge" style="margin-top: 12px; padding: 8px; border-radius: 6px; text-align: center; font-size: 13px; font-weight: 700;"></div>
+                            </div>
+                        </div>
+
+                        <!-- WHATSAPP SCRIPT GENERATOR -->
+                        <div id="whatsappSection" style="padding: 20px; background: rgba(37, 211, 102, 0.05); border-radius: 12px; border: 2px solid rgba(37, 211, 102, 0.3);">
+                            <h4 style="font-size: 16px; font-weight: 800; color: #25d366; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 24px;">📱</span>
+                                Script WhatsApp Optimizado
+                            </h4>
+                            <div id="whatsappScript" style="background: rgba(10, 10, 10, 0.6); padding: 16px; border-radius: 8px; font-size: 14px; line-height: 1.6; color: #e5e7eb; margin-bottom: 12px; border: 1px solid rgba(37, 211, 102, 0.2);"></div>
+                            <button id="copyWhatsappBtn" class="crimson-btn-success" style="width: 100%;">
+                                📋 Copiar Script
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROWTH STRATEGIES -->
+                <div class="war-room-card">
+                    <h3 style="font-size: 20px; font-weight: 800; color: #dc2626; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+                        🚀 Estrategias de Crecimiento Perú
+                    </h3>
+                    <div id="strategiesContainer" style="display: grid; gap: 12px;"></div>
                 </div>
             </div>
 
-            <!-- Results Section -->
-            <div id="resultsSection" class="hidden space-y-6">
-                <!-- Funnel Visualization -->
-                <div class="cyber-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">📉 Visualización del Embudo</h2>
-                    <div class="h-64 md:h-80">
-                        <canvas id="funnelChart"></canvas>
+            <!-- RIGHT COLUMN: NEWS PULSE & PENTAGON HUB -->
+            <div>
+                <!-- NEWS PULSE -->
+                <div id="news" class="war-room-card" style="margin-bottom: 24px; position: sticky; top: 100px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+                        <h3 style="font-size: 18px; font-weight: 800; color: #dc2626; margin: 0; display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 24px;">📰</span>
+                            News Pulse
+                        </h3>
+                        <button id="refreshNewsBtn" class="crimson-btn-sm">
+                            🔄 Actualizar
+                        </button>
                     </div>
-                </div>
-
-                <!-- Multi-Channel Breakdown -->
-                <div class="cyber-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">📱 Simulador Multi-Canal</h2>
-                    <p class="text-sm text-gray-400 mb-4">Distribuye tu presupuesto y compara ROAS por plataforma</p>
                     
-                    <div id="channelBreakdown" class="space-y-4"></div>
-                    
-                    <div class="mt-6 p-4 bg-violet-500/10 border border-violet-500/30 rounded-lg">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium">Blended ROAS:</span>
-                            <span id="blendedROAS" class="text-2xl font-bold text-violet-400">0.0x</span>
+                    <div style="margin-bottom: 16px; padding: 12px; background: rgba(220, 38, 38, 0.05); border-radius: 8px; border: 1px solid rgba(220, 38, 38, 0.2);">
+                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">ESTADO DEL MERCADO</div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 10px; height: 10px; background: #10b981; border-radius: 50%; box-shadow: 0 0 12px #10b981;"></span>
+                            <span style="font-size: 14px; font-weight: 700; color: #10b981;">ACTIVO</span>
+                            <span style="font-size: 12px; color: #6b7280; margin-left: auto;">Última actualización: <strong id="lastUpdate">ahora</strong></span>
                         </div>
                     </div>
+
+                    <div id="newsContainer" style="display: flex; flex-direction: column; gap: 12px; max-height: 600px; overflow-y: auto; padding-right: 8px;"></div>
                 </div>
 
-                <!-- Influencer ROI Calculator -->
-                <div class="cyber-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">🌟 Influencer ROI Calculator</h2>
-                    <p class="text-sm text-gray-400 mb-4">Calcula cuántas ventas necesitas para rentabilizar un influencer</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Fee del Influencer</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-3 text-gray-400" id="influencerSymbol">$</span>
-                                <input type="number" id="influencerFee" class="cyber-input w-full pl-8" placeholder="5000" value="5000">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Tasa de Conversión Estimada (%)</label>
-                            <input type="number" id="influencerConversion" class="cyber-input w-full" placeholder="1.5" value="1.5" step="0.1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Alcance/Followers</label>
-                            <input type="number" id="influencerReach" class="cyber-input w-full" placeholder="100000" value="100000">
-                        </div>
-                    </div>
-
-                    <button id="calculateInfluencerBtn" class="cyber-btn w-full mb-4">
-                        🧮 Calcular Break-Even
-                    </button>
-
-                    <div id="influencerResults" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">Ventas Necesarias</div>
-                            <div id="influencerSalesNeeded" class="text-2xl font-bold text-violet-400">0</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">CPV (Costo por Venta)</div>
-                            <div id="influencerCPV" class="text-2xl font-bold text-cyan-400">$0</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">ROI Estimado</div>
-                            <div id="influencerROI" class="text-2xl font-bold text-green-400">0%</div>
-                        </div>
-                    </div>
+                <!-- PENTAGON HUB -->
+                <div id="pentagon" class="war-room-card">
+                    <h3 style="font-size: 18px; font-weight: 800; color: #dc2626; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+                        ⬟ Pentagon Hub
+                    </h3>
+                    <div id="pentagonTools" style="display: grid; gap: 10px;"></div>
                 </div>
+            </div>
+        </div>
 
-                <!-- WhatsApp Growth Calculator -->
-                <div class="cyber-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">💬 WhatsApp Growth (LATAM)</h2>
-                    <p class="text-sm text-gray-400 mb-4">Calcula el costo por conversación iniciada en WhatsApp Business</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Presupuesto Click-to-WhatsApp</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-3 text-gray-400" id="whatsappSymbol">$</span>
-                                <input type="number" id="whatsappBudget" class="cyber-input w-full pl-8" placeholder="1000" value="1000">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Tasa de Respuesta (%)</label>
-                            <input type="number" id="whatsappResponse" class="cyber-input w-full" placeholder="45" value="45">
-                        </div>
-                    </div>
-
-                    <button id="calculateWhatsAppBtn" class="cyber-btn w-full mb-4">
-                        📊 Analizar WhatsApp Funnel
-                    </button>
-
-                    <div id="whatsappResults" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">Conversaciones Iniciadas</div>
-                            <div id="whatsappConversations" class="text-2xl font-bold text-violet-400">0</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">Costo por Conversación</div>
-                            <div id="whatsappCPC" class="text-2xl font-bold text-cyan-400">$0</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="text-xs text-gray-400 mb-1">Ventas Potenciales</div>
-                            <div id="whatsappSales" class="text-2xl font-bold text-green-400">0</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CMO Diagnostic Dashboard -->
-                <div class="cyber-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-violet-400 mb-6">🩺 CMO Health Diagnostic</h2>
-                    <div id="healthDiagnostic" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                </div>
-
-                <!-- Export Actions -->
-                <div class="flex flex-col md:flex-row justify-center gap-4">
-                    <button id="saveScenarioBtn" class="cyber-btn">
-                        💾 Guardar Escenario
-                    </button>
-                    <button id="exportPDFBtn" class="cyber-btn-success">
-                        📄 Exportar Reporte PDF
-                    </button>
-                    <button id="exportTXTBtn" class="cyber-btn-alt">
-                        📝 Exportar TXT
-                    </button>
+        <!-- SAVED SCENARIOS SECTION -->
+        <div id="scenarios" class="war-room-card" style="margin-top: 48px;">
+            <h3 style="font-size: 24px; font-weight: 800; color: #dc2626; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+                💼 Mis Escenarios Guardados
+            </h3>
+            <div id="scenariosContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
+                <div style="padding: 40px; text-align: center; color: #6b7280; border: 2px dashed rgba(153, 27, 27, 0.3); border-radius: 12px;">
+                    <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.5;">📊</div>
+                    <p style="font-size: 14px; margin: 0;">No hay escenarios guardados aún.<br>Calcula una proyección y guárdala.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="mt-12 border-t border-violet-500/20 bg-obsidian/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <!-- Pentagon Links -->
-            <div id="pentagonFooter" class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6"></div>
-            
-            <!-- Legal Disclaimer -->
-            <div class="text-center text-gray-500 text-xs border-t border-violet-500/10 pt-6">
-                <p class="mb-2">⚖️ <strong>Disclaimer Legal:</strong> LeadNexus AI es una plataforma de simulación de inteligencia comercial.</p>
-                <p>Los resultados son proyecciones basadas en datos ingresados y benchmarks de mercado 2026. No garantiza resultados futuros.</p>
-                <p class="mt-4 text-violet-400">© 2026 LeadNexus AI - Enterprise Intelligence Suite - Powered by Pentagon Ecosystem</p>
+    <!-- MODAL CONTAINER -->
+    <div id="modalContainer"></div>
+
+    <!-- FOOTER -->
+    <footer style="margin-top: 64px; padding: 32px 24px; background: rgba(10, 10, 10, 0.8); border-top: 2px solid #991b1b;">
+        <div style="max-width: 1400px; margin: 0 auto; text-align: center;">
+            <div style="display: flex; justify-content: center; gap: 32px; margin-bottom: 16px; flex-wrap: wrap;">
+                <a href="#" style="color: #6b7280; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#6b7280'">Documentación</a>
+                <a href="#" style="color: #6b7280; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#6b7280'">API Status</a>
+                <a href="#" style="color: #6b7280; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#6b7280'">Soporte</a>
             </div>
+            <p style="font-size: 12px; color: #4b5563; margin: 0;">
+                LeadTarget · Pentágono Financiero © 2026 · Diseñado para el mercado peruano
+            </p>
         </div>
     </footer>
 

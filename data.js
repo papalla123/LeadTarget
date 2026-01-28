@@ -1,500 +1,348 @@
-// ═══════════════════════════════════════════════════════════════════
-// LEADNEXUS AI - DATABASE & ECOSYSTEM BRIDGE
-// Enterprise Intelligence Edition - Pentagon Ecosystem
-// ═══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// LEADTARGET DATA ENGINE - PENTÁGONO FINANCIERO
+// Market Intelligence & Sales Funnel Database - Perú 2026
+// ═══════════════════════════════════════════════════════════════
 
-// PENTAGON LINK 5.0 - Centralized Navigation System
-window.PENTAGON_LINKS = {
-    sueldopro: {
-        name: 'SueldoPro Ultra',
-        url: 'https://sueldopro-2026.vercel.app',
-        icon: '💼',
-        color: 'from-blue-500 to-cyan-500'
+const MARKET_NEWS_PERU = [
+    {
+        id: 1,
+        title: "BCR mantiene tasa de interés en 5.75% para enero 2026",
+        summary: "El Banco Central de Reserva decidió mantener la tasa de referencia ante señales de desaceleración inflacionaria. Expertos proyectan inicio de recortes en Q2.",
+        impact: "NEUTRAL",
+        source: "Gestión",
+        url: "https://gestion.pe",
+        date: "2026-01-28",
+        category: "MONETARY_POLICY"
     },
-    marginaxis: {
-        name: 'MarginMaster Pro',
-        url: 'https://margin-master-pro-pboy.vercel.app',
-        icon: '📊',
-        color: 'from-green-500 to-emerald-500'
+    {
+        id: 2,
+        title: "E-commerce peruano creció 28% en 2025, liderado por food delivery",
+        summary: "Plataformas digitales alcanzaron S/18,500 millones en GMV. TikTok Shop y redes sociales capturaron 34% del tráfico de conversión.",
+        impact: "POSITIVE",
+        source: "El Comercio",
+        url: "https://elcomercio.pe",
+        date: "2026-01-27",
+        category: "DIGITAL_ECONOMY"
     },
-    leadnexus: {
-        name: 'LeadNexus AI',
-        url: 'https://lead-nexus-ai.vercel.app',
-        icon: '🎯',
-        color: 'from-violet-500 to-fuchsia-500',
-        active: true
+    {
+        id: 3,
+        title: "Dólar cierra en S/3.72: presión cambiaria por incertidumbre global",
+        summary: "El tipo de cambio subió 0.8% esta semana. Importadores reportan incremento en costos de insumos para Q1 2026.",
+        impact: "NEGATIVE",
+        source: "Bloomberg Línea",
+        url: "https://bloomberg.com",
+        date: "2026-01-28",
+        category: "FOREX"
     },
-    liquidezforce: {
-        name: 'Liquidez Force',
-        url: 'https://liquidez-force.vercel.app',
-        icon: '💰',
-        color: 'from-yellow-500 to-orange-500'
+    {
+        id: 4,
+        title: "Sector construcción proyecta crecimiento de 6.2% para 2026",
+        summary: "Inversión privada en vivienda y obras públicas impulsan recuperación. Lima Norte y Callao concentran 42% de nuevos proyectos inmobiliarios.",
+        impact: "POSITIVE",
+        source: "Gestión",
+        url: "https://gestion.pe",
+        date: "2026-01-26",
+        category: "REAL_ESTATE"
     },
-    wealtharmor: {
-        name: 'Wealth Armor AI',
-        url: 'https://wealth-armor-ai.vercel.app',
-        icon: '🛡️',
-        color: 'from-purple-500 to-pink-500'
+    {
+        id: 5,
+        title: "Costos de Meta Ads suben 18% YoY en Perú por saturación",
+        summary: "CPM promedio alcanza $8.50 en Facebook/Instagram. Marcas migran a TikTok Ads donde CPM se mantiene en $4.20 con mejor engagement.",
+        impact: "NEGATIVE",
+        source: "Mercado Negro",
+        url: "https://mercanegro.pe",
+        date: "2026-01-25",
+        category: "DIGITAL_ADS"
+    },
+    {
+        id: 6,
+        title: "Sunat intensifica fiscalización a influencers y creadores de contenido",
+        summary: "Nueva directiva exige declaración de ingresos por monetización digital. Afecta a +12,000 profesionales del marketing digital en Perú.",
+        impact: "NEUTRAL",
+        source: "Gestión",
+        url: "https://gestion.pe",
+        date: "2026-01-24",
+        category: "REGULATION"
     }
-};
+];
 
-// ═══════════════════════════════════════════════════════════════════
-// AI GROWTH ADVISOR MESSAGES - Tu CMO 24/7
-// ═══════════════════════════════════════════════════════════════════
-window.AI_ADVISOR_MESSAGES = {
-    critical: {
-        threshold: 1.5,
-        icon: '🛑',
-        title: 'ALERTA CRÍTICA - QUEMANDO CAPITAL',
-        message: 'Estás perdiendo dinero con cada venta. Tu costo de adquisición supera tu ganancia neta. Detén los anuncios inmediatamente y revisa el CTR de tus creativos. Esta campaña necesita una reestructuración total antes de seguir invirtiendo.',
-        color: 'red',
-        action: 'Detener gastos y optimizar creativos urgentemente'
-    },
-    risk: {
-        threshold: 3.0,
-        icon: '⚠️',
-        title: 'ZONA DE RIESGO - RENTABILIDAD FRÁGIL',
-        message: 'Estás en break-even o con margen muy estrecho. Cualquier aumento en costos de pauta o disminución en conversión te llevará a pérdidas. Necesitas mejorar tu tasa de cierre y optimizar el embudo antes de escalar.',
-        color: 'yellow',
-        action: 'Optimizar embudo de conversión y reducir CAC'
-    },
-    healthy: {
-        threshold: 6.0,
-        icon: '✅',
-        title: 'CAMPAÑA SALUDABLE - ESCALABLE',
-        message: 'Tu campaña está generando retornos sólidos y sostenibles. Tienes margen suficiente para absorber fluctuaciones del mercado. Este es el momento ideal para probar nuevos creativos y audiencias sin arriesgar la rentabilidad.',
-        color: 'green',
-        action: 'Escalar gradualmente (+10-20% semanal)'
-    },
-    unicorn: {
-        threshold: Infinity,
-        icon: '🚀',
-        title: 'MODO UNICORNIO - MÁQUINA DE DINERO',
-        message: '¡Felicidades! Tienes una máquina de imprimir dinero. Tu ROAS es excepcional y tus márgenes son brutales. Escala agresivamente mientras dure esta ventana de oportunidad. Aumenta presupuesto 20% diario y duplica esfuerzos en remarketing.',
-        color: 'violet',
-        action: 'Escalar agresivamente (+20% diario)'
-    }
-};
-
-// ═══════════════════════════════════════════════════════════════════
-// COUNTRY INTELLIGENCE DATABASE - 21 Países LATAM + USA + España
-// ═══════════════════════════════════════════════════════════════════
-window.COUNTRY_DATABASE = {
-    AR: {
-        name: 'Argentina',
-        flag: '🇦🇷',
-        currency: 'ARS',
-        symbol: '$',
-        cpcEstimated: 0.35,
-        digitalTax: 21,
-        taxName: 'IVA + Imp. PAIS',
-        region: 'LATAM',
-        marketSize: 'Grande'
-    },
-    MX: {
-        name: 'México',
-        flag: '🇲🇽',
-        currency: 'MXN',
-        symbol: '$',
-        cpcEstimated: 0.28,
-        digitalTax: 16,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Muy Grande'
-    },
-    CO: {
-        name: 'Colombia',
-        flag: '🇨🇴',
-        currency: 'COP',
-        symbol: '$',
-        cpcEstimated: 0.22,
-        digitalTax: 19,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Grande'
-    },
-    CL: {
-        name: 'Chile',
-        flag: '🇨🇱',
-        currency: 'CLP',
-        symbol: '$',
-        cpcEstimated: 0.32,
-        digitalTax: 19,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Medio'
-    },
-    PE: {
-        name: 'Perú',
-        flag: '🇵🇪',
-        currency: 'PEN',
-        symbol: 'S/',
-        cpcEstimated: 0.25,
-        digitalTax: 18,
-        taxName: 'IGV',
-        region: 'LATAM',
-        marketSize: 'Medio'
-    },
-    BR: {
-        name: 'Brasil',
-        flag: '🇧🇷',
-        currency: 'BRL',
-        symbol: 'R$',
-        cpcEstimated: 0.30,
-        digitalTax: 17,
-        taxName: 'ICMS',
-        region: 'LATAM',
-        marketSize: 'Gigante'
-    },
-    EC: {
-        name: 'Ecuador',
-        flag: '🇪🇨',
-        currency: 'USD',
-        symbol: '$',
-        cpcEstimated: 0.20,
-        digitalTax: 12,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Pequeño'
-    },
-    UY: {
-        name: 'Uruguay',
-        flag: '🇺🇾',
-        currency: 'UYU',
-        symbol: '$',
-        cpcEstimated: 0.38,
-        digitalTax: 22,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Pequeño'
-    },
-    PY: {
-        name: 'Paraguay',
-        flag: '🇵🇾',
-        currency: 'PYG',
-        symbol: '₲',
-        cpcEstimated: 0.18,
-        digitalTax: 10,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Pequeño'
-    },
-    BO: {
-        name: 'Bolivia',
-        flag: '🇧🇴',
-        currency: 'BOB',
-        symbol: 'Bs',
-        cpcEstimated: 0.15,
-        digitalTax: 13,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Pequeño'
-    },
-    VE: {
-        name: 'Venezuela',
-        flag: '🇻🇪',
-        currency: 'USD',
-        symbol: '$',
-        cpcEstimated: 0.12,
-        digitalTax: 16,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Medio'
-    },
-    CR: {
-        name: 'Costa Rica',
-        flag: '🇨🇷',
-        currency: 'CRC',
-        symbol: '₡',
-        cpcEstimated: 0.40,
-        digitalTax: 13,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Pequeño'
-    },
-    PA: {
-        name: 'Panamá',
-        flag: '🇵🇦',
-        currency: 'USD',
-        symbol: '$',
-        cpcEstimated: 0.45,
-        digitalTax: 7,
-        taxName: 'ITBMS',
-        region: 'LATAM',
-        marketSize: 'Pequeño'
-    },
-    GT: {
-        name: 'Guatemala',
-        flag: '🇬🇹',
-        currency: 'GTQ',
-        symbol: 'Q',
-        cpcEstimated: 0.22,
-        digitalTax: 12,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Medio'
-    },
-    SV: {
-        name: 'El Salvador',
-        flag: '🇸🇻',
-        currency: 'USD',
-        symbol: '$',
-        cpcEstimated: 0.25,
-        digitalTax: 13,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Pequeño'
-    },
-    HN: {
-        name: 'Honduras',
-        flag: '🇭🇳',
-        currency: 'HNL',
-        symbol: 'L',
-        cpcEstimated: 0.20,
-        digitalTax: 15,
-        taxName: 'ISV',
-        region: 'LATAM',
-        marketSize: 'Pequeño'
-    },
-    NI: {
-        name: 'Nicaragua',
-        flag: '🇳🇮',
-        currency: 'NIO',
-        symbol: 'C$',
-        cpcEstimated: 0.18,
-        digitalTax: 15,
-        taxName: 'IVA',
-        region: 'LATAM',
-        marketSize: 'Pequeño'
-    },
-    DO: {
-        name: 'República Dominicana',
-        flag: '🇩🇴',
-        currency: 'DOP',
-        symbol: 'RD$',
-        cpcEstimated: 0.30,
-        digitalTax: 18,
-        taxName: 'ITBIS',
-        region: 'LATAM',
-        marketSize: 'Medio'
-    },
-    PR: {
-        name: 'Puerto Rico',
-        flag: '🇵🇷',
-        currency: 'USD',
-        symbol: '$',
-        cpcEstimated: 0.80,
-        digitalTax: 11.5,
-        taxName: 'IVU',
-        region: 'Caribe',
-        marketSize: 'Pequeño'
-    },
-    ES: {
-        name: 'España',
-        flag: '🇪🇸',
-        currency: 'EUR',
-        symbol: '€',
-        cpcEstimated: 0.65,
-        digitalTax: 21,
-        taxName: 'IVA',
-        region: 'Europa',
-        marketSize: 'Grande'
-    },
-    US: {
-        name: 'Estados Unidos',
-        flag: '🇺🇸',
-        currency: 'USD',
-        symbol: '$',
-        cpcEstimated: 1.20,
-        digitalTax: 0,
-        taxName: 'Varía por Estado',
-        region: 'Norteamérica',
-        marketSize: 'Gigante'
-    }
-};
-
-// ═══════════════════════════════════════════════════════════════════
-// CHANNEL BENCHMARKS - Multi-Platform Intelligence
-// ═══════════════════════════════════════════════════════════════════
-window.CHANNEL_BENCHMARKS = {
-    facebook: {
-        name: 'Facebook Ads',
-        icon: '📘',
-        color: 'from-blue-600 to-blue-400',
-        avgCPC: 0.45,
-        avgCTR: 1.8,
-        avgConversion: 3.2,
-        bestFor: ['E-commerce', 'B2C', 'Local'],
-        strength: 'Alcance masivo y targeting preciso'
-    },
-    instagram: {
-        name: 'Instagram Ads',
-        icon: '📸',
-        color: 'from-pink-600 to-purple-500',
-        avgCPC: 0.55,
-        avgCTR: 2.1,
-        avgConversion: 2.8,
-        bestFor: ['Fashion', 'Beauty', 'Lifestyle'],
-        strength: 'Engagement visual y shopping nativo'
-    },
-    google: {
-        name: 'Google Ads',
-        icon: '🔍',
-        color: 'from-red-500 to-yellow-500',
-        avgCPC: 1.20,
-        avgCTR: 3.5,
-        avgConversion: 4.5,
-        bestFor: ['B2B', 'Servicios', 'High Ticket'],
-        strength: 'Intención de búsqueda alta'
-    },
-    tiktok: {
-        name: 'TikTok Ads',
-        icon: '🎵',
-        color: 'from-black to-cyan-400',
-        avgCPC: 0.35,
-        avgCTR: 2.5,
-        avgConversion: 2.0,
-        bestFor: ['Gen Z', 'Viral', 'Impulse Buy'],
-        strength: 'Contenido viral y engagement orgánico'
-    },
-    linkedin: {
-        name: 'LinkedIn Ads',
-        icon: '💼',
-        color: 'from-blue-700 to-blue-500',
-        avgCPC: 5.50,
-        avgCTR: 0.8,
-        avgConversion: 2.5,
-        bestFor: ['B2B', 'SaaS', 'Executive'],
-        strength: 'Decisores y profesionales'
-    }
-};
-
-// ═══════════════════════════════════════════════════════════════════
-// INDUSTRY CONVERSION FUNNELS
-// ═══════════════════════════════════════════════════════════════════
-window.INDUSTRY_FUNNELS = {
+const INDUSTRIES_PERU = {
     ecommerce: {
-        impressions: 10000,
-        clicks: 200,
-        leads: 50,
-        sales: 10
+        name: "E-commerce / Tiendas Online",
+        avgTicket: 180,
+        conversionRate: 2.8,
+        avgMargin: 35,
+        closingCycle: 2,
+        whatsappScript: "¡Hola! 👋 Vi tu tienda online y me interesa {producto}. ¿Tienes stock disponible? ¿Cuál es el tiempo de envío a {ciudad}?"
     },
-    services: {
-        impressions: 5000,
-        clicks: 150,
-        leads: 30,
-        sales: 8
+    realEstate: {
+        name: "Inmobiliaria / Proyectos",
+        avgTicket: 320000,
+        conversionRate: 1.2,
+        avgMargin: 8,
+        closingCycle: 120,
+        whatsappScript: "Buenos días. Estoy interesado en {proyecto} que vi en su publicidad. ¿Podrían enviarme el brochure y agendar una visita? Mi presupuesto es de S/{monto}."
     },
-    b2b: {
-        impressions: 3000,
-        clicks: 90,
-        leads: 15,
-        sales: 3
+    healthWellness: {
+        name: "Salud / Clínicas / Wellness",
+        avgTicket: 850,
+        conversionRate: 4.5,
+        avgMargin: 52,
+        closingCycle: 7,
+        whatsappScript: "Hola, quisiera agendar una cita para {servicio}. ¿Tienen disponibilidad esta semana? ¿Aceptan seguro/particular?"
     },
     education: {
-        impressions: 8000,
-        clicks: 240,
-        leads: 60,
-        sales: 15
+        name: "Educación / Cursos / Coaching",
+        avgTicket: 1200,
+        conversionRate: 3.8,
+        avgMargin: 68,
+        closingCycle: 14,
+        whatsappScript: "¡Hola! Me interesa el curso de {especialidad}. ¿Cuándo inicia la próxima promoción? ¿Tienen opciones de pago fraccionado?"
     },
-    health: {
-        impressions: 6000,
-        clicks: 180,
-        leads: 45,
-        sales: 12
+    automotive: {
+        name: "Automotriz / Repuestos",
+        avgTicket: 4500,
+        conversionRate: 2.1,
+        avgMargin: 28,
+        closingCycle: 21,
+        whatsappScript: "Buen día. Necesito cotización para {servicio/repuesto} para un {marca} {modelo}. ¿Hacen instalación? ¿Cuál es el tiempo de entrega?"
     },
-    realestate: {
-        impressions: 4000,
-        clicks: 120,
-        leads: 20,
-        sales: 2
+    beautyFashion: {
+        name: "Belleza / Moda / Estética",
+        avgTicket: 420,
+        conversionRate: 5.2,
+        avgMargin: 58,
+        closingCycle: 3,
+        whatsappScript: "Hola! Vi tu {servicio/producto} en {red_social}. Me encantó! ¿Cuál es el precio final? ¿Tienen promociones activas?"
+    },
+    foodBeverage: {
+        name: "Restaurantes / Food Delivery",
+        avgTicket: 65,
+        conversionRate: 8.5,
+        avgMargin: 42,
+        closingCycle: 1,
+        whatsappScript: "Hola! Quiero hacer un pedido para {cantidad} personas. ¿Tienen delivery a {distrito}? ¿Cuál es el monto mínimo?"
+    },
+    legalServices: {
+        name: "Servicios Legales / Asesoría",
+        avgTicket: 2800,
+        conversionRate: 2.9,
+        avgMargin: 72,
+        closingCycle: 30,
+        whatsappScript: "Buenos días. Necesito asesoría legal para {tema}. ¿Podrían agendar una consulta? ¿Cuál es el costo de la primera sesión?"
+    },
+    homeServices: {
+        name: "Servicios para el Hogar",
+        avgTicket: 580,
+        conversionRate: 6.8,
+        avgMargin: 48,
+        closingCycle: 5,
+        whatsappScript: "Hola, necesito contratar servicio de {tipo} para {fecha}. ¿Tienen disponibilidad? ¿Cuál es la tarifa en {distrito}?"
+    },
+    b2bServices: {
+        name: "Servicios B2B / Corporativos",
+        avgTicket: 8500,
+        conversionRate: 1.8,
+        avgMargin: 45,
+        closingCycle: 60,
+        whatsappScript: "Buen día. Representamos a {empresa} y nos interesa su solución de {servicio}. ¿Podrían enviarnos una propuesta comercial? Nuestro volumen mensual es de {cantidad}."
     }
 };
 
-// ═══════════════════════════════════════════════════════════════════
-// ECOSYSTEM DATA BRIDGE - Pentagon Sync Protocol
-// ═══════════════════════════════════════════════════════════════════
-window.EcosystemBridge = {
-    importSalaryData() {
-        try {
-            const salesCommission = localStorage.getItem('SALES_COMMISSION_COST');
-            return salesCommission ? parseFloat(salesCommission) : 0;
-        } catch (e) {
-            return 0;
-        }
+const AD_PLATFORMS_PERU_2026 = {
+    facebookAds: {
+        name: "Facebook/Instagram Ads",
+        cpmLima: 8.50,
+        cpmProvincias: 6.20,
+        cpcLima: 0.42,
+        cpcProvincias: 0.31,
+        avgCTR: 2.8,
+        bestFor: ["E-commerce", "Belleza", "Food", "Servicios"],
+        minBudget: 300,
+        saturationLevel: "HIGH"
     },
-    
-    importCashData() {
-        try {
-            const availableCash = localStorage.getItem('AVAILABLE_CASH');
-            return availableCash ? parseFloat(availableCash) : 0;
-        } catch (e) {
-            return 0;
-        }
+    tiktokAds: {
+        name: "TikTok Ads",
+        cpmLima: 4.20,
+        cpmProvincias: 3.10,
+        cpcLima: 0.18,
+        cpcProvincias: 0.13,
+        avgCTR: 4.5,
+        bestFor: ["Belleza", "Moda", "Food", "Educación"],
+        minBudget: 500,
+        saturationLevel: "MEDIUM"
     },
-    
-    exportCAC(cac) {
-        try {
-            localStorage.setItem('GLOBAL_CAC', cac.toFixed(2));
-            localStorage.setItem('CAC_UPDATED_AT', new Date().toISOString());
-        } catch (e) {
-            console.warn('No se pudo exportar CAC');
-        }
+    googleAds: {
+        name: "Google Ads (Search)",
+        cpmLima: 12.80,
+        cpmProvincias: 8.90,
+        cpcLima: 0.85,
+        cpcProvincias: 0.58,
+        avgCTR: 3.2,
+        bestFor: ["B2B", "Legal", "Salud", "Inmobiliaria"],
+        minBudget: 800,
+        saturationLevel: "HIGH"
     },
-    
-    exportBurnRate(burnRate) {
-        try {
-            localStorage.setItem('MARKETING_BURN_RATE', burnRate.toFixed(2));
-            localStorage.setItem('BURN_RATE_UPDATED_AT', new Date().toISOString());
-        } catch (e) {
-            console.warn('No se pudo exportar Burn Rate');
-        }
+    youtubeAds: {
+        name: "YouTube Ads",
+        cpmLima: 5.60,
+        cpmProvincias: 3.80,
+        cpcLima: 0.28,
+        cpcProvincias: 0.19,
+        avgCTR: 3.8,
+        bestFor: ["Educación", "Automotriz", "Inmobiliaria"],
+        minBudget: 600,
+        saturationLevel: "MEDIUM"
     },
-    
-    exportMarketingHealth(score) {
-        try {
-            localStorage.setItem('MARKETING_HEALTH', score.toString());
-            localStorage.setItem('MARKETING_HEALTH_UPDATED_AT', new Date().toISOString());
-        } catch (e) {
-            console.warn('No se pudo exportar Marketing Health');
-        }
-    },
-    
-    checkEcosystemHealth() {
-        const connections = {
-            sueldopro: !!localStorage.getItem('SALES_COMMISSION_COST'),
-            liquidezforce: !!localStorage.getItem('AVAILABLE_CASH'),
-            marginaxis: !!localStorage.getItem('NET_MARGIN')
-        };
-        
-        return connections;
+    linkedinAds: {
+        name: "LinkedIn Ads",
+        cpmLima: 18.50,
+        cpmProvincias: 14.20,
+        cpcLima: 1.85,
+        cpcProvincias: 1.42,
+        avgCTR: 1.8,
+        bestFor: ["B2B", "Legal", "Educación Premium"],
+        minBudget: 1500,
+        saturationLevel: "LOW"
     }
 };
 
-// ═══════════════════════════════════════════════════════════════════
-// FOREX API CONFIGURATION
-// ═══════════════════════════════════════════════════════════════════
-window.FOREX_CONFIG = {
-    apiURL: 'https://api.exchangerate-api.com/v4/latest/USD',
-    lastUpdate: null,
-    rates: {},
-    
-    async updateRates() {
-        try {
-            const response = await fetch(this.apiURL);
-            const data = await response.json();
-            this.rates = data.rates;
-            this.lastUpdate = new Date();
-            return true;
-        } catch (e) {
-            console.warn('No se pudieron actualizar tasas de cambio');
-            return false;
-        }
+const COST_PER_LEAD_BENCHMARKS_2026 = {
+    lima: {
+        cold: { min: 8, max: 25, avg: 15 },
+        warm: { min: 12, max: 38, avg: 22 },
+        hot: { min: 28, max: 85, avg: 52 }
     },
-    
-    convert(amount, from, to) {
-        if (!this.rates[from] || !this.rates[to]) return amount;
-        const amountInUSD = from === 'USD' ? amount : amount / this.rates[from];
-        return to === 'USD' ? amountInUSD : amountInUSD * this.rates[to];
+    provincias: {
+        cold: { min: 5, max: 18, avg: 10 },
+        warm: { min: 8, max: 28, avg: 16 },
+        hot: { min: 18, max: 62, avg: 38 }
     }
 };
+
+const CONVERSION_FUNNEL_STAGES = {
+    awareness: {
+        name: "Awareness (Conocimiento)",
+        typical_rate: 100,
+        description: "Personas que ven tu anuncio"
+    },
+    interest: {
+        name: "Interest (Interés)",
+        typical_rate: 15,
+        description: "Clicks en tu anuncio / Landing page"
+    },
+    consideration: {
+        name: "Consideration (Consideración)",
+        typical_rate: 35,
+        description: "Dejan datos / Añaden al carrito"
+    },
+    intent: {
+        name: "Intent (Intención)",
+        typical_rate: 55,
+        description: "Inician checkout / Solicitan cotización"
+    },
+    purchase: {
+        name: "Purchase (Compra)",
+        typical_rate: 42,
+        description: "Completan la compra / Firman contrato"
+    }
+};
+
+const GROWTH_STRATEGIES_PERU = [
+    {
+        strategy: "WhatsApp Business API",
+        roi: 320,
+        difficulty: "MEDIUM",
+        timeToResults: "2-4 semanas",
+        bestFor: ["E-commerce", "Servicios", "Food"]
+    },
+    {
+        strategy: "Influencer Marketing Local",
+        roi: 280,
+        difficulty: "MEDIUM",
+        timeToResults: "1-2 semanas",
+        bestFor: ["Belleza", "Moda", "Food"]
+    },
+    {
+        strategy: "SEO Local + Google My Business",
+        roi: 450,
+        difficulty: "HIGH",
+        timeToResults: "3-6 meses",
+        bestFor: ["Servicios Locales", "Salud", "Legal"]
+    },
+    {
+        strategy: "TikTok Shop + Live Shopping",
+        roi: 380,
+        difficulty: "LOW",
+        timeToResults: "1-3 semanas",
+        bestFor: ["E-commerce", "Belleza", "Moda"]
+    },
+    {
+        strategy: "Email Marketing Automation",
+        roi: 420,
+        difficulty: "MEDIUM",
+        timeToResults: "2-4 semanas",
+        bestFor: ["E-commerce", "Educación", "B2B"]
+    }
+];
+
+const PENTAGON_TOOLS = {
+    sueldopro: {
+        name: "SueldoPro",
+        icon: "💰",
+        description: "Calculadora Salarial Inteligente",
+        color: "#059669",
+        available: true
+    },
+    marginaxis: {
+        name: "MarginAxis",
+        icon: "📊",
+        description: "Optimizador de Márgenes",
+        color: "#0891b2",
+        available: true
+    },
+    liquidezforce: {
+        name: "LiquidezForce",
+        icon: "💎",
+        description: "Monitor de Flujo de Caja",
+        color: "#7c3aed",
+        available: true
+    },
+    wealtharmor: {
+        name: "WealthArmor",
+        icon: "🛡️",
+        description: "Escudo Patrimonial",
+        color: "#dc2626",
+        available: true
+    },
+    leadtarget: {
+        name: "LeadTarget",
+        icon: "🎯",
+        description: "Central de Crecimiento",
+        color: "#991b1b",
+        available: true
+    }
+};
+
+const NEWS_SOURCES_CREDIBILITY = {
+    gestion: { name: "Gestión", trust: 95, category: "BUSINESS" },
+    elcomercio: { name: "El Comercio", trust: 90, category: "GENERAL" },
+    bloomberg: { name: "Bloomberg Línea", trust: 98, category: "FINANCE" },
+    rpp: { name: "RPP Noticias", trust: 88, category: "GENERAL" },
+    mercanegro: { name: "Mercado Negro", trust: 85, category: "MARKETING" },
+    semanaeconomica: { name: "Semana Económica", trust: 92, category: "BUSINESS" }
+};
+
+// Export para uso en script.js
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        MARKET_NEWS_PERU,
+        INDUSTRIES_PERU,
+        AD_PLATFORMS_PERU_2026,
+        COST_PER_LEAD_BENCHMARKS_2026,
+        CONVERSION_FUNNEL_STAGES,
+        GROWTH_STRATEGIES_PERU,
+        PENTAGON_TOOLS,
+        NEWS_SOURCES_CREDIBILITY
+    };
+}

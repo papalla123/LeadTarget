@@ -1,895 +1,864 @@
-// ═══════════════════════════════════════════════════════════════════
-// LEADNEXUS AI - ENTERPRISE INTELLIGENCE SUITE
-// Complete Marketing Intelligence Suite con AI Advisor + Health Score
-// ═══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// LEADTARGET ENGINE - SCRIPT.JS
+// War Room Intelligence System - Pentágono Financiero
+// ═══════════════════════════════════════════════════════════════
 
-let funnelChart = null;
-let currentCountry = null;
-let forexRates = {};
-let currentMetrics = {};
+// ══════════════════════════════════════════════════════════════════════════
+// GLOBAL STATE MANAGEMENT
+// ══════════════════════════════════════════════════════════════════════════
 
-// ═══════════════════════════════════════════════════════════════════
+const AppState = {
+    currentIndustry: null,
+    currentPlatform: null,
+    currentLocation: 'lima',
+    currentBudget: 0,
+    currentLeadQuality: 'warm',
+    lastCalculation: null,
+    savedScenarios: JSON.parse(localStorage.getItem('leadtarget_scenarios')) || [],
+    newsData: MARKET_NEWS_PERU || []
+};
+
+// ══════════════════════════════════════════════════════════════════════════
 // INITIALIZATION
-// ═══════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════
 
-window.addEventListener('load', async () => {
-    renderPentagonNav();
-    populateCountrySelector();
-    checkEcosystemConnections();
-    await loadForexRates();
-    initializeEventListeners();
-    loadSavedData();
+document.addEventListener('DOMContentLoaded', () => {
+    initializeApp();
 });
 
-// ═══════════════════════════════════════════════════════════════════
-// PENTAGON NAVIGATION SYSTEM
-// ═══════════════════════════════════════════════════════════════════
-
-function renderPentagonNav() {
-    const navContainer = document.getElementById('pentagonNav');
-    const footerContainer = document.getElementById('pentagonFooter');
+function initializeApp() {
+    console.log('🎯 LeadTarget War Room - Initializing...');
     
-    Object.values(window.PENTAGON_LINKS).forEach(link => {
-        const navLink = document.createElement('a');
-        navLink.href = link.url;
-        navLink.className = `nav-link ${link.active ? 'active' : ''}`;
-        navLink.innerHTML = `${link.icon} ${link.name}`;
-        navContainer.appendChild(navLink);
+    // Load industries
+    populateIndustrySelector();
+    
+    // Load ad platforms
+    populateAdPlatformSelector();
+    
+    // Load news feed
+    loadNewsFeed();
+    
+    // Load growth strategies
+    loadGrowthStrategies();
+    
+    // Load Pentagon tools
+    loadPentagonTools();
+    
+    // Load saved scenarios
+    loadSavedScenarios();
+    
+    // Attach event listeners
+    attachEventListeners();
+    
+    // Update last update time
+    updateLastUpdateTime();
+    
+    console.log('✅ LeadTarget War Room - Ready');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// NEWS PULSE - REAL-TIME FETCHER
+// ══════════════════════════════════════════════════════════════════════════
+
+async function loadNewsFeed() {
+    const container = document.getElementById('newsContainer');
+    
+    if (!container) return;
+    
+    // Show loading state
+    container.innerHTML = '<div style="text-align: center; padding: 20px; color: #6b7280;">📡 Cargando noticias del mercado...</div>';
+    
+    try {
+        // Simulate API call (in production, this would fetch from a real endpoint)
+        const news = await fetchMarketNews();
         
-        const footerCard = document.createElement('a');
-        footerCard.href = link.url;
-        footerCard.className = 'block p-4 bg-gradient-to-br ' + link.color + ' rounded-lg hover:scale-105 transition-transform';
-        footerCard.innerHTML = `
-            <div class="text-center">
-                <span class="text-3xl">${link.icon}</span>
-                <p class="text-xs font-semibold mt-2 text-white">${link.name}</p>
-            </div>
-        `;
-        footerContainer.appendChild(footerCard);
+        if (news && news.length > 0) {
+            renderNews(news);
+        } else {
+            container.innerHTML = '<div style="text-align: center; padding: 20px; color: #6b7280;">No hay noticias disponibles</div>';
+        }
+    } catch (error) {
+        console.error('Error loading news:', error);
+        // Fallback to local data
+        renderNews(MARKET_NEWS_PERU);
+    }
+}
+
+async function fetchMarketNews() {
+    // Simulate async API call with delay
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(MARKET_NEWS_PERU);
+        }, 800);
     });
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// COUNTRY SELECTOR & INTELLIGENCE
-// ═══════════════════════════════════════════════════════════════════
-
-function populateCountrySelector() {
-    const select = document.getElementById('countrySelect');
+function renderNews(newsArray) {
+    const container = document.getElementById('newsContainer');
     
-    Object.entries(window.COUNTRY_DATABASE).forEach(([code, country]) => {
+    if (!container) return;
+    
+    container.innerHTML = newsArray.map(news => `
+        <div class="news-card slide-in" onclick="openNewsLink('${news.url}')">
+            <div class="news-category">${news.category.replace(/_/g, ' ')}</div>
+            <h4 class="news-title">${news.title}</h4>
+            <p class="news-summary">${news.summary}</p>
+            <div class="news-meta">
+                <div class="news-source">
+                    <span>📰</span>
+                    <strong>${news.source}</strong>
+                </div>
+                <div class="news-impact-${news.impact.toLowerCase()}">
+                    ${news.impact === 'POSITIVE' ? '📈' : news.impact === 'NEGATIVE' ? '📉' : '➖'}
+                    ${news.impact}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function openNewsLink(url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+function refreshNews() {
+    loadNewsFeed();
+    updateLastUpdateTime();
+    
+    // Visual feedback
+    const btn = document.getElementById('refreshNewsBtn');
+    if (btn) {
+        btn.textContent = '🔄 Actualizando...';
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            btn.textContent = '🔄 Actualizar';
+            btn.disabled = false;
+        }, 1000);
+    }
+}
+
+function updateLastUpdateTime() {
+    const element = document.getElementById('lastUpdate');
+    if (element) {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        element.textContent = `${hours}:${minutes}`;
+    }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// INDUSTRY & PLATFORM SELECTORS
+// ══════════════════════════════════════════════════════════════════════════
+
+function populateIndustrySelector() {
+    const select = document.getElementById('industrySelect');
+    
+    if (!select) return;
+    
+    Object.keys(INDUSTRIES_PERU).forEach(key => {
+        const industry = INDUSTRIES_PERU[key];
         const option = document.createElement('option');
-        option.value = code;
-        option.textContent = `${country.flag} ${country.name}`;
+        option.value = key;
+        option.textContent = industry.name;
         select.appendChild(option);
     });
 }
 
-function handleCountryChange() {
-    const code = document.getElementById('countrySelect').value;
-    if (!code) {
-        document.getElementById('countryInfo').classList.add('hidden');
-        currentCountry = null;
+function populateAdPlatformSelector() {
+    const select = document.getElementById('platformSelect');
+    
+    if (!select) return;
+    
+    Object.keys(AD_PLATFORMS_PERU_2026).forEach(key => {
+        const platform = AD_PLATFORMS_PERU_2026[key];
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = `${platform.name} (CPM: $${platform.cpmLima})`;
+        select.appendChild(option);
+    });
+}
+
+function onIndustryChange(industryKey) {
+    AppState.currentIndustry = industryKey;
+    
+    // Show relevant platforms for this industry
+    updatePlatformRecommendations(industryKey);
+}
+
+function onPlatformChange(platformKey) {
+    AppState.currentPlatform = platformKey;
+    
+    // Show platform details
+    showPlatformInfo(platformKey);
+}
+
+function showPlatformInfo(platformKey) {
+    const platform = AD_PLATFORMS_PERU_2026[platformKey];
+    const infoDiv = document.getElementById('platformInfo');
+    
+    if (!platform || !infoDiv) return;
+    
+    infoDiv.style.display = 'block';
+    
+    document.getElementById('platformCPMLima').textContent = `$${platform.cpmLima}`;
+    document.getElementById('platformCPCLima').textContent = `$${platform.cpcLima}`;
+    document.getElementById('platformMinBudget').textContent = `S/${platform.minBudget}`;
+    
+    const saturationEl = document.getElementById('platformSaturation');
+    saturationEl.textContent = platform.saturationLevel;
+    saturationEl.style.color = platform.saturationLevel === 'HIGH' ? '#ef4444' : 
+                                platform.saturationLevel === 'MEDIUM' ? '#f59e0b' : '#10b981';
+}
+
+function updatePlatformRecommendations(industryKey) {
+    const industry = INDUSTRIES_PERU[industryKey];
+    const platformSelect = document.getElementById('platformSelect');
+    
+    if (!industry || !platformSelect) return;
+    
+    // Visual feedback for recommended platforms could be added here
+    console.log(`Recommended platforms for ${industry.name}:`, industry);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// LEAD QUALITY SLIDER
+// ══════════════════════════════════════════════════════════════════════════
+
+function onLeadQualityChange(value) {
+    const qualities = ['cold', 'warm', 'hot'];
+    const labels = ['COLD (Fríos)', 'WARM (Templados)', 'HOT (Calientes)'];
+    const colors = ['#06b6d4', '#f59e0b', '#ef4444'];
+    
+    AppState.currentLeadQuality = qualities[value - 1];
+    
+    const label = document.getElementById('leadQualityLabel');
+    if (label) {
+        label.textContent = labels[value - 1];
+        label.style.color = colors[value - 1];
+    }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// FUNNEL CALCULATION ENGINE
+// ══════════════════════════════════════════════════════════════════════════
+
+function calculateFunnel() {
+    // Get inputs
+    const industryKey = document.getElementById('industrySelect').value;
+    const platformKey = document.getElementById('platformSelect').value;
+    const location = document.getElementById('locationSelect').value;
+    const budget = parseFloat(document.getElementById('budgetInput').value);
+    const leadQualityValue = parseInt(document.getElementById('leadQualityRange').value);
+    
+    // Validation
+    if (!industryKey) {
+        showAlert('Por favor selecciona una industria', 'warning');
         return;
     }
     
-    currentCountry = window.COUNTRY_DATABASE[code];
-    
-    // Mostrar info del país
-    document.getElementById('countryInfo').classList.remove('hidden');
-    document.getElementById('countryCPC').textContent = `${currentCountry.symbol}${currentCountry.cpcEstimated.toFixed(2)}`;
-    document.getElementById('countryTax').textContent = `${currentCountry.digitalTax}% ${currentCountry.taxName}`;
-    
-    // ACTUALIZAR TODOS LOS SÍMBOLOS DE MONEDA
-    document.getElementById('currencySymbol').textContent = currentCountry.symbol;
-    document.getElementById('budgetSymbol').textContent = currentCountry.symbol;
-    document.getElementById('influencerSymbol').textContent = currentCountry.symbol;
-    document.getElementById('whatsappSymbol').textContent = currentCountry.symbol;
-    
-    // Actualizar precio en USD
-    updatePriceInUSD();
-    
-    // Actualizar funnel metrics con nuevo CPC
-    updateFunnelMetrics();
-    
-    // Si ya hay resultados, recalcular
-    if (!document.getElementById('resultsSection').classList.contains('hidden')) {
-        calculateROI();
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// FOREX INTEGRATION
-// ═══════════════════════════════════════════════════════════════════
-
-async function loadForexRates() {
-    try {
-        await window.FOREX_CONFIG.updateRates();
-        forexRates = window.FOREX_CONFIG.rates;
-    } catch (e) {
-        console.warn('Forex rates not available, using defaults');
-    }
-}
-
-function convertToUSD(amount, currency) {
-    if (!forexRates[currency]) return amount;
-    return window.FOREX_CONFIG.convert(amount, currency, 'USD');
-}
-
-function updatePriceInUSD() {
-    if (!currentCountry) return;
-    
-    const price = parseFloat(document.getElementById('productPrice').value) || 0;
-    const priceUSD = convertToUSD(price, currentCountry.currency);
-    
-    if (currentCountry.currency !== 'USD') {
-        document.getElementById('priceUSD').classList.remove('hidden');
-        document.getElementById('priceUSD').textContent = `≈ $${priceUSD.toFixed(2)} USD`;
-    } else {
-        document.getElementById('priceUSD').classList.add('hidden');
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// ECOSYSTEM DATA BRIDGE
-// ═══════════════════════════════════════════════════════════════════
-
-function checkEcosystemConnections() {
-    const status = window.EcosystemBridge.checkEcosystemHealth();
-    const statusContainer = document.getElementById('ecosystemStatus');
-    
-    const connections = [
-        { name: 'SueldoPro', key: 'sueldopro', icon: '💼' },
-        { name: 'LiquidezForce', key: 'liquidezforce', icon: '💰' },
-        { name: 'MarginAxis', key: 'marginaxis', icon: '📊' }
-    ];
-    
-    statusContainer.innerHTML = connections.map(conn => `
-        <div class="flex items-center space-x-1 ${status[conn.key] ? 'text-green-400' : 'text-gray-600'}">
-            <span>${conn.icon}</span>
-            <span class="text-xs">${conn.name}</span>
-            <span>${status[conn.key] ? '✓' : '○'}</span>
-        </div>
-    `).join('');
-    
-    const netMargin = localStorage.getItem('NET_MARGIN');
-    if (netMargin) {
-        document.getElementById('netMargin').value = netMargin;
-    }
-}
-
-function checkCashAlert(budget) {
-    const availableCash = window.EcosystemBridge.importCashData();
-    
-    if (availableCash > 0 && budget > availableCash) {
-        document.getElementById('cashAlert').classList.remove('hidden');
-        document.getElementById('cashAlertMsg').textContent = 
-            `Tu presupuesto ($${budget.toLocaleString()}) excede tu caja disponible ($${availableCash.toLocaleString()})`;
-    } else {
-        document.getElementById('cashAlert').classList.add('hidden');
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// FUNNEL PHYSICS SIMULATOR
-// ═══════════════════════════════════════════════════════════════════
-
-function autoFillFunnel() {
-    const industry = document.getElementById('industrySelect').value;
-    const funnel = window.INDUSTRY_FUNNELS[industry];
-    
-    if (!funnel) return;
-    
-    const ctr = ((funnel.clicks / funnel.impressions) * 100).toFixed(1);
-    const leadConv = ((funnel.leads / funnel.clicks) * 100).toFixed(0);
-    const closeRate = ((funnel.sales / funnel.leads) * 100).toFixed(0);
-    
-    document.getElementById('ctrSlider').value = ctr;
-    document.getElementById('leadConvSlider').value = leadConv;
-    document.getElementById('closeRateSlider').value = closeRate;
-    
-    updateFunnelMetrics();
-}
-
-function updateFunnelMetrics() {
-    const budget = parseFloat(document.getElementById('monthlyBudget').value) || 0;
-    const cpc = currentCountry ? currentCountry.cpcEstimated : 0.50;
-    
-    const clicks = Math.floor(budget / cpc);
-    const ctr = parseFloat(document.getElementById('ctrSlider').value);
-    const impressions = Math.floor(clicks / (ctr / 100));
-    
-    const leadConv = parseFloat(document.getElementById('leadConvSlider').value);
-    const leads = Math.floor(clicks * (leadConv / 100));
-    
-    const closeRate = parseFloat(document.getElementById('closeRateSlider').value);
-    const sales = Math.floor(leads * (closeRate / 100));
-    
-    document.getElementById('ctrDisplay').textContent = ctr + '%';
-    document.getElementById('leadConvDisplay').textContent = leadConv + '%';
-    document.getElementById('closeRateDisplay').textContent = closeRate + '%';
-    
-    document.getElementById('impressions').value = impressions.toLocaleString();
-    document.getElementById('clicks').value = clicks.toLocaleString();
-    document.getElementById('leads').value = leads.toLocaleString();
-    document.getElementById('sales').value = sales.toLocaleString();
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// ROI CALCULATOR ENGINE + AI ADVISOR + HEALTH SCORE
-// ═══════════════════════════════════════════════════════════════════
-
-function calculateROI() {
-    if (!currentCountry) {
-        alert('Por favor selecciona un país primero');
+    if (!platformKey) {
+        showAlert('Por favor selecciona una plataforma publicitaria', 'warning');
         return;
     }
     
-    const budget = parseFloat(document.getElementById('monthlyBudget').value) || 0;
-    let price = parseFloat(document.getElementById('productPrice').value) || 0;
-    const margin = parseFloat(document.getElementById('netMargin').value) || 0;
-    const sales = parseInt(document.getElementById('sales').value.replace(/,/g, '')) || 0;
-    const leads = parseInt(document.getElementById('leads').value.replace(/,/g, '')) || 0;
-    
-    // GUERRA DE PRECIOS: Reducir precio 15% si está activo
-    const warModeActive = document.getElementById('warModeToggle').checked;
-    if (warModeActive) {
-        price = price * 0.85; // -15%
+    if (!budget || budget < 100) {
+        showAlert('Por favor ingresa un presupuesto válido (mínimo S/100)', 'warning');
+        return;
     }
     
-    // IMPUESTOS DIGITALES
-    const includeTaxes = document.getElementById('includeTaxesToggle').checked;
-    const digitalTax = includeTaxes ? (budget * (currentCountry.digitalTax / 100)) : 0;
-    const totalCost = budget + digitalTax;
+    // Get data
+    const industry = INDUSTRIES_PERU[industryKey];
+    const platform = AD_PLATFORMS_PERU_2026[platformKey];
+    const leadQualityMap = ['cold', 'warm', 'hot'];
+    const leadQuality = leadQualityMap[leadQualityValue - 1];
+    const benchmarks = COST_PER_LEAD_BENCHMARKS_2026[location][leadQuality];
     
-    const revenue = sales * price;
-    const netRevenue = revenue * (margin / 100);
+    // Calculate metrics
+    const costPerLead = benchmarks.avg;
+    const estimatedLeads = Math.floor(budget / costPerLead);
+    const conversionRate = industry.conversionRate / 100;
+    const projectedSales = Math.floor(estimatedLeads * conversionRate);
+    const totalRevenue = projectedSales * industry.avgTicket;
     
-    const cpa = sales > 0 ? (totalCost / sales) : 0;
-    const cac = cpa;
-    const roas = budget > 0 ? (revenue / budget) : 0;
-    const roi = totalCost > 0 ? ((netRevenue - totalCost) / totalCost * 100) : 0;
+    // Calculate funnel stages
+    const funnelData = calculateFunnelStages(estimatedLeads, industry);
     
-    currentMetrics = { budget, price, margin, sales, leads, revenue, netRevenue, cpa, cac, roas, roi, totalCost, digitalTax, warModeActive };
+    // Calculate ROAS
+    const marginData = getMarginFromMarginAxis();
+    const netMargin = marginData ? marginData.netMargin : industry.avgMargin;
+    const grossProfit = totalRevenue * (netMargin / 100);
+    const netProfit = grossProfit - budget;
+    const roas = budget > 0 ? (totalRevenue / budget).toFixed(2) : 0;
     
-    // Actualizar displays
-    document.getElementById('cpaValue').textContent = `${currentCountry.symbol}${cpa.toFixed(2)}`;
-    document.getElementById('cacValue').textContent = `${currentCountry.symbol}${cac.toFixed(2)}`;
-    document.getElementById('roasValue').textContent = `${roas.toFixed(2)}x`;
-    document.getElementById('roiValue').textContent = `${roi.toFixed(1)}%`;
+    // Store calculation
+    AppState.lastCalculation = {
+        timestamp: Date.now(),
+        industry: industryKey,
+        industryName: industry.name,
+        platform: platformKey,
+        platformName: platform.name,
+        location,
+        budget,
+        leadQuality,
+        costPerLead,
+        estimatedLeads,
+        projectedSales,
+        totalRevenue,
+        roas,
+        netProfit,
+        funnelData
+    };
     
-    updateStatusMessages(cpa, roas, roi, price, margin);
+    // Render results
+    renderResults(AppState.lastCalculation);
     
-    // AI GROWTH ADVISOR
-    updateAIAdvisor(roas, roi, cpa, price, margin);
+    // Show save button
+    document.getElementById('saveScenarioBtn').style.display = 'inline-block';
     
-    // MARKETING HEALTH SCORE
-    updateHealthScore(roas, cpa, price, margin);
-    
-    // Pentagon Sync
-    window.EcosystemBridge.exportCAC(cac);
-    window.EcosystemBridge.exportBurnRate(budget);
-    
-    checkCashAlert(budget);
-    
-    document.getElementById('resultsSection').classList.remove('hidden');
-    
-    createFunnelChart();
-    createChannelBreakdown(budget);
-    createHealthDiagnostic();
-    
-    setTimeout(() => {
-        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
-    }, 300);
+    // Scroll to results
+    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// AI GROWTH ADVISOR - Tu CMO 24/7
-// ═══════════════════════════════════════════════════════════════════
-
-function updateAIAdvisor(roas, roi, cpa, price, margin) {
-    const hub = document.getElementById('aiInsightHub');
-    const content = document.getElementById('aiInsightContent');
+function calculateFunnelStages(totalLeads, industry) {
+    const stages = CONVERSION_FUNNEL_STAGES;
     
-    let advisor = null;
+    const data = {
+        awareness: totalLeads,
+        interest: Math.floor(totalLeads * (stages.interest.typical_rate / 100)),
+        consideration: 0,
+        intent: 0,
+        purchase: 0
+    };
     
-    if (roas < 1.5) {
-        advisor = window.AI_ADVISOR_MESSAGES.critical;
-    } else if (roas < 3.0) {
-        advisor = window.AI_ADVISOR_MESSAGES.risk;
-    } else if (roas < 6.0) {
-        advisor = window.AI_ADVISOR_MESSAGES.healthy;
-    } else {
-        advisor = window.AI_ADVISOR_MESSAGES.unicorn;
-    }
+    data.consideration = Math.floor(data.interest * (stages.consideration.typical_rate / 100));
+    data.intent = Math.floor(data.consideration * (stages.intent.typical_rate / 100));
+    data.purchase = Math.floor(data.intent * (stages.purchase.typical_rate / 100));
     
-    const borderColor = {
-        red: 'border-red-500',
-        yellow: 'border-yellow-500',
-        green: 'border-green-500',
-        violet: 'border-violet-500'
-    }[advisor.color];
-    
-    const bgColor = {
-        red: 'bg-red-500/10',
-        yellow: 'bg-yellow-500/10',
-        green: 'bg-green-500/10',
-        violet: 'bg-violet-500/10'
-    }[advisor.color];
-    
-    content.className = `p-4 rounded-lg border-2 ${borderColor} ${bgColor} transition-all duration-300`;
-    content.innerHTML = `
-        <div class="flex items-start space-x-3">
-            <span class="text-4xl">${advisor.icon}</span>
-            <div class="flex-1">
-                <h4 class="text-lg font-bold text-${advisor.color}-400 mb-2">${advisor.title}</h4>
-                <p class="text-sm text-gray-300 mb-3">${advisor.message}</p>
-                <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-400">Acción Recomendada:</span>
-                    <span class="text-xs font-bold text-${advisor.color}-400">${advisor.action}</span>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    hub.classList.remove('hidden');
+    return data;
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// MARKETING HEALTH SCORE (0-100)
-// ═══════════════════════════════════════════════════════════════════
-
-function updateHealthScore(roas, cpa, price, margin) {
-    const clicks = parseInt(document.getElementById('clicks').value.replace(/,/g, '')) || 0;
-    const leads = parseInt(document.getElementById('leads').value.replace(/,/g, '')) || 0;
+function renderResults(calculation) {
+    // Show results section
+    document.getElementById('resultsSection').style.display = 'block';
     
-    // Tasa de Conversión (30%)
-    const conversionRate = clicks > 0 ? (leads / clicks) : 0;
-    const conversionScore = Math.min((conversionRate / 0.3) * 30, 30);
+    // Update metrics
+    document.getElementById('estimatedLeads').textContent = calculation.estimatedLeads.toLocaleString('es-PE');
+    document.getElementById('costPerLead').textContent = `S/${calculation.costPerLead.toFixed(2)}`;
+    document.getElementById('projectedSales').textContent = calculation.projectedSales.toLocaleString('es-PE');
+    document.getElementById('totalRevenue').textContent = `S/${calculation.totalRevenue.toLocaleString('es-PE')}`;
     
-    // ROAS (50%)
-    const roasScore = Math.min((roas / 6.0) * 50, 50);
+    // Update ROAS
+    document.getElementById('roasValue').textContent = `${calculation.roas}x`;
+    document.getElementById('netProfit').textContent = `S/${calculation.netProfit.toLocaleString('es-PE')}`;
     
-    // Eficiencia de CPC (20%)
-    const maxSafeCPA = price * (margin / 100) * 0.7;
-    const cpaEfficiency = cpa > 0 ? Math.max(0, (1 - (cpa / maxSafeCPA))) : 0;
-    const cpaScore = Math.min(cpaEfficiency * 20, 20);
+    // Update ROAS health badge
+    updateROASHealthBadge(parseFloat(calculation.roas));
     
-    const totalScore = Math.round(conversionScore + roasScore + cpaScore);
+    // Render funnel visualization
+    renderFunnelVisualization(calculation.funnelData);
     
-    // Actualizar barra y color
-    const bar = document.getElementById('healthScoreBar');
-    const value = document.getElementById('healthScoreValue');
-    const display = document.getElementById('healthScoreDisplay');
-    
-    bar.style.width = `${totalScore}%`;
-    
-    if (totalScore >= 76) {
-        bar.className = 'h-full bg-green-500 transition-all duration-500';
-        value.className = 'text-sm font-bold text-green-400';
-    } else if (totalScore >= 41) {
-        bar.className = 'h-full bg-yellow-500 transition-all duration-500';
-        value.className = 'text-sm font-bold text-yellow-400';
-    } else {
-        bar.className = 'h-full bg-red-500 transition-all duration-500';
-        value.className = 'text-sm font-bold text-red-400';
-    }
-    
-    value.textContent = totalScore;
-    display.classList.remove('hidden');
-    
-    // Export to Pentagon
-    window.EcosystemBridge.exportMarketingHealth(totalScore);
+    // Generate WhatsApp script
+    generateWhatsAppScript(calculation.industryName);
 }
 
-function updateStatusMessages(cpa, roas, roi, price, margin) {
-    const maxSafeCPA = price * (margin / 100) * 0.7;
+function updateROASHealthBadge(roas) {
+    const badge = document.getElementById('roasHealthBadge');
     
-    if (cpa <= maxSafeCPA) {
-        document.getElementById('cpaStatus').innerHTML = '<span class="status-excellent">✓ Dentro del rango seguro</span>';
-    } else if (cpa <= maxSafeCPA * 1.2) {
-        document.getElementById('cpaStatus').innerHTML = '<span class="status-warning">⚠️ Cerca del límite</span>';
-    } else {
-        document.getElementById('cpaStatus').innerHTML = '<span class="status-danger">⛔ Muy alto, reduce costos</span>';
-    }
+    if (!badge) return;
+    
+    let message = '';
+    let bgColor = '';
+    let textColor = '';
     
     if (roas >= 4) {
-        document.getElementById('roasStatus').innerHTML = '<span class="status-excellent">🔥 Excelente retorno</span>';
-    } else if (roas >= 2) {
-        document.getElementById('roasStatus').innerHTML = '<span class="status-good">✓ Buen retorno</span>';
-    } else if (roas >= 1) {
-        document.getElementById('roasStatus').innerHTML = '<span class="status-warning">⚠️ Margen estrecho</span>';
+        message = '🔥 EXCELENTE - Campaña altamente rentable';
+        bgColor = 'rgba(16, 185, 129, 0.2)';
+        textColor = '#10b981';
+    } else if (roas >= 2.5) {
+        message = '✅ BUENO - Campaña rentable';
+        bgColor = 'rgba(34, 211, 238, 0.2)';
+        textColor = '#06b6d4';
+    } else if (roas >= 1.5) {
+        message = '⚠️ REGULAR - Optimización requerida';
+        bgColor = 'rgba(245, 158, 11, 0.2)';
+        textColor = '#f59e0b';
     } else {
-        document.getElementById('roasStatus').innerHTML = '<span class="status-danger">⛔ Perdiendo dinero</span>';
+        message = '🚨 CRÍTICO - Revisar estrategia urgente';
+        bgColor = 'rgba(239, 68, 68, 0.2)';
+        textColor = '#ef4444';
     }
     
-    if (roi >= 100) {
-        document.getElementById('roiStatus').innerHTML = '<span class="status-excellent">🚀 ¡Escala ahora!</span>';
-    } else if (roi >= 50) {
-        document.getElementById('roiStatus').innerHTML = '<span class="status-good">✓ Rentable</span>';
-    } else if (roi >= 0) {
-        document.getElementById('roiStatus').innerHTML = '<span class="status-warning">⚠️ Margen bajo</span>';
-    } else {
-        document.getElementById('roiStatus').innerHTML = '<span class="status-danger">⛔ Pérdida neta</span>';
-    }
-}// ═══════════════════════════════════════════════════════════════════
-// CHART VISUALIZATIONS
-// ═══════════════════════════════════════════════════════════════════
-
-function createFunnelChart() {
-    const ctx = document.getElementById('funnelChart');
-    
-    if (funnelChart) {
-        funnelChart.destroy();
-    }
-    
-    const impressions = parseInt(document.getElementById('impressions').value.replace(/,/g, '')) || 0;
-    const clicks = parseInt(document.getElementById('clicks').value.replace(/,/g, '')) || 0;
-    const leads = parseInt(document.getElementById('leads').value.replace(/,/g, '')) || 0;
-    const sales = parseInt(document.getElementById('sales').value.replace(/,/g, '')) || 0;
-    
-    funnelChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Impresiones', 'Clicks', 'Leads', 'Ventas'],
-            datasets: [{
-                label: 'Cantidad',
-                data: [impressions, clicks, leads, sales],
-                backgroundColor: [
-                    'rgba(139, 92, 246, 0.8)',
-                    'rgba(217, 70, 239, 0.8)',
-                    'rgba(34, 211, 238, 0.8)',
-                    'rgba(16, 185, 129, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(139, 92, 246, 1)',
-                    'rgba(217, 70, 239, 1)',
-                    'rgba(34, 211, 238, 1)',
-                    'rgba(16, 185, 129, 1)'
-                ],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: 'rgba(2, 6, 23, 0.95)',
-                    titleColor: '#8b5cf6',
-                    bodyColor: '#fff',
-                    borderColor: '#8b5cf6',
-                    borderWidth: 1
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: { color: 'rgba(139, 92, 246, 0.1)' },
-                    ticks: { color: '#94a3b8' }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#94a3b8' }
-                }
-            }
-        }
-    });
+    badge.style.background = bgColor;
+    badge.style.color = textColor;
+    badge.textContent = message;
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// MULTI-CHANNEL SIMULATOR
-// ═══════════════════════════════════════════════════════════════════
-
-function createChannelBreakdown(totalBudget) {
-    const container = document.getElementById('channelBreakdown');
-    const channels = window.CHANNEL_BENCHMARKS;
+function renderFunnelVisualization(funnelData) {
+    const container = document.getElementById('funnelVisualization');
     
-    let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
-    let totalROAS = 0;
-    let channelCount = 0;
+    if (!container) return;
     
-    Object.entries(channels).forEach(([key, channel]) => {
-        const allocation = totalBudget * 0.2;
-        const estimatedRevenue = allocation * (channel.avgConversion / 100) * parseFloat(document.getElementById('productPrice').value);
-        const channelROAS = allocation > 0 ? (estimatedRevenue / allocation) : 0;
-        
-        totalROAS += channelROAS;
-        channelCount++;
-        
-        html += `
-            <div class="channel-card">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-2xl">${channel.icon}</span>
-                        <div>
-                            <p class="font-semibold">${channel.name}</p>
-                            <p class="text-xs text-gray-500">${channel.bestFor.join(', ')}</p>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-lg font-bold text-violet-400">${channelROAS.toFixed(2)}x</p>
-                        <p class="text-xs text-gray-500">ROAS</p>
-                    </div>
-                </div>
-                <div class="w-full bg-obsidian-light rounded-full h-2">
-                    <div class="bg-gradient-to-r ${channel.color} h-2 rounded-full" style="width: ${Math.min(channelROAS * 25, 100)}%"></div>
-                </div>
-                <p class="text-xs text-gray-400 mt-2">${channel.strength}</p>
-            </div>
-        `;
-    });
-    
-    html += '</div>';
-    container.innerHTML = html;
-    
-    const blendedROAS = totalROAS / channelCount;
-    document.getElementById('blendedROAS').textContent = blendedROAS.toFixed(2) + 'x';
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// INFLUENCER ROI CALCULATOR
-// ═══════════════════════════════════════════════════════════════════
-
-function calculateInfluencer() {
-    const fee = parseFloat(document.getElementById('influencerFee').value) || 0;
-    const conversion = parseFloat(document.getElementById('influencerConversion').value) || 0;
-    const reach = parseFloat(document.getElementById('influencerReach').value) || 0;
-    const price = parseFloat(document.getElementById('productPrice').value) || 0;
-    const margin = parseFloat(document.getElementById('netMargin').value) || 0;
-    
-    const estimatedViews = reach * 0.3;
-    const estimatedSales = (estimatedViews * conversion) / 100;
-    const salesNeeded = Math.ceil(fee / (price * (margin / 100)));
-    const cpv = estimatedSales > 0 ? (fee / estimatedSales) : 0;
-    const revenue = estimatedSales * price;
-    const profit = (revenue * (margin / 100)) - fee;
-    const influencerROI = fee > 0 ? ((profit / fee) * 100) : 0;
-    
-    document.getElementById('influencerSalesNeeded').textContent = salesNeeded;
-    document.getElementById('influencerCPV').textContent = `${currentCountry ? currentCountry.symbol : '$'}${cpv.toFixed(2)}`;
-    document.getElementById('influencerROI').textContent = `${influencerROI.toFixed(1)}%`;
-    
-    document.getElementById('influencerResults').classList.remove('hidden');
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// WHATSAPP GROWTH CALCULATOR
-// ═══════════════════════════════════════════════════════════════════
-
-function calculateWhatsApp() {
-    const budget = parseFloat(document.getElementById('whatsappBudget').value) || 0;
-    const responseRate = parseFloat(document.getElementById('whatsappResponse').value) || 0;
-    const cpc = currentCountry ? currentCountry.cpcEstimated : 0.50;
-    
-    const clicks = Math.floor(budget / (cpc * 1.2));
-    const conversations = Math.floor(clicks * (responseRate / 100));
-    const costPerConversation = conversations > 0 ? (budget / conversations) : 0;
-    const estimatedSales = Math.floor(conversations * 0.15);
-    
-    document.getElementById('whatsappConversations').textContent = conversations.toLocaleString();
-    document.getElementById('whatsappCPC').textContent = `${currentCountry ? currentCountry.symbol : '$'}${costPerConversation.toFixed(2)}`;
-    document.getElementById('whatsappSales').textContent = estimatedSales.toLocaleString();
-    
-    document.getElementById('whatsappResults').classList.remove('hidden');
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// CMO HEALTH DIAGNOSTIC
-// ═══════════════════════════════════════════════════════════════════
-
-function createHealthDiagnostic() {
-    const container = document.getElementById('healthDiagnostic');
-    const metrics = currentMetrics;
-    
-    const diagnostics = [
-        {
-            name: 'Eficiencia de Gasto',
-            value: metrics.roas >= 3 ? 'Excelente' : metrics.roas >= 2 ? 'Bueno' : metrics.roas >= 1 ? 'Aceptable' : 'Crítico',
-            status: metrics.roas >= 3 ? 'excellent' : metrics.roas >= 2 ? 'good' : metrics.roas >= 1 ? 'warning' : 'danger',
-            icon: '💰'
-        },
-        {
-            name: 'Salud del CAC',
-            value: metrics.cac <= (metrics.price * 0.3) ? 'Óptimo' : metrics.cac <= (metrics.price * 0.5) ? 'Sostenible' : 'Alto Riesgo',
-            status: metrics.cac <= (metrics.price * 0.3) ? 'excellent' : metrics.cac <= (metrics.price * 0.5) ? 'good' : 'danger',
-            icon: '🎯'
-        },
-        {
-            name: 'Rentabilidad',
-            value: metrics.roi >= 100 ? 'Altamente Rentable' : metrics.roi >= 50 ? 'Rentable' : metrics.roi >= 0 ? 'Margen Bajo' : 'Pérdidas',
-            status: metrics.roi >= 100 ? 'excellent' : metrics.roi >= 50 ? 'good' : metrics.roi >= 0 ? 'warning' : 'danger',
-            icon: '📈'
-        },
-        {
-            name: 'Escalabilidad',
-            value: metrics.roi >= 50 && metrics.roas >= 2.5 ? 'Lista para Escalar' : 'Optimizar Primero',
-            status: metrics.roi >= 50 && metrics.roas >= 2.5 ? 'excellent' : 'warning',
-            icon: '🚀'
-        }
+    const stages = [
+        { name: 'Awareness (Impresiones)', value: funnelData.awareness, percent: 100 },
+        { name: 'Interest (Clicks)', value: funnelData.interest, percent: (funnelData.interest / funnelData.awareness * 100) },
+        { name: 'Consideration (Leads)', value: funnelData.consideration, percent: (funnelData.consideration / funnelData.awareness * 100) },
+        { name: 'Intent (Calificados)', value: funnelData.intent, percent: (funnelData.intent / funnelData.awareness * 100) },
+        { name: 'Purchase (Ventas)', value: funnelData.purchase, percent: (funnelData.purchase / funnelData.awareness * 100) }
     ];
     
-    container.innerHTML = diagnostics.map(diag => `
-        <div class="p-4 rounded-lg health-${diag.status}">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-2xl">${diag.icon}</span>
-                <span class="text-xs font-bold uppercase status-${diag.status}">${diag.value}</span>
+    container.innerHTML = stages.map(stage => `
+        <div class="funnel-stage" style="--fill-width: ${stage.percent}%;">
+            <div class="funnel-stage-content">
+                <span class="funnel-stage-name">${stage.name}</span>
+                <span class="funnel-stage-value">${stage.value.toLocaleString('es-PE')}</span>
             </div>
-            <p class="text-sm font-semibold">${diag.name}</p>
         </div>
     `).join('');
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// SCENARIO MANAGER
-// ═══════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════
+// WHATSAPP SCRIPT GENERATOR
+// ══════════════════════════════════════════════════════════════════════════
 
-function openScenarioManager() {
-    document.getElementById('scenarioModal').classList.remove('hidden');
-    loadScenarioList();
-}
-
-function closeScenarioManager() {
-    document.getElementById('scenarioModal').classList.add('hidden');
-}
-
-function loadScenarioList() {
-    const container = document.getElementById('scenarioList');
-    const scenarios = [];
+function generateWhatsAppScript(industryName) {
+    const industryKey = document.getElementById('industrySelect').value;
+    const industry = INDUSTRIES_PERU[industryKey];
     
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith('scenario_')) {
-            const data = JSON.parse(localStorage.getItem(key));
-            scenarios.push({ name: key.replace('scenario_', ''), data, key });
+    if (!industry) return;
+    
+    const scriptDiv = document.getElementById('whatsappScript');
+    
+    if (!scriptDiv) return;
+    
+    scriptDiv.textContent = industry.whatsappScript;
+}
+
+function copyWhatsAppScript() {
+    const script = document.getElementById('whatsappScript').textContent;
+    
+    navigator.clipboard.writeText(script).then(() => {
+        const btn = document.getElementById('copyWhatsappBtn');
+        const originalText = btn.textContent;
+        
+        btn.textContent = '✅ Script Copiado!';
+        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.background = '';
+        }, 2000);
+    }).catch(err => {
+        console.error('Error copying script:', err);
+        showAlert('Error al copiar el script', 'danger');
+    });
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// MARGINAXIS INTEGRATION
+// ══════════════════════════════════════════════════════════════════════════
+
+function getMarginFromMarginAxis() {
+    // Try to get margin data from MarginAxis via localStorage
+    try {
+        const marginAxisData = localStorage.getItem('marginaxis_calculation');
+        
+        if (marginAxisData) {
+            const data = JSON.parse(marginAxisData);
+            return {
+                netMargin: data.netMargin || data.margin || 0,
+                timestamp: data.timestamp
+            };
         }
+    } catch (error) {
+        console.warn('Could not retrieve MarginAxis data:', error);
     }
     
-    if (scenarios.length === 0) {
-        container.innerHTML = '<p class="text-gray-400 text-center py-8">No hay escenarios guardados</p>';
+    return null;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// GROWTH STRATEGIES
+// ══════════════════════════════════════════════════════════════════════════
+
+function loadGrowthStrategies() {
+    const container = document.getElementById('strategiesContainer');
+    
+    if (!container) return;
+    
+    container.innerHTML = GROWTH_STRATEGIES_PERU.map(strategy => `
+        <div class="strategy-card">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                <h4 style="font-size: 15px; font-weight: 700; color: #f3f4f6; margin: 0;">
+                    ${strategy.strategy}
+                </h4>
+                <span style="font-size: 11px; font-weight: 700; padding: 4px 8px; background: rgba(16, 185, 129, 0.2); color: #10b981; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    ROI: ${strategy.roi}%
+                </span>
+            </div>
+            <div style="font-size: 12px; color: #9ca3af; margin-bottom: 6px;">
+                ${strategy.bestFor.join(' · ')}
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #6b7280;">
+                <span>⏱️ ${strategy.timeToResults}</span>
+                <span style="color: ${strategy.difficulty === 'LOW' ? '#10b981' : strategy.difficulty === 'MEDIUM' ? '#f59e0b' : '#ef4444'};">
+                    Dificultad: ${strategy.difficulty}
+                </span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// PENTAGON TOOLS HUB
+// ══════════════════════════════════════════════════════════════════════════
+
+function loadPentagonTools() {
+    const container = document.getElementById('pentagonTools');
+    
+    if (!container) return;
+    
+    const tools = Object.values(PENTAGON_TOOLS).filter(tool => tool.available);
+    
+    container.innerHTML = tools.map(tool => `
+        <a href="#" class="pentagon-tool" style="--tool-color: ${tool.color}; --tool-color-rgb: ${hexToRgb(tool.color)};" 
+           onclick="openPentagonTool('${tool.name.toLowerCase().replace(/\s+/g, '')}'); return false;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-size: 28px;">${tool.icon}</span>
+                <div style="flex: 1;">
+                    <div style="font-size: 14px; font-weight: 800; color: ${tool.color}; margin-bottom: 2px;">
+                        ${tool.name}
+                    </div>
+                    <div style="font-size: 11px; color: #9ca3af;">
+                        ${tool.description}
+                    </div>
+                </div>
+            </div>
+        </a>
+    `).join('');
+}
+
+function openPentagonTool(toolName) {
+    showAlert(`Navegando a ${toolName}... 🚀`, 'info');
+    
+    // In production, this would navigate to actual tool URLs
+    setTimeout(() => {
+        console.log(`Opening ${toolName}`);
+    }, 500);
+}
+
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? 
+        `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+        '220, 38, 38';
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// SCENARIO MANAGEMENT
+// ══════════════════════════════════════════════════════════════════════════
+
+function saveScenario() {
+    if (!AppState.lastCalculation) {
+        showAlert('No hay cálculo para guardar', 'warning');
         return;
     }
     
-    container.innerHTML = scenarios.map(scenario => `
-        <div class="scenario-card">
-            <div class="flex justify-between items-start">
-                <div class="flex-1" onclick="loadScenario('${scenario.key}')">
-                    <h3 class="font-semibold text-violet-400 mb-1">${scenario.name}</h3>
-                    <p class="text-xs text-gray-400">${new Date(scenario.data.timestamp).toLocaleDateString('es-ES')}</p>
-                    <p class="text-xs text-gray-500 mt-1">
-                        ${window.COUNTRY_DATABASE[scenario.data.country]?.name || 'N/A'} • ${scenario.data.industry} • ${currentCountry?.symbol || '$'}${scenario.data.price}
+    // Generate unique ID
+    const scenarioId = `scenario_${Date.now()}`;
+    
+    // Create scenario object
+    const scenario = {
+        id: scenarioId,
+        ...AppState.lastCalculation,
+        savedAt: new Date().toISOString()
+    };
+    
+    // Add to scenarios array
+    AppState.savedScenarios.push(scenario);
+    
+    // Save to localStorage
+    localStorage.setItem('leadtarget_scenarios', JSON.stringify(AppState.savedScenarios));
+    
+    // Reload scenarios display
+    loadSavedScenarios();
+    
+    // Show feedback
+    showAlert('✅ Escenario guardado exitosamente', 'success');
+    
+    // Hide save button
+    document.getElementById('saveScenarioBtn').style.display = 'none';
+}
+
+function loadSavedScenarios() {
+    const container = document.getElementById('scenariosContainer');
+    
+    if (!container) return;
+    
+    if (AppState.savedScenarios.length === 0) {
+        container.innerHTML = `
+            <div style="padding: 40px; text-align: center; color: #6b7280; border: 2px dashed rgba(153, 27, 27, 0.3); border-radius: 12px;">
+                <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.5;">📊</div>
+                <p style="font-size: 14px; margin: 0;">No hay escenarios guardados aún.<br>Calcula una proyección y guárdala.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = AppState.savedScenarios.map(scenario => `
+        <div class="scenario-card" onclick="viewScenario('${scenario.id}')">
+            <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 12px;">
+                <div style="flex: 1;">
+                    <h4 style="font-size: 16px; font-weight: 800; color: #dc2626; margin: 0 0 4px 0;">
+                        ${scenario.industryName}
+                    </h4>
+                    <p style="font-size: 12px; color: #9ca3af; margin: 0;">
+                        ${scenario.platformName} · ${scenario.location === 'lima' ? 'Lima' : 'Provincias'}
                     </p>
                 </div>
-                <button onclick="deleteScenario('${scenario.key}')" class="scenario-delete-btn">
+                <button class="scenario-delete-btn" onclick="deleteScenario('${scenario.id}', event)">
                     🗑️ Eliminar
                 </button>
             </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px;">
+                <div style="padding: 8px; background: rgba(220, 38, 38, 0.1); border-radius: 6px; border: 1px solid rgba(220, 38, 38, 0.2);">
+                    <div style="font-size: 10px; color: #6b7280; font-weight: 600; margin-bottom: 2px;">PRESUPUESTO</div>
+                    <div style="font-size: 16px; font-weight: 900; color: #dc2626;">S/${scenario.budget.toLocaleString('es-PE')}</div>
+                </div>
+                <div style="padding: 8px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <div style="font-size: 10px; color: #6b7280; font-weight: 600; margin-bottom: 2px;">ROAS</div>
+                    <div style="font-size: 16px; font-weight: 900; color: #10b981;">${scenario.roas}x</div>
+                </div>
+            </div>
+            
+            <div style="font-size: 11px; color: #6b7280; display: flex; justify-content: space-between;">
+                <span>📊 ${scenario.estimatedLeads} leads</span>
+                <span>💰 ${scenario.projectedSales} ventas</span>
+            </div>
         </div>
     `).join('');
 }
 
-function loadScenario(key) {
-    const data = JSON.parse(localStorage.getItem(key));
+function viewScenario(scenarioId) {
+    const scenario = AppState.savedScenarios.find(s => s.id === scenarioId);
     
-    document.getElementById('countrySelect').value = data.country;
-    handleCountryChange();
+    if (!scenario) return;
     
-    document.getElementById('industrySelect').value = data.industry;
-    document.getElementById('productPrice').value = data.price;
-    document.getElementById('monthlyBudget').value = data.budget;
-    document.getElementById('netMargin').value = data.margin;
-    document.getElementById('ctrSlider').value = data.ctr;
-    document.getElementById('leadConvSlider').value = data.leadConv;
-    document.getElementById('closeRateSlider').value = data.closeRate;
-    
-    updateFunnelMetrics();
-    closeScenarioManager();
+    // Show modal with scenario details
+    showScenarioModal(scenario);
 }
 
-function deleteScenario(key) {
-    if (confirm('¿Eliminar este escenario?')) {
-        localStorage.removeItem(key);
-        loadScenarioList();
-    }
+function deleteScenario(scenarioId, event) {
+    event.stopPropagation();
+    
+    if (!confirm('¿Estás seguro de eliminar este escenario?')) return;
+    
+    // Remove from array
+    AppState.savedScenarios = AppState.savedScenarios.filter(s => s.id !== scenarioId);
+    
+    // Update localStorage
+    localStorage.setItem('leadtarget_scenarios', JSON.stringify(AppState.savedScenarios));
+    
+    // Reload display
+    loadSavedScenarios();
+    
+    showAlert('Escenario eliminado', 'info');
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// PDF EXPORT
-// ═══════════════════════════════════════════════════════════════════
-
-function exportToPDF() {
-    if (!currentMetrics.sales) {
-        alert('Primero calcula las métricas');
-        return;
-    }
-    
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    doc.setFontSize(20);
-    doc.text('LeadNexus AI - Reporte de Campana', 20, 20);
-    
-    doc.setFontSize(12);
-    doc.text(`Pais: ${currentCountry.name}`, 20, 35);
-    doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, 20, 42);
-    
-    if (currentMetrics.warModeActive) {
-        doc.setTextColor(255, 0, 0);
-        doc.text('MODO GUERRA DE PRECIOS ACTIVO (-15%)', 20, 49);
-        doc.setTextColor(0, 0, 0);
-    }
-    
-    doc.setFontSize(14);
-    doc.text('Metricas Principales', 20, 60);
-    
-    doc.setFontSize(11);
-    doc.text(`Presupuesto: ${currentCountry.symbol}${currentMetrics.budget.toLocaleString()}`, 20, 70);
-    doc.text(`CAC: ${currentCountry.symbol}${currentMetrics.cac.toFixed(2)}`, 20, 77);
-    doc.text(`ROAS: ${currentMetrics.roas.toFixed(2)}x`, 20, 84);
-    doc.text(`ROI: ${currentMetrics.roi.toFixed(1)}%`, 20, 91);
-    doc.text(`Revenue: ${currentCountry.symbol}${currentMetrics.revenue.toLocaleString()}`, 20, 98);
-    doc.text(`Marketing Health Score: ${document.getElementById('healthScoreValue').textContent}/100`, 20, 105);
-    
-    doc.setFontSize(14);
-    doc.text('Embudo de Conversion', 20, 120);
-    
-    doc.setFontSize(11);
-    doc.text(`Impresiones: ${document.getElementById('impressions').value}`, 20, 130);
-    doc.text(`Clicks: ${document.getElementById('clicks').value}`, 20, 137);
-    doc.text(`Leads: ${document.getElementById('leads').value}`, 20, 144);
-    doc.text(`Ventas: ${document.getElementById('sales').value}`, 20, 151);
-    
-    doc.setFontSize(8);
-    doc.text('Generado por LeadNexus AI - Pentagon Financial Ecosystem', 20, 280);
-    
-    doc.save(`LeadNexus-Report-${Date.now()}.pdf`);
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// TXT EXPORT
-// ═══════════════════════════════════════════════════════════════════
-
-function exportToTXT() {
-    if (!currentMetrics.sales) {
-        alert('Primero calcula las métricas');
-        return;
-    }
-    
-    const warModeText = currentMetrics.warModeActive ? '\n⚔️ MODO GUERRA DE PRECIOS ACTIVO (-15% precio)' : '';
-    
-    const report = `
-╔═══════════════════════════════════════════════════════════════════╗
-       LEADNEXUS AI - REPORTE DE CAMPAÑA PUBLICITARIA
-╚═══════════════════════════════════════════════════════════════════╝
-
-📅 INFORMACIÓN GENERAL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-País: ${currentCountry.name} ${currentCountry.flag}
-Industria: ${document.getElementById('industrySelect').value}
-Fecha: ${new Date().toLocaleString('es-ES')}${warModeText}
-
-💰 INVERSIÓN Y COSTOS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Presupuesto Mensual: ${currentCountry.symbol}${currentMetrics.budget.toLocaleString()}
-Impuestos Digitales (${currentCountry.digitalTax}%): ${currentCountry.symbol}${currentMetrics.digitalTax.toFixed(2)}
-Costo Total: ${currentCountry.symbol}${currentMetrics.totalCost.toLocaleString()}
-Precio de Venta: ${currentCountry.symbol}${currentMetrics.price.toFixed(2)}
-
-📊 MÉTRICAS DE RENDIMIENTO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CPA (Costo por Adquisición): ${currentCountry.symbol}${currentMetrics.cpa.toFixed(2)}
-CAC (Customer Acquisition Cost): ${currentCountry.symbol}${currentMetrics.cac.toFixed(2)}
-ROAS (Return on Ad Spend): ${currentMetrics.roas.toFixed(2)}x
-ROI Neto: ${currentMetrics.roi.toFixed(1)}%
-Marketing Health Score: ${document.getElementById('healthScoreValue').textContent}/100
-
-📉 EMBUDO DE CONVERSIÓN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Impresiones: ${document.getElementById('impressions').value}
-Clicks: ${document.getElementById('clicks').value}
-Leads: ${document.getElementById('leads').value}
-Ventas: ${document.getElementById('sales').value}
-
-💵 RESULTADOS FINANCIEROS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Revenue Total: ${currentCountry.symbol}${currentMetrics.revenue.toLocaleString()}
-Revenue Neto: ${currentCountry.symbol}${currentMetrics.netRevenue.toLocaleString()}
-Ganancia/Pérdida: ${currentCountry.symbol}${(currentMetrics.netRevenue - currentMetrics.totalCost).toLocaleString()}
-
-🩺 DIAGNÓSTICO DE SALUD
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Estado General: ${currentMetrics.roi >= 50 ? '✅ SALUDABLE' : currentMetrics.roi >= 0 ? '⚠️ PRECAUCIÓN' : '❌ CRÍTICO'}
-Recomendación: ${currentMetrics.roi >= 100 && currentMetrics.roas >= 2.5 ? 'ESCALAR AHORA' : currentMetrics.roi >= 50 ? 'OPTIMIZAR Y ESCALAR' : 'OPTIMIZAR CAMPAÑA'}
-
-╔═══════════════════════════════════════════════════════════════════╗
-  Generado por LeadNexus AI - Pentagon Financial Ecosystem
-  © 2026 - Simulación basada en benchmarks de mercado
-╚═══════════════════════════════════════════════════════════════════╝
+function showScenarioModal(scenario) {
+    const modal = `
+        <div class="modal-overlay" onclick="closeModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid rgba(153, 27, 27, 0.3);">
+                    <div>
+                        <h3 style="font-size: 24px; font-weight: 900; color: #dc2626; margin: 0 0 8px 0;">
+                            ${scenario.industryName}
+                        </h3>
+                        <p style="font-size: 14px; color: #9ca3af; margin: 0;">
+                            Guardado el ${new Date(scenario.savedAt).toLocaleDateString('es-PE')}
+                        </p>
+                    </div>
+                    <button onclick="closeModal()" class="crimson-btn-sm">✕ Cerrar</button>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                    <div class="metric-box-crimson">
+                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">PRESUPUESTO</div>
+                        <div style="font-size: 28px; font-weight: 900; color: #dc2626;">S/${scenario.budget.toLocaleString('es-PE')}</div>
+                    </div>
+                    <div class="metric-box-crimson">
+                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">LEADS ESTIMADOS</div>
+                        <div style="font-size: 28px; font-weight: 900; color: #dc2626;">${scenario.estimatedLeads.toLocaleString('es-PE')}</div>
+                    </div>
+                    <div class="metric-box-crimson">
+                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">VENTAS PROYECTADAS</div>
+                        <div style="font-size: 28px; font-weight: 900; color: #10b981;">${scenario.projectedSales.toLocaleString('es-PE')}</div>
+                    </div>
+                    <div class="metric-box-crimson">
+                        <div style="font-size: 11px; color: #6b7280; font-weight: 600; margin-bottom: 4px;">INGRESOS TOTALES</div>
+                        <div style="font-size: 28px; font-weight: 900; color: #10b981;">S/${scenario.totalRevenue.toLocaleString('es-PE')}</div>
+                    </div>
+                </div>
+                
+                <div style="padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border: 2px solid #10b981; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; color: #6b7280; font-weight: 600;">ROAS PROYECTADO</div>
+                            <div style="font-size: 42px; font-weight: 900; color: #10b981;">${scenario.roas}x</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 12px; color: #6b7280; font-weight: 600;">GANANCIA NETA</div>
+                            <div style="font-size: 28px; font-weight: 800; color: #10b981;">S/${scenario.netProfit.toLocaleString('es-PE')}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 13px;">
+                    <div>
+                        <strong style="color: #dc2626;">Plataforma:</strong>
+                        <span style="color: #9ca3af;">${scenario.platformName}</span>
+                    </div>
+                    <div>
+                        <strong style="color: #dc2626;">Ubicación:</strong>
+                        <span style="color: #9ca3af;">${scenario.location === 'lima' ? 'Lima Metropolitana' : 'Provincias'}</span>
+                    </div>
+                    <div>
+                        <strong style="color: #dc2626;">Calidad de Leads:</strong>
+                        <span style="color: #9ca3af;">${scenario.leadQuality.toUpperCase()}</span>
+                    </div>
+                    <div>
+                        <strong style="color: #dc2626;">CPL:</strong>
+                        <span style="color: #9ca3af;">S/${scenario.costPerLead.toFixed(2)}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     `;
     
-    const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `LeadNexus-Report-${Date.now()}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-}// ═══════════════════════════════════════════════════════════════════
-// EVENT LISTENERS
-// ═══════════════════════════════════════════════════════════════════
+    document.getElementById('modalContainer').innerHTML = modal;
+}
 
-function initializeEventListeners() {
-    document.getElementById('countrySelect').addEventListener('change', handleCountryChange);
-    document.getElementById('productPrice').addEventListener('input', updatePriceInUSD);
-    document.getElementById('monthlyBudget').addEventListener('input', updateFunnelMetrics);
-    document.getElementById('ctrSlider').addEventListener('input', updateFunnelMetrics);
-    document.getElementById('leadConvSlider').addEventListener('input', updateFunnelMetrics);
-    document.getElementById('closeRateSlider').addEventListener('input', updateFunnelMetrics);
+function closeModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('modalContainer').innerHTML = '';
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// EVENT LISTENERS
+// ══════════════════════════════════════════════════════════════════════════
+
+function attachEventListeners() {
+    // Industry selector
+    const industrySelect = document.getElementById('industrySelect');
+    if (industrySelect) {
+        industrySelect.addEventListener('change', (e) => onIndustryChange(e.target.value));
+    }
     
-    document.getElementById('autoFillBtn').addEventListener('click', autoFillFunnel);
-    document.getElementById('calculateBtn').addEventListener('click', calculateROI);
+    // Platform selector
+    const platformSelect = document.getElementById('platformSelect');
+    if (platformSelect) {
+        platformSelect.addEventListener('change', (e) => onPlatformChange(e.target.value));
+    }
     
-    document.getElementById('calculateInfluencerBtn').addEventListener('click', calculateInfluencer);
-    document.getElementById('calculateWhatsAppBtn').addEventListener('click', calculateWhatsApp);
+    // Lead quality slider
+    const leadQualityRange = document.getElementById('leadQualityRange');
+    if (leadQualityRange) {
+        leadQualityRange.addEventListener('input', (e) => onLeadQualityChange(e.target.value));
+    }
     
-    document.getElementById('scenarioManagerBtn').addEventListener('click', openScenarioManager);
-    document.getElementById('closeModalBtn').addEventListener('click', closeScenarioManager);
+    // Calculate button
+    const calculateBtn = document.getElementById('calculateBtn');
+    if (calculateBtn) {
+        calculateBtn.addEventListener('click', calculateFunnel);
+    }
     
-    document.getElementById('saveScenarioBtn').addEventListener('click', saveScenario);
-    document.getElementById('exportPDFBtn').addEventListener('click', exportToPDF);
-    document.getElementById('exportTXTBtn').addEventListener('click', exportToTXT);
+    // Save scenario button
+    const saveScenarioBtn = document.getElementById('saveScenarioBtn');
+    if (saveScenarioBtn) {
+        saveScenarioBtn.addEventListener('click', saveScenario);
+    }
     
-    document.getElementById('warModeToggle').addEventListener('change', () => {
-        if (!document.getElementById('resultsSection').classList.contains('hidden')) {
-            calculateROI();
-        }
-    });
+    // Copy WhatsApp button
+    const copyWhatsappBtn = document.getElementById('copyWhatsappBtn');
+    if (copyWhatsappBtn) {
+        copyWhatsappBtn.addEventListener('click', copyWhatsAppScript);
+    }
     
-    document.getElementById('includeTaxesToggle').addEventListener('change', () => {
-        if (!document.getElementById('resultsSection').classList.contains('hidden')) {
-            calculateROI();
-        }
-    });
+    // Refresh news button
+    const refreshNewsBtn = document.getElementById('refreshNewsBtn');
+    if (refreshNewsBtn) {
+        refreshNewsBtn.addEventListener('click', refreshNews);
+    }
     
-    // Guardar país seleccionado
-    document.getElementById('countrySelect').addEventListener('change', () => {
-        const country = document.getElementById('countrySelect').value;
-        if (country) {
-            localStorage.setItem('last_country', country);
+    // Escape key to close modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
         }
     });
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// SAVE SCENARIO
-// ═══════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════
+// UTILITY FUNCTIONS
+// ══════════════════════════════════════════════════════════════════════════
 
-function saveScenario() {
-    const name = prompt('Nombre del escenario:');
-    if (!name) return;
-    
-    const scenario = {
-        timestamp: new Date().toISOString(),
-        country: document.getElementById('countrySelect').value,
-        industry: document.getElementById('industrySelect').value,
-        price: parseFloat(document.getElementById('productPrice').value),
-        budget: parseFloat(document.getElementById('monthlyBudget').value),
-        margin: parseFloat(document.getElementById('netMargin').value),
-        ctr: parseFloat(document.getElementById('ctrSlider').value),
-        leadConv: parseFloat(document.getElementById('leadConvSlider').value),
-        closeRate: parseFloat(document.getElementById('closeRateSlider').value),
-        metrics: currentMetrics
+function showAlert(message, type = 'info') {
+    const colors = {
+        success: '#10b981',
+        warning: '#f59e0b',
+        danger: '#ef4444',
+        info: '#06b6d4'
     };
     
-    localStorage.setItem(`scenario_${name}`, JSON.stringify(scenario));
-    alert('✅ Escenario guardado exitosamente');
+    const alert = document.createElement('div');
+    alert.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 24px;
+        background: linear-gradient(135deg, rgba(23, 23, 23, 0.98), rgba(10, 10, 10, 0.95));
+        border: 2px solid ${colors[type] || colors.info};
+        border-radius: 12px;
+        color: ${colors[type] || colors.info};
+        font-weight: 700;
+        font-size: 14px;
+        z-index: 1000;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        animation: slideIn 0.3s ease;
+    `;
+    alert.textContent = message;
+    
+    document.body.appendChild(alert);
+    
+    setTimeout(() => {
+        alert.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => alert.remove(), 300);
+    }, 3000);
 }
 
-function loadSavedData() {
-    // Intentar cargar el último país usado
-    const lastCountry = localStorage.getItem('last_country');
-    if (lastCountry && window.COUNTRY_DATABASE[lastCountry]) {
-        document.getElementById('countrySelect').value = lastCountry;
-        handleCountryChange();
+// Add slideOut animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideOut {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(100px);
+        }
     }
-}
+`;
+document.head.appendChild(style);
+
+// ══════════════════════════════════════════════════════════════════════════
+// CONSOLE BRANDING
+// ══════════════════════════════════════════════════════════════════════════
+
+console.log('%c🎯 LeadTarget War Room', 'font-size: 24px; font-weight: 900; color: #dc2626; text-shadow: 0 0 10px rgba(220, 38, 38, 0.5);');
+console.log('%cPentágono Financiero © 2026', 'font-size: 12px; color: #6b7280;');
+console.log('%cCentral de Crecimiento + Inteligencia de Mercado', 'font-size: 14px; color: #9ca3af;');
+console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #dc2626;');
